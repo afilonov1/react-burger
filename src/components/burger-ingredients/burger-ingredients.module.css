@@ -1,0 +1,29 @@
+.section {
+    width: 600px;
+    background: #131316;
+
+
+}
+.wrapper {
+
+    position: relative;
+
+}
+.menu {
+    height: calc(100vh - 253px);
+    /*оставил отступ 10 px*/
+    overflow: scroll;
+}
+.tab {
+    display: flex;
+}
+.grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding-bottom: 32px;
+    padding-left: 16px;
+    padding-right: 16px;
+    /*justify-content: space-around;*/
+    /*align-items: flex-start;*/
+}

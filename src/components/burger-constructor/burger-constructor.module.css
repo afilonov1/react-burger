@@ -1,0 +1,33 @@
+.section {
+    margin-left: 40px;
+    width: 600px;
+    margin-top: 100px;
+}
+.list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding-left: 16px;
+    padding-right: 16px;
+    height: calc(100vh - 334px);
+    overflow: scroll;
+}
+.icon {
+    position: absolute;
+    left: 0;
+    top: calc(50% - 12px);
+}
+.item {
+    position: relative;
+}
+.footer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    margin-right: 16px;
+    margin-top: 40px;
+}
+.wrapper {
+    position: relative;
+
+}

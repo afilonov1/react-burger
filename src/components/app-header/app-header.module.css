@@ -1,0 +1,23 @@
+.wrapper {
+    background: #1C1C21;
+}
+.header {
+    max-width: 1280px;
+    margin: 0 auto;
+}
+
+.list {
+    display: flex;
+    justify-content: flex-start;
+}
+.logo {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+}
+.nav {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+}
