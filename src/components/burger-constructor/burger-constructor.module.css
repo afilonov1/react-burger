@@ -10,8 +10,8 @@
     padding-left: 16px;
     padding-right: 16px;
     height: calc(100vh - 334px);
-    overflow: scroll;
-}
+    overflow-y: scroll;
+    overflow-x: visible;}
 .icon {
     position: absolute;
     left: 0;

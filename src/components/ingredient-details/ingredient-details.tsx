@@ -1,11 +1,10 @@
 import React from "react";
 
 import styles from "./ingredient-details.module.css";
-import {dataProps} from "../../utils/props";
+import {ingredientType} from "../../utils/props";
 
 export default function IngredientDetails({data} : any ){
-    console.log(data)
-    console.log(styles)
+
     return (
         <div className={styles.wrapper}>
             <img src={data.image_large} alt=""/>
@@ -35,5 +34,5 @@ export default function IngredientDetails({data} : any ){
 }
 
 IngredientDetails.propTypes = {
-    data: dataProps,
+    data: ingredientType.isRequired,
 }

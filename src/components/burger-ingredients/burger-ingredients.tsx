@@ -4,32 +4,29 @@ import PropTypes from "prop-types";
 
 import styles from "./burger-ingredients.module.css";
 import IngredientsItem from "../ingredients-item/ingredients-item";
-import {dataProps} from "../../utils/props";
+import {ingredientType} from "../../utils/props";
 import Modal from "../modal/modal";
 import IngredientDetails from "../ingredient-details/ingredient-details";
 
 
 export default function BurgerIngredients({data}: any) {
     const [current, setCurrent] = useState('Булки');
-    const [modalVisibility, setModalVisibility] = useState(false);
-    const [nest, setNest] = useState(null);
+
+    const [modalData, setModalData] = useState(null);
     const openModal = (data: any) => {
-        const value: any = (
-            <IngredientDetails data={data}/>
-        )
-        setNest(value);
-        setModalVisibility(true);
+        setModalData(data);
     }
     const closeModal = () => {
-        setModalVisibility(false);
+        setModalData(null);
     }
-    function modal(child: any) {
+    function modal(data: any) {
         return (
             <Modal header="Детали ингредиента" onClose={closeModal}>
-                {child}
+                <IngredientDetails data={data}/>
             </Modal>
         );
     }
+
     return (
         <section className={styles.section}>
             <h1 className="white text text_type_main-large mt-10 mb-5">Соберите бургер</h1>
@@ -44,34 +41,32 @@ export default function BurgerIngredients({data}: any) {
                     Начинки
                 </Tab>
             </div>
-            <section className={styles.wrapper}>
-                <div className={styles.menu}>
-                    <h2 className="white text text_type_main-medium pt-10">Булки</h2>
-                    <div className={ styles.grid }>
-                        {
-                            data.map((item: any) => ((item.type === "bun") ? (<IngredientsItem openModal={openModal} key={item._id} data={item}/>) : null))
-                        }
-                    </div>
-                    <h2 className="white text text_type_main-medium">Соусы</h2>
-                    <div className={ styles.grid }>
-                        {
-                            data.map((item: any) => ((item.type === "sauce") ? (<IngredientsItem openModal={openModal} key={item._id} data={item}/>) : null))
-                        }
-                    </div>
-                    <h2 className="white text text_type_main-medium">Начинка</h2>
-                    <div className={ styles.grid }>
-                        {
-                            data.map((item: any) => ((item.type === "main") ? (<IngredientsItem openModal={openModal} key={item._id} data={item}/>) : null))
-                        }
-                    </div>
+            <section className={styles.menu + " scrollbar"}>
+                <h2 className="white text text_type_main-medium pt-10">Булки</h2>
+                <div className={ styles.grid }>
+                    {
+                        data.map((item: any) => ((item.type === "bun") ? (<IngredientsItem openModal={openModal} key={item._id} data={item}/>) : null))
+                    }
                 </div>
-                <div className="scroll"></div>
+                <h2 className="white text text_type_main-medium">Соусы</h2>
+                <div className={ styles.grid }>
+                    {
+                        data.map((item: any) => ((item.type === "sauce") ? (<IngredientsItem openModal={openModal} key={item._id} data={item}/>) : null))
+                    }
+                </div>
+                <h2 className="white text text_type_main-medium">Начинка</h2>
+                <div className={ styles.grid }>
+                    {
+                        data.map((item: any) => ((item.type === "main") ? (<IngredientsItem openModal={openModal} key={item._id} data={item}/>) : null))
+                    }
+                </div>
+
             </section>
-            {modalVisibility && modal(nest)}
+            {modalData && modal(modalData)}
         </section>
     );
 }
 
 BurgerIngredients.propTypes = {
-    data: PropTypes.arrayOf(dataProps)
+    data: PropTypes.arrayOf(ingredientType).isRequired
 }

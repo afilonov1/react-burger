@@ -4,9 +4,7 @@ import PropTypes from "prop-types";
 import styles from "./nav-item.module.css";
 
 export default function NavItem(props: any) {
-    console.log('NavItem');
     const primaryClass = props.isPrimary ? "white" : "dark-gray";
-
 
     return (
         <a href="/#" className={ styles.item + " pl-5 pr-5 pt-4 pb-4 mt-4 mb-4"}>
@@ -20,6 +18,6 @@ export default function NavItem(props: any) {
 
 NavItem.propTypes = {
     isPrimary: PropTypes.bool,
-    text: PropTypes.string,
-    children: PropTypes.element,
+    text: PropTypes.string.isRequired,
+    children: PropTypes.element.isRequired,
 }

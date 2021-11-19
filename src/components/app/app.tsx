@@ -4,29 +4,35 @@ import AppHeader from "../app-header/app-header";
 import styles from "./app.module.css";
 import BurgerIngredients from "../burger-ingredients/burger-ingredients";
 import BurgerConstructor from "../burger-constructor/burger-constructor";
-import { Fetch } from '../../utils/utils';
+import {getData} from '../../utils/utils';
 import { link } from '../../utils/constants';
 
-
+const initialCart = [0, 8, 3, 11, 10, 10, 0];
 
 function App() {
     const [data, setData] = useState();
+    const [cart, setCart] = useState<any>();
     const [isError, setIsError] = useState(false);
     useEffect(() => {
-        Fetch(link, setData, setIsError);
+        getData(link, setData, setIsError);
     }, []);
+    useEffect(() => {
+        if (data) {
+            const dataCart = initialCart.map((item, index) => data[item]);
+            setCart(dataCart);
+        }
+    }, [data])
 
-    const cart = [0, 8, 3, 11, 10, 10, 0];
   return (
     <div className={ styles.app }>
       <AppHeader />
-        {data && !isError &&
+      {data && !isError && cart &&
           <main className={styles.main}>
               <BurgerIngredients data={data}/>
-              <BurgerConstructor data={data} cart={cart}/>
+              <BurgerConstructor cart={cart}/>
           </main>
-        }
-        {isError && <p className="error">Ошибка соединения с сервером</p>}
+      }
+      {isError && <p className="error">Ошибка соединения с сервером</p>}
     </div>
   );
 }

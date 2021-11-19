@@ -6,14 +6,13 @@ import styles from './app-header.module.css';
 
 
 export default function AppHeader() {
-    console.log('AppHeader');
     return (
         <div className={styles.wrapper}>
             <header className={ styles.header }>
                 <nav className={ styles.nav }>
                     <ul className={ styles.list }>
                         <li>
-                            <NavItem text="Конструктор" isPrimary={true}>
+                            <NavItem text="Конструктор" isPrimary>
                                 <BurgerIcon type="primary" />
                             </NavItem>
                         </li>

@@ -1,59 +1,57 @@
-import React, {useEffect, useState} from "react";
+import React, { useMemo, useState } from "react";
 import styles from "./burger-constructor.module.css";
 import PropTypes from 'prop-types';
 import {Button, ConstructorElement,
     DragIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 
 import imagePath from '../../images/Subtract.svg';
-import {dataProps} from "../../utils/props";
+import {ingredientType} from "../../utils/props";
 import OrderDetails from "../order-details/order-details";
 import Modal from "../modal/modal";
 
-type myType = "top" | "bottom" | undefined;
-export default function BurgerConstructor({data, cart}: any) {
-    const [orderSum, setOrderSum] = useState(0);
 
-    const [modalVisibility, setModalVisibility] = useState(false);
-    const [nest, setNest] = useState(null);
-    const openModal = (data: any) => {
-        const value: any = (
-            <OrderDetails data={data}/>
-        )
-        setNest(value);
-        setModalVisibility(true);
+
+export default function BurgerConstructor({cart}: any) {
+
+    const [isModalVisible, setIsModalVisible] = useState(false);
+    const openModal = () => {
+        setIsModalVisible(true);
     }
     const closeModal = () => {
-        setModalVisibility(false);
+        setIsModalVisible(false);
     }
-    function modal(child: any) {
+    function modal() {
         return (
-            <Modal header="" onClose={closeModal}>
-                {child}
+            <Modal onClose={closeModal}>
+                <OrderDetails />
             </Modal>
         );
     }
-    useEffect(() => {
-        const reducer = (previousValue: number, currentValue: number) => {
-            return previousValue + data[currentValue].price;
-        }
-        setOrderSum(cart.reduce(reducer, 0));
-    }, [cart])
+
+    let orderSum = useMemo(() => {
+        const reducer = (previousValue: number, currentValue: any) => {
+            return previousValue + currentValue.price;
+        };
+        return cart.reduce(reducer, 0);
+    }, [cart]);
     return (
         <section className={styles.section}>
             <div className={styles.wrapper}>
-                <ul className={styles.list} >
-                    {cart.map((item: any, index: any) => {
-                        const ingredient = data[item];
-                        let type: myType = undefined;
+                <ul className={styles.list + " scrollbar"} >
+                    {cart.map((ingredient: any, index: any) => {
+                        let type: any = undefined;
                         let isLocked = false;
                         const lastIndex = cart.length - 1;
+                        let text = ingredient.name;
                         if (index === 0) {
                             type = "top";
                             isLocked = true;
+                            text += " (верх)";
                         }
                         if (index === lastIndex) {
                             type = "bottom";
                             isLocked = true;
+                            text += " (низ)";
                         }
                         const icon = (
                             <div className={styles.icon}>
@@ -61,13 +59,13 @@ export default function BurgerConstructor({data, cart}: any) {
                             </div>
                         )
                         return (
-                            <li key={Math.random()}className={styles.item}>
+                            <li key={ingredient._id + index + Math.random()} className={styles.item}>
                                 { (index === 0 || index === lastIndex) || icon}
                                 <div className="ml-8">
                                     <ConstructorElement
                                         type={type}
                                         isLocked={isLocked}
-                                        text={ingredient.name}
+                                        text={text}
                                         price={ingredient.price}
                                         thumbnail={ingredient.image}
                                     />
@@ -77,7 +75,6 @@ export default function BurgerConstructor({data, cart}: any) {
                         )
                     })}
                 </ul>
-                <div className="scroll"></div>
             </div>
             <div className={styles.footer}>
 
@@ -89,14 +86,12 @@ export default function BurgerConstructor({data, cart}: any) {
                 </Button>
             </div>
 
-
-            {modalVisibility && modal(nest)}
+            {isModalVisible && modal()}
         </section>
     )
 }
 
 
 BurgerConstructor.propTypes = {
-    data: PropTypes.arrayOf(dataProps),
-    cart: PropTypes.arrayOf(PropTypes.number),
+    cart: PropTypes.arrayOf(ingredientType).isRequired,
 };

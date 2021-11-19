@@ -10,35 +10,38 @@ const modalRoot = document.getElementById("react-modals")!;
 
 export default function Modal(props: any) {
     const { children, header, onClose } = props;
-    const escapeHandler = (e: any) => {
-        if (e.code === "Escape") {
-            onClose();
-        }
-    };
+
     useEffect(() => {
+        const escapeHandler = (e: any) => {
+            if (e.code === "Escape") {
+                onClose();
+            }
+        };
         document.addEventListener("keydown", escapeHandler);
         return () => document.removeEventListener("keydown", escapeHandler);
-    }, []);
+    }, [onClose]);
     return ReactDOM.createPortal(
-        <div className={styles.wrapper}>
-            <section className={ styles.modal }>
-                <header className={ styles.header }>
-                    <p className={ styles.text + " white text text_type_main-large"}>{header}</p>
-                    <div className={styles.close}>
-                        <CloseIcon onClick={onClose} type="primary" />
-                    </div>
-                </header>
-                {children}
-            </section>
-            <ModalOverlay onClose={onClose} />
-        </div>
+        (
+            <div className={styles.wrapper}>
+                <section className={ styles.modal }>
+                    <header className={ styles.header }>
+                        <p className={ styles.text + " white text text_type_main-large"}>{header}</p>
+                        <div className={styles.close}>
+                            <CloseIcon onClick={onClose} type="primary" />
+                        </div>
+                    </header>
+                    {children}
+                </section>
+                <ModalOverlay onClose={onClose} />
+            </div>
+        )
         ,
         modalRoot
     );
 }
 
 Modal.propTypes = {
-    children: PropTypes.element,
+    children: PropTypes.element.isRequired,
     header: PropTypes.string,
-    onClose: PropTypes.func,
+    onClose: PropTypes.func.isRequired,
 }

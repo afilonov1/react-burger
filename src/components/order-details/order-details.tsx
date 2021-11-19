@@ -2,9 +2,8 @@ import React from "react";
 
 import styles from "./order-details.module.css";
 import gifPath from  "../../images/done.gif";
-import {dataProps} from "../../utils/props";
 
-export default function OrderDetails({data}: any) {
+export default function OrderDetails() {
     return (
         <section className={styles.section}>
             <p className={ styles.orderNum + "white text text_type_digits-large mt-4 mb-8"}>034536</p>
@@ -20,8 +19,4 @@ export default function OrderDetails({data}: any) {
             </p>
         </section>
     );
-}
-
-OrderDetails.propTypes = {
-    data: dataProps,
 }

@@ -4,15 +4,12 @@
 
 
 }
-.wrapper {
 
-    position: relative;
-
-}
 .menu {
     height: calc(100vh - 253px);
-    /*оставил отступ 10 px*/
-    overflow: scroll;
+
+    overflow-y: scroll;
+    overflow-x: visible;
 }
 .tab {
     display: flex;

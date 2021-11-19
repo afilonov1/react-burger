@@ -16,3 +16,6 @@
 .priceWrap {
     display: flex;
 }
+.text {
+    text-align: center;
+}
