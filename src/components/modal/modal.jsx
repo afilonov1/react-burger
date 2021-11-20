@@ -6,13 +6,15 @@ import {CloseIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./modal.module.css";
 import ModalOverlay from "../modal-overlay/modal-overlay";
 
-const modalRoot = document.getElementById("react-modals")!;
+const modalRoot = document.getElementById("react-modals");
+//const modalRoot = document.getElementById("react-modals")!;
 
-export default function Modal(props: any) {
+
+export default function Modal(props) {
     const { children, header, onClose } = props;
 
     useEffect(() => {
-        const escapeHandler = (e: any) => {
+        const escapeHandler = (e) => {
             if (e.code === "Escape") {
                 onClose();
             }

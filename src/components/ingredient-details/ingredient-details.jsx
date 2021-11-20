@@ -3,12 +3,12 @@ import React from "react";
 import styles from "./ingredient-details.module.css";
 import {ingredientType} from "../../utils/props";
 
-export default function IngredientDetails({data} : any ){
+export default function IngredientDetails({data}){
 
     return (
         <div className={styles.wrapper}>
-            <img src={data.image_large} alt=""/>
-            <p className="white text text_type_main-medium mt-4 mb-8">{data.name}</p>
+            <img className={styles.image} src={data.image_large} alt=""/>
+            <p className={styles.name + " white text text_type_main-medium mt-4 mb-8"}>{data.name}</p>
 
                 <div className={styles.list}>
                     <div className={styles.item}>

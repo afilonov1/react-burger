@@ -6,7 +6,7 @@ import styles from './ingredients-item.module.css';
 import {ingredientType} from "../../utils/props";
 
 
-export default function IngredientsItem({data, openModal}: any) {
+export default function IngredientsItem({data, openModal}) {
     const [counter, setCounter] = useState(0);
     const increaseCount = () => {
         if (counter <= 4)

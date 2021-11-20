@@ -1,6 +1,6 @@
 
 
-export function getData(url: string, setData: any, setIsError: any) {
+export function getData(url, setData, setIsError) {
     fetch(url)
         .then(response => {
             if (!response.ok) {

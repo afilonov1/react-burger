@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 
 import styles from "./nav-item.module.css";
 
-export default function NavItem(props: any) {
+export default function NavItem(props) {
     const primaryClass = props.isPrimary ? "white" : "dark-gray";
 
     return (

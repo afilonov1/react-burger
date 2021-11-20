@@ -18,3 +18,10 @@
     width: 112px;
     text-align: center;
 }
+.image {
+    width: 480px;
+    height: 240px;
+}
+.name {
+    text-align: center;
+}

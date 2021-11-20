@@ -9,17 +9,17 @@ import Modal from "../modal/modal";
 import IngredientDetails from "../ingredient-details/ingredient-details";
 
 
-export default function BurgerIngredients({data}: any) {
+export default function BurgerIngredients({data}) {
     const [current, setCurrent] = useState('Булки');
 
     const [modalData, setModalData] = useState(null);
-    const openModal = (data: any) => {
+    const openModal = (data) => {
         setModalData(data);
     }
     const closeModal = () => {
         setModalData(null);
     }
-    function modal(data: any) {
+    function modal(data) {
         return (
             <Modal header="Детали ингредиента" onClose={closeModal}>
                 <IngredientDetails data={data}/>
@@ -45,19 +45,19 @@ export default function BurgerIngredients({data}: any) {
                 <h2 className="white text text_type_main-medium pt-10">Булки</h2>
                 <div className={ styles.grid }>
                     {
-                        data.map((item: any) => ((item.type === "bun") ? (<IngredientsItem openModal={openModal} key={item._id} data={item}/>) : null))
+                        data.map((item) => ((item.type === "bun") ? (<IngredientsItem openModal={openModal} key={item._id} data={item}/>) : null))
                     }
                 </div>
                 <h2 className="white text text_type_main-medium">Соусы</h2>
                 <div className={ styles.grid }>
                     {
-                        data.map((item: any) => ((item.type === "sauce") ? (<IngredientsItem openModal={openModal} key={item._id} data={item}/>) : null))
+                        data.map((item) => ((item.type === "sauce") ? (<IngredientsItem openModal={openModal} key={item._id} data={item}/>) : null))
                     }
                 </div>
                 <h2 className="white text text_type_main-medium">Начинка</h2>
                 <div className={ styles.grid }>
                     {
-                        data.map((item: any) => ((item.type === "main") ? (<IngredientsItem openModal={openModal} key={item._id} data={item}/>) : null))
+                        data.map((item) => ((item.type === "main") ? (<IngredientsItem openModal={openModal} key={item._id} data={item}/>) : null))
                     }
                 </div>
 
