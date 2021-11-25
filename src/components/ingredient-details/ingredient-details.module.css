@@ -1,0 +1,27 @@
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0 60px 20px;
+}
+.list {
+    display: flex;
+    /*flex-basis: 112px;*/
+    /*justify-content: space-between;*/
+
+    gap: 20px;
+}
+.item {
+    width: 112px;
+}
+.text {
+    width: 112px;
+    text-align: center;
+}
+.image {
+    width: 480px;
+    height: 240px;
+}
+.name {
+    text-align: center;
+}

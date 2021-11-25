@@ -1,0 +1,40 @@
+.section {
+    margin-left: 40px;
+    width: 600px;
+    padding-top: 100px;
+}
+.list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+
+
+}
+.icon {
+    position: absolute;
+    left: 0;
+    top: calc(50% - 12px);
+}
+.item {
+    position: relative;
+}
+.footer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    margin-right: 16px;
+    margin-top: 40px;
+}
+.cart {
+    display: flex;
+    flex-direction: column;
+    padding-left: 16px;
+
+}
+
+.wrapper {
+    overflow-y: scroll;
+    overflow-x: visible;
+    //height: calc(100vh - 494px);
+    height: 464px;
+}
