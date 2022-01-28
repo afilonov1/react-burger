@@ -1,38 +1,33 @@
 import React, {useEffect, useState} from 'react';
+import {useDispatch, useSelector} from "react-redux";
 
 import AppHeader from "../app-header/app-header";
-import styles from "./app.module.css";
-import BurgerIngredients from "../burger-ingredients/burger-ingredients";
-import BurgerConstructor from "../burger-constructor/burger-constructor";
-import {getData} from '../../utils/utils';
 import { link } from '../../utils/constants';
+import {getFeed} from "../../services/actions/cart";
+import Main from "../main/main";
 
-const initialCart = [0, 8, 3, 11, 10, 10, 11, 12, 4, 7, 0];
 
 function App() {
-    const [data, setData] = useState();
-    const [cart, setCart] = useState();
-    const [isError, setIsError] = useState(false);
+    const {ingredientsData, constructorData, isFailed} = useSelector(store => ({
+        ingredientsData: store.cart.ingredientsData,
+        constructorData: store.cart.constructorData,
+        isFailed: store.cart.isFailed
+    }))
+
+    const store = useSelector(store => store);
+    console.log(store)
+
+    const dispatch = useDispatch();
+
     useEffect(() => {
-        getData(link, setData, setIsError);
+        dispatch(getFeed(link));
     }, []);
-    useEffect(() => {
-        if (data) {
-            const dataCart = initialCart.map((item, index) => data[item]);
-            setCart(dataCart);
-        }
-    }, [data])
 
   return (
     <div>
       <AppHeader />
-      {data && !isError && cart &&
-          <main className={styles.main}>
-              <BurgerIngredients data={data}/>
-              <BurgerConstructor cart={cart}/>
-          </main>
-      }
-      {isError && <p className="error">Ошибка соединения с сервером</p>}
+      { ingredientsData && !isFailed && constructorData && <Main /> }
+      {isFailed && <p className="error">Ошибка соединения с сервером</p>}
     </div>
   );
 }

@@ -1,28 +1,23 @@
-import React, { useMemo, useState } from "react";
+import React, {useContext, useMemo, useState} from "react";
 import styles from "./burger-constructor.module.css";
-import PropTypes from 'prop-types';
 import {Button, ConstructorElement,
     DragIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 
 import imagePath from '../../images/Subtract.svg';
-import {ingredientType} from "../../utils/props";
 import OrderDetails from "../order-details/order-details";
 import Modal from "../modal/modal";
+import {useDispatch, useSelector} from "react-redux";
+import {openOrderModal} from "../../services/actions/modal";
 
 
+export default function BurgerConstructor() {
+    const cart = useSelector(store => store.cart.constructorData);
+    const isModalVisible = useSelector(store => store.modal.isOrderModalVisible);
+    const dispatch = useDispatch();
 
-export default function BurgerConstructor({cart}) {
-
-    const [isModalVisible, setIsModalVisible] = useState(false);
-    const openModal = () => {
-        setIsModalVisible(true);
-    }
-    const closeModal = () => {
-        setIsModalVisible(false);
-    }
     function modal() {
         return (
-            <Modal onClose={closeModal}>
+            <Modal>
                 <OrderDetails />
             </Modal>
         );
@@ -83,7 +78,7 @@ export default function BurgerConstructor({cart}) {
                         <ConstructorElement
                             type={"bottom"}
                             isLocked={true}
-                            text={cart[cart.length - 1].name + " ( низ)"}
+                            text={cart[cart.length - 1].name + " (низ)"}
                             price={cart[cart.length - 1].price}
                             thumbnail={cart[cart.length - 1].image}
                         />
@@ -94,7 +89,7 @@ export default function BurgerConstructor({cart}) {
                 <p className="white text text_type_digits-medium">{orderSum}</p>
 
                 <img className="mr-10 ml-3" src={imagePath} alt="Цена" />
-                <Button type="primary" size="medium" onClick={openModal}>
+                <Button type="primary" size="medium" onClick={() => dispatch(openOrderModal())}>
                     Оформить заказ
                 </Button>
             </div>
@@ -103,8 +98,3 @@ export default function BurgerConstructor({cart}) {
         </section>
     )
 }
-
-
-BurgerConstructor.propTypes = {
-    cart: PropTypes.arrayOf(ingredientType).isRequired,
-};
