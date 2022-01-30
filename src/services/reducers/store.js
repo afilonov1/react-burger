@@ -1,8 +1,16 @@
-import {combineReducers} from "redux";
-import {cartReducer} from "./cart";
-import {modalReducer} from "./modal";
+import { compose, createStore, applyMiddleware } from 'redux';
+import thunk from 'redux-thunk';
 
-export const rootReducer = combineReducers({
-    cart: cartReducer,
-    modal: modalReducer
-})
+import { rootReducer } from './';
+
+
+const composeEnhancers =
+    typeof window === 'object' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
+        ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({})
+        : compose;
+
+const enhancer = composeEnhancers(applyMiddleware(thunk));
+
+const store = createStore(rootReducer, enhancer);
+
+export default store;
