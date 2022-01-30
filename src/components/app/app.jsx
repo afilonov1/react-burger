@@ -1,9 +1,9 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 
 import AppHeader from "../app-header/app-header";
-import { link } from '../../utils/constants';
-import {getFeed} from "../../services/actions/cart";
+import {ingredientsUrl} from '../../utils/constants';
+import {getIngredients} from "../../services/actions/cart";
 import Main from "../main/main";
 
 
@@ -11,17 +11,14 @@ function App() {
     const {ingredientsData, constructorData, isFailed} = useSelector(store => ({
         ingredientsData: store.cart.ingredientsData,
         constructorData: store.cart.constructorData,
-        isFailed: store.cart.isFailed
+        isFailed: store.cart.getIngredients.isError || store.cart.postOrder.isError
     }))
-
-    const store = useSelector(store => store);
-    console.log(store)
 
     const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch(getFeed(link));
-    }, []);
+        dispatch(getIngredients(ingredientsUrl));
+    }, [dispatch]);
 
   return (
     <div>

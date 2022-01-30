@@ -24,7 +24,7 @@ export default function Modal(props) {
         };
         document.addEventListener("keydown", escapeHandler);
         return () => document.removeEventListener("keydown", escapeHandler);
-    }, );
+    }, [dispatch]);
     return ReactDOM.createPortal(
         (
             <div className={styles.wrapper}>

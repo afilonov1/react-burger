@@ -12,7 +12,7 @@ export default function AppHeader() {
                 <nav className={ styles.nav }>
                     <ul className={ styles.list }>
                         <li>
-                            <NavItem text="Конструктор" isPrimary>
+                            <NavItem text="Конструктор" current>
                                 <BurgerIcon type="primary" />
                             </NavItem>
                         </li>

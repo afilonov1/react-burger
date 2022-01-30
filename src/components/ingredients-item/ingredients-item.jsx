@@ -5,23 +5,32 @@ import styles from './ingredients-item.module.css';
 import {ingredientType} from "../../utils/props";
 import {useDispatch, useSelector} from "react-redux";
 import {openIngredientModal} from "../../services/actions/modal";
+import {useDrag} from "react-dnd";
 
 
 export default function IngredientsItem({itemData}) {
     const [counter, setCounter] = useState(0);
     const dispatch = useDispatch();
-    //console.log(itemData)
     const cart = useSelector(store => store.cart.constructorData);
     useEffect(() => {
         let newCount = cart.filter(item => item._id === itemData._id).length;
-        if (itemData.type === "bun" && newCount > 0) {
-            newCount = 1;
-        }
         setCounter(newCount);
-    }, [cart]);
+    }, [cart, itemData]);
+    const [{isDrag}, dragRef] = useDrag({
+        type: "ingredient",
+        item: {
+            subtype: itemData.type,
+            id: itemData._id,
+        },
+        collect: monitor => ({
+            isDrag: monitor.isDragging()
+        })
+    });
+    const border = isDrag ? "1px solid coral" : "1px solid transparent";
+
 
     return (
-        <a className={ styles.link + " mt-6 mb-2"} href="/#" onClick={() => { dispatch(openIngredientModal(itemData)); }}>
+        <a style={{border}} ref={dragRef} className={ styles.link + " mt-6 mb-2"} href="/#" onClick={() => { dispatch(openIngredientModal(itemData)); }}>
             <img src={itemData.image} alt={itemData.name}/>
             <div className={ styles.priceWrap + " pt-1 pb-2"}>
                 <p className={"pr-1 white text text_type_digits-default"}>{itemData.price}</p>
