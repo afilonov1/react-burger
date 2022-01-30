@@ -11,7 +11,8 @@ import {
 } from '../actions/types/cart';
 const initialState = {
     ingredientsData: null,
-    constructorData: null,
+    initialConstructorIndexes: [8, 3, 11, 10, 10, 11, 12, 4, 7],
+    constructorData: [],
     getIngredients: {
         isRequest: false,
         isSuccess: false,
@@ -63,7 +64,6 @@ export const cartReducer = (state = initialState, action) => {
                     isError: false
                 },
                 ingredientsData: action.payload,
-                constructorData: []
             };
         }
 
@@ -123,47 +123,53 @@ export const cartReducer = (state = initialState, action) => {
         case ADD_CONTAINER_ITEM: {
             const constructor = state.constructorData;
             const ingredients = state.ingredientsData;
-            const item = ingredients.find(item => item._id === action.id);
-            const newItem = {
-                ...item,
-                hash: action.hash
-            };
+            const newItem = ingredients.find(item => item._id === action.id);
             return {
                 ...state,
-                constructorData: constructor[0]?.type === "bun" ? ([
+                constructorData: [
                     ...constructor.slice(0, -1),
-                    newItem,
+                    {
+                        ...newItem,
+                        hash: action.hash
+                    },
                     ...constructor.slice(-1)
-                ]) : constructor.concat(newItem)
+                ]
             }
         }
         case SET_CONTAINER_BUN: {
             const constructor = state.constructorData;
             const ingredients = state.ingredientsData;
             const newBun = ingredients.find(item => item._id === action.id);
-            return {
-                ...state,
-                constructorData: constructor[0]?.type === "bun" ? ([
-                    {
-                        ...newBun,
-                        hash: action.hashTop
-                    },
-                    ...constructor.slice(1, -1),
-                    {
-                        ...newBun,
-                        hash: action.hashBottom
-                    }
-                ]) : ([
-                    {
-                        ...newBun,
-                        hash: action.hashTop
-                    },
-                    ...constructor,
-                    {
-                        ...newBun,
-                        hash: action.hashBottom
-                    }
-                ])
+            if (constructor[0]?.type === "bun") {
+                return {
+                    ...state,
+                    constructorData: [
+                        {
+                            ...newBun,
+                            hash: action.hashTop
+                        },
+                        ...constructor.slice(1, -1),
+                        {
+                            ...newBun,
+                            hash: action.hashBottom
+                        }
+                    ]
+                }
+            } else {
+                return {
+                    ...state,
+                    constructorData: [
+                        {
+                            ...newBun,
+                            hash: action.hashTop
+                        },
+                        ...constructor.slice(),
+                        {
+                            ...newBun,
+                            hash: action.hashBottom
+                        }
+                    ]
+                }
             }
         }
         case REMOVE_CONTAINER_ITEM: {
@@ -176,9 +182,8 @@ export const cartReducer = (state = initialState, action) => {
             //const firstItem = state.constructorData[action.indexFrom]
             const firstItemIndex = action.indexFrom;
             const secondItemIndex = action.indexAt;
-            const cart = [...state.constructorData];
-            [cart[firstItemIndex], cart[secondItemIndex]] = [cart[secondItemIndex], cart[firstItemIndex]];
-
+            const cart = state.constructorData;
+            [cart[firstItemIndex], cart[secondItemIndex]] = [cart[secondItemIndex], cart[firstItemIndex]]
             return {
                 ...state,
                 constructorData: cart
@@ -194,13 +199,6 @@ export const cartReducer = (state = initialState, action) => {
                 constructorData: cartWitchDeletedItem
             }
         }
-        case "EBIS_ONO_KONEM": {
-            return {
-                ...state,
-                constructorData: action.payload
-            }
-        }
-
         default: {
             return state;
         }

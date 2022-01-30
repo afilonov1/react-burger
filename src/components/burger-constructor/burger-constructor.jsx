@@ -1,3 +1,4 @@
+
 import React, {useMemo} from "react";
 import styles from "./burger-constructor.module.css";
 import {Button, ConstructorElement} from "@ya.praktikum/react-developer-burger-ui-components";
@@ -14,6 +15,7 @@ import ConstructorItem from "../constructor-item/constructor-item";
 
 export default function BurgerConstructor() {
     const cart = useSelector(store => store.cart.constructorData);
+    const isBun = cart[0]?.type ==="bun";
     const isModalVisible = useSelector(store => store.modal.isOrderModalVisible);
     const dispatch = useDispatch();
     const [{isHover}, dropRef] = useDrop({
@@ -44,21 +46,12 @@ export default function BurgerConstructor() {
     return (
         <section className={styles.section} >
             <div className={styles.cart} style={{borderColor}} ref={dropRef}>
-                {cart.length === 0 ? (
+                {cart.length === 0 && (
                     <span className={styles.placeholderWrapper}>
                         <p className={styles.placeholder}>Для создания заказа перетащите булку и ингредиенты</p>
                     </span>
-                ) : cart[0].type !== "bun" ? (
-                    <span className={styles.placeholderWrapper}>
-                        <p className={styles.placeholder}>Для создания заказа перетащите булку</p>
-                    </span>
-                ) : cart[0].type === "bun" && cart.length < 3? (
-                    <span className={styles.placeholderWrapper}>
-                        <p className={styles.placeholder}>Для создания заказа перетащите ингредиенты</p>
-                    </span>
-                ) : null
-                }
-                {cart.length !== 0 && cart[0].type ==="bun" && (
+                )}
+                {isBun && (
                     <div className="ml-8">
                         <ConstructorElement
                             type={"top"}
@@ -69,22 +62,20 @@ export default function BurgerConstructor() {
                         />
                     </div>
                 )}
-
                 <div className={styles.wrapper + " scrollbar mt-4 mb-4"}>
                     <ul className={styles.list}>
-                    {cart.map((ingredient, index) => {
-                        const lastIndex = cart.length - 1;
-                        if ((index === 0 || index === lastIndex) && (cart[index].type ==="bun")) {
-                            return null;
-                        }
-                        return (
-                            <ConstructorItem key={ingredient.hash + index} index={index} />
-                        )
-                    })}
+                        {cart.map((ingredient, index) => {
+                            const lastIndex = cart.length - 1;
+                            if ((index === 0 || index === lastIndex) && cart[index].type === "bun") {
+                                return null;
+                            }
+                            return (
+                                <ConstructorItem key={ingredient.hash} index={index} />
+                            )
+                        })}
                     </ul>
                 </div>
-
-                {cart.length !== 0 && cart[cart.length - 1].type ==="bun" && (
+                {cart[cart.length - 1]?.type ==="bun" && (
                     <div className="ml-8">
                         <ConstructorElement
                             type={"bottom"}

@@ -33,7 +33,6 @@ function sendData ({url, requestAction, successAction, errorAction, options, car
                 dispatch(successAction(json, cartIDs));
             } else {
                 dispatch(errorAction());
-                console.log(response);
             }
 
         } catch {
