@@ -31,5 +31,15 @@
     overflow-y: scroll;
     overflow-x: visible;
     //height: calc(100vh - 494px);
-    height: 464px;
+    max-height: 464px;
+}
+.placeholder {
+    font-size: 24px;
+    color: aquamarine;
+}
+.placeholderWrapper {
+    min-height: 192px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }

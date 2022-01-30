@@ -44,7 +44,21 @@ export default function BurgerConstructor() {
     return (
         <section className={styles.section} >
             <div className={styles.cart} style={{borderColor}} ref={dropRef}>
-                {cart[0].type ==="bun" && (
+                {cart.length === 0 ? (
+                    <span className={styles.placeholderWrapper}>
+                        <p className={styles.placeholder}>Для создания заказа перетащите булку и ингредиенты</p>
+                    </span>
+                ) : cart[0].type !== "bun" ? (
+                    <span className={styles.placeholderWrapper}>
+                        <p className={styles.placeholder}>Для создания заказа перетащите булку</p>
+                    </span>
+                ) : cart[0].type === "bun" && cart.length < 3? (
+                    <span className={styles.placeholderWrapper}>
+                        <p className={styles.placeholder}>Для создания заказа перетащите ингредиенты</p>
+                    </span>
+                ) : null
+                }
+                {cart.length !== 0 && cart[0].type ==="bun" && (
                     <div className="ml-8">
                         <ConstructorElement
                             type={"top"}
@@ -55,20 +69,22 @@ export default function BurgerConstructor() {
                         />
                     </div>
                 )}
+
                 <div className={styles.wrapper + " scrollbar mt-4 mb-4"}>
                     <ul className={styles.list}>
                     {cart.map((ingredient, index) => {
                         const lastIndex = cart.length - 1;
-                        if (index === 0 || index === lastIndex) {
+                        if ((index === 0 || index === lastIndex) && (cart[index].type ==="bun")) {
                             return null;
                         }
                         return (
-                            <ConstructorItem key={ingredient.hash} index={index} />
+                            <ConstructorItem key={ingredient.hash + index} index={index} />
                         )
                     })}
                     </ul>
                 </div>
-                {cart[cart.length - 1].type ==="bun" && (
+
+                {cart.length !== 0 && cart[cart.length - 1].type ==="bun" && (
                     <div className="ml-8">
                         <ConstructorElement
                             type={"bottom"}
@@ -85,7 +101,10 @@ export default function BurgerConstructor() {
                 <p className="white text text_type_digits-medium">{orderSum}</p>
 
                 <img className="mr-10 ml-3" src={imagePath} alt="Цена" />
-                <Button type="primary" size="medium" onClick={() => dispatch(openOrderModal())}>
+                <Button type="primary" size="medium" onClick={() => {
+                    const isFormValid = cart.length >= 3 && cart[0].type === "bun";
+                    if (isFormValid) dispatch(openOrderModal());
+                }}>
                     Оформить заказ
                 </Button>
             </div>

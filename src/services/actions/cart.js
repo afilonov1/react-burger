@@ -9,14 +9,16 @@ import {
     SET_CONTAINER_BUN,
     SET_ORDER
 } from "./types/cart";
+import {v4 as uuid} from "uuid";
+
 
 export function getIngredients(url, requestAction = getIngredientsRequest, successAction = getIngredientsSuccess, errorAction = getIngredientsError) {
-
     return sendData({url, requestAction, successAction, errorAction});
 }
 export function postOrder (url, options, cartIDs, requestAction = postOrderRequest, successAction = postOrderSuccess, errorAction = postOrderError) {
     return sendData({url, cartIDs, requestAction, successAction, errorAction, options});
 }
+
 function sendData ({url, requestAction, successAction, errorAction, options, cartIDs}) {
 
     return async function(dispatch) {
@@ -70,7 +72,8 @@ export const setOrder = (name, number, cartSum, cartIDs) => ({
 })
 export const addContainerItem = (id) => ({
     type: ADD_CONTAINER_ITEM,
-    id
+    id,
+    hash: uuid()
 })
 export const removeContainerItem = (hash) => ({
     type: REMOVE_CONTAINER_ITEM,
@@ -78,7 +81,9 @@ export const removeContainerItem = (hash) => ({
 })
 export const setContainerBun = (id) => ({
     type: SET_CONTAINER_BUN,
-    id
+    id,
+    hashTop: uuid(),
+    hashBottom: uuid()
 })
 export const replaceCartIngredients = (indexFrom, indexAt) => ({
     type: REPLACE_CART_INGREDIENTS,

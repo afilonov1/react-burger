@@ -8,54 +8,61 @@ import PropTypes from "prop-types";
 
 function ConstructorItem ({index}) {
     const cart = useSelector(store => store.cart.constructorData);
-    const ingredient = cart[index];
-    const { hash } = ingredient;
+    const cartItem = cart[index];
+    const targetHash = cartItem.hash;
     const dispatch = useDispatch();
     const removeItem = (hash) => {
         dispatch(removeContainerItem(hash))
     }
 
+    // function moveItem(fromIndex, toIndex) {
+    //     dispatch(replaceCartIngredients(fromIndex, toIndex));
+    // }
+    const moveItem = useCallback((dragIndex, hoverIndex) => {
+        const newCards = [...cart];
 
-    const findCard = useCallback((hash) => {
-        const card = cart.filter((c) => `${c.hash}` === hash)[0];
-        return {
-            card,
-            index: cart.indexOf(card),
-        };
-    }, [cart]);
-    const moveCard = useCallback((hash, atIndex) => {
-        const { index } = findCard(hash);
-        dispatch(replaceCartIngredients(index, atIndex));
-    }, [findCard, dispatch]);
-    const originalIndex = findCard(hash).index;
-    const [{ isDragging }, drag] = useDrag(() => ({
+        newCards.splice(hoverIndex, 0, newCards.splice(dragIndex, 1)[0]);
+        dispatch({
+            type: "EBIS_ONO_KONEM",
+            payload: newCards
+        });
+    },[cart])
+    const [{isDragging}, dragRef] = useDrag({
         type: "sort",
-        item: { hash, originalIndex },
-        collect: (monitor) => ({
-            isDragging: monitor.isDragging(),
+        item: {
+            sourceHash: cartItem.hash,
+            sourceIndex: index
+        },
+        collect: monitor => ({
+            isDragging: monitor.isDragging()
         }),
         end: (item, monitor) => {
-            const { hash: droppedHash, originalIndex } = item;
+            const { sourceHash, sourceIndex } = item;
             const didDrop = monitor.didDrop();
             if (!didDrop) {
-                dispatch(moveCartItemToIndex(droppedHash, originalIndex));
+                //moveItem()
             }
-        },
-    }), [hash, originalIndex, moveCard]);
-    const [, drop] = useDrop(() => ({
+        }
+    })
+    const [, dropRef] = useDrop({
         accept: "sort",
-        hover({ hash: draggedHash }) {
-            //const isItemInCart = cart.filter(item => item.hash === draggedHash).length !== 0;
-            if (draggedHash !== hash) {
-                const { index: overIndex } = findCard(hash);
-                moveCard(draggedHash, overIndex);
+        hover(item, monitor) {
+            const { sourceHash } = item;
+            const sourceIndex = cart.findIndex(item => item.hash === sourceHash);
+            const targetIndex = cart.findIndex(item => item.hash === targetHash);
+            if (targetIndex !== sourceIndex) {
+                console.log("Ny vse, pizda!!", targetIndex, sourceIndex, cart)
+                moveItem(sourceIndex, targetIndex)
+                console.log("a teperb yje", cart)
             }
-        },
-    }), [findCard, moveCard]);
+        }
+    })
+
+
     const opacity = isDragging ? 0 : 1;
 
     return (
-        <li className={styles.item} ref={(node) => drag(drop(node))} style={{ opacity }}>
+        <li className={styles.item} ref={(node) => dragRef(dropRef(node))} style={{ opacity }}>
             <div className={styles.icon}>
                 <DragIcon type="primary" />
             </div>
@@ -63,10 +70,10 @@ function ConstructorItem ({index}) {
                 <ConstructorElement
                     type={undefined}
                     isLocked={false}
-                    text={ingredient.name}
-                    price={ingredient.price}
-                    thumbnail={ingredient.image}
-                    handleClose={() => removeItem(ingredient.hash)}
+                    text={cartItem.name}
+                    price={cartItem.price}
+                    thumbnail={cartItem.image}
+                    handleClose={() => removeItem(cartItem.hash)}
                 />
             </div>
         </li>

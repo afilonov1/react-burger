@@ -29,9 +29,7 @@ export const modalReducer = (state = initialState, action) => {
             }
         }
         default: {
-            return {
-                ...state,
-            }
+            return state;
         }
     }
 }

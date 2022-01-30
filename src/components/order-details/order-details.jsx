@@ -4,7 +4,8 @@ import styles from "./order-details.module.css";
 import gifPath from  "../../images/done.gif";
 import {useDispatch, useSelector} from "react-redux";
 import {postOrder} from "../../services/actions/cart";
-import {compareArrays, orderUrl} from "../../utils/constants";
+import {baseUrl} from "../../utils/constants";
+import {compareArrays} from "../../utils/utils";
 
 
 export default function OrderDetails() {
@@ -38,8 +39,7 @@ export default function OrderDetails() {
                 },
                 body: JSON.stringify(fetchData)
             }
-
-            dispatch(postOrder(orderUrl, options, cartIDs));
+            dispatch(postOrder(baseUrl + "orders", options, cartIDs));
         }
 
     }, [cartIDs, cartIDsFromStore, dispatch, orderNum]);
