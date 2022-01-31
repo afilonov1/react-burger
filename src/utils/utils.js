@@ -1,17 +1,6 @@
-
-
-export function getData(url, setData, setIsError) {
-    fetch(url)
-        .then(response => {
-            if (!response.ok) {
-                setIsError(true);
-            }
-            return response.json()
-        })
-        .then(result => {
-            setData(result.data);
-        })
-        .catch(err => {
-            setIsError(true);
-        });
+export const compareArrays = (array1, array2) => {
+    return array1.length === array2.length && array1.every((value, index) => value === array2[index]);
+};
+export function getHash(id) {
+    return id + Math.random() + new Date().getTime();
 }

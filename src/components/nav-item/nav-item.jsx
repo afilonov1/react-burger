@@ -4,12 +4,12 @@ import PropTypes from "prop-types";
 import styles from "./nav-item.module.css";
 
 export default function NavItem(props) {
-    const primaryClass = props.isPrimary ? "white" : "dark-gray";
+    const isCurrentPage = props.current ? "white" : "dark-gray";
 
     return (
         <a href="/#" className={ styles.item + " pl-5 pr-5 pt-4 pb-4 mt-4 mb-4"}>
             {props.children}
-            <p className={ primaryClass + " text text_type_main-default pl-2"}>
+            <p className={ isCurrentPage + " text text_type_main-default pl-2"}>
                 {props.text}
             </p>
         </a>
@@ -17,7 +17,7 @@ export default function NavItem(props) {
 }
 
 NavItem.propTypes = {
-    isPrimary: PropTypes.bool,
+    current: PropTypes.bool,
     text: PropTypes.string.isRequired,
     children: PropTypes.element.isRequired,
 }

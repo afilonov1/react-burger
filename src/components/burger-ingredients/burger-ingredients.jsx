@@ -1,72 +1,88 @@
-import React, {useState} from "react";
+import React, { useRef, useState } from "react";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
-import PropTypes from "prop-types";
 
 import styles from "./burger-ingredients.module.css";
 import IngredientsItem from "../ingredients-item/ingredients-item";
-import {ingredientType} from "../../utils/props";
 import Modal from "../modal/modal";
 import IngredientDetails from "../ingredient-details/ingredient-details";
+import {useSelector} from "react-redux";
+import {
+    additionScrollForSaucesAndFillings,
+    BUNS,
+    FILLINGS, fixTabsPixels,
+    heightFromTopPageToRelativeBlock,
+    ingredientModalHeader,
+    SAUCES
+} from "../../utils/constants";
 
+export default function BurgerIngredients() {
+    const [currentTab, setCurrentTab] = useState(BUNS);
+    const ingredientsData = useSelector(store => store.cart.ingredientsData);
+    const isModalVisible = useSelector(store => store.modal.isIngredientModalVisible);
 
-export default function BurgerIngredients({data}) {
-    const [current, setCurrent] = useState('Булки');
+    const sectionRef = useRef();
+    const bunRef = useRef();
+    const sauceRef = useRef();
+    const mainRef = useRef();
 
-    const [modalData, setModalData] = useState(null);
-    const openModal = (data) => {
-        setModalData(data);
+    const scrollToRef = (ref) => {
+        sectionRef.current.scrollTo(0, ref.current.offsetTop - heightFromTopPageToRelativeBlock - additionScrollForSaucesAndFillings)
     }
-    const closeModal = () => {
-        setModalData(null);
+
+    const handler = e => {
+        const distanceFromSauceBlockToRelative = sauceRef.current.getBoundingClientRect().top - heightFromTopPageToRelativeBlock - additionScrollForSaucesAndFillings;
+        const distanceFromMainBlockToRelative = mainRef.current.getBoundingClientRect().top - heightFromTopPageToRelativeBlock- additionScrollForSaucesAndFillings;
+        if (distanceFromMainBlockToRelative <= fixTabsPixels) {
+            if (currentTab !== FILLINGS) setCurrentTab(FILLINGS);
+        } else if (distanceFromSauceBlockToRelative <= fixTabsPixels) {
+            if (currentTab !== SAUCES) setCurrentTab(SAUCES);
+        } else if (currentTab !== BUNS) {
+            setCurrentTab(BUNS)
+        }
+
     }
-    function modal(data) {
-        return (
-            <Modal header="Детали ингредиента" onClose={closeModal}>
-                <IngredientDetails data={data}/>
-            </Modal>
-        );
-    }
+
 
     return (
-        <section className={styles.section}>
+        <section className={styles.section} >
             <h1 className="white text text_type_main-large mt-10 mb-5">Соберите бургер</h1>
             <div className={styles.tab}>
-                <Tab value="Булки" active={current === 'Булки'} onClick={setCurrent}>
+                <Tab value={BUNS} active={currentTab === BUNS} onClick={ingredientType => {setCurrentTab(ingredientType); scrollToRef(bunRef)}}>
                     Булки
                 </Tab>
-                <Tab value="Соусы" active={current === 'Соусы'} onClick={setCurrent}>
+                <Tab value={SAUCES} active={currentTab === SAUCES} onClick={ingredientType => {setCurrentTab(ingredientType); scrollToRef(sauceRef)}}>
                     Соусы
                 </Tab>
-                <Tab value="Начинки" active={current === 'Начинки'} onClick={setCurrent}>
+                <Tab value={FILLINGS} active={currentTab === FILLINGS} onClick={ingredientType => {setCurrentTab(ingredientType); scrollToRef(mainRef)}}>
                     Начинки
                 </Tab>
             </div>
-            <section className={styles.menu + " scrollbar"}>
-                <h2 className="white text text_type_main-medium pt-10">Булки</h2>
+            <section className={styles.menu + " scrollbar"} ref={sectionRef} onScroll={handler}>
+                <h2 className="white text text_type_main-medium pt-10" ref={bunRef} >{BUNS}</h2>
                 <div className={ styles.grid }>
                     {
-                        data.map((item) => ((item.type === "bun") ? (<IngredientsItem openModal={openModal} key={item._id} data={item}/>) : null))
+                        ingredientsData.map((item) => ((item.type === "bun") ? (<IngredientsItem key={item._id} itemData={item}/>) : null))
                     }
                 </div>
-                <h2 className="white text text_type_main-medium">Соусы</h2>
+                <h2 className="white text text_type_main-medium" ref={sauceRef}>{SAUCES}</h2>
                 <div className={ styles.grid }>
                     {
-                        data.map((item) => ((item.type === "sauce") ? (<IngredientsItem openModal={openModal} key={item._id} data={item}/>) : null))
+                        ingredientsData.map((item) => ((item.type === "sauce") ? (<IngredientsItem key={item._id} itemData={item}/>) : null))
                     }
                 </div>
-                <h2 className="white text text_type_main-medium">Начинка</h2>
+                <h2 className="white text text_type_main-medium" ref={mainRef}>{FILLINGS}</h2>
                 <div className={ styles.grid }>
                     {
-                        data.map((item) => ((item.type === "main") ? (<IngredientsItem openModal={openModal} key={item._id} data={item}/>) : null))
+                        ingredientsData.map((item) => ((item.type === "main") ? (<IngredientsItem key={item._id} itemData={item}/>) : null))
                     }
                 </div>
 
             </section>
-            {modalData && modal(modalData)}
+            {isModalVisible && (
+                <Modal header={ingredientModalHeader}>
+                    <IngredientDetails/>
+                </Modal>
+            )}
         </section>
     );
-}
-
-BurgerIngredients.propTypes = {
-    data: PropTypes.arrayOf(ingredientType).isRequired
 }

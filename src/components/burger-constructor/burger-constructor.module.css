@@ -10,14 +10,8 @@
 
 
 }
-.icon {
-    position: absolute;
-    left: 0;
-    top: calc(50% - 12px);
-}
-.item {
-    position: relative;
-}
+
+
 .footer {
     display: flex;
     align-items: center;
@@ -29,12 +23,23 @@
     display: flex;
     flex-direction: column;
     padding-left: 16px;
-
+    border: 1px solid transparent;
+    border-radius: 8px;
 }
 
 .wrapper {
     overflow-y: scroll;
     overflow-x: visible;
     //height: calc(100vh - 494px);
-    height: 464px;
+    max-height: 464px;
+}
+.placeholder {
+    font-size: 24px;
+    color: aquamarine;
+}
+.placeholderWrapper {
+    min-height: 192px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
