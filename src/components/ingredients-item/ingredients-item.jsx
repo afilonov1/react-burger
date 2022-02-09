@@ -30,7 +30,7 @@ export default function IngredientsItem({itemData}) {
 
 
     return (
-        <a style={{border}} ref={dragRef} className={ styles.link + " mt-6 mb-2"} href="/#" onClick={() => { dispatch(openIngredientModal(itemData)); }}>
+        <a style={{border}} ref={dragRef} className={ styles.link + " mt-6 mb-2"} onClick={() => { dispatch(openIngredientModal(itemData)); }}>
             <img src={itemData.image} alt={itemData.name}/>
             <div className={ styles.priceWrap + " pt-1 pb-2"}>
                 <p className={"pr-1 white text text_type_digits-default"}>{itemData.price}</p>

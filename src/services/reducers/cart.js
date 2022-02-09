@@ -11,7 +11,6 @@ import {
 } from '../actions/types/cart';
 const initialState = {
     ingredientsData: null,
-    initialConstructorIndexes: [8, 3, 11, 10, 10, 11, 12, 4, 7],
     constructorData: [],
     getIngredients: {
         isRequest: false,
@@ -182,7 +181,7 @@ export const cartReducer = (state = initialState, action) => {
             //const firstItem = state.constructorData[action.indexFrom]
             const firstItemIndex = action.indexFrom;
             const secondItemIndex = action.indexAt;
-            const cart = state.constructorData;
+            const cart = [...state.constructorData];
             [cart[firstItemIndex], cart[secondItemIndex]] = [cart[secondItemIndex], cart[firstItemIndex]]
             return {
                 ...state,

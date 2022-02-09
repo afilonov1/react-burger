@@ -1,9 +1,28 @@
+/*.item {*/
+/*    display: flex;*/
+/*}*/
+/*.primary {*/
+/*    color: #F2F2F3;*/
+/*}*/
+/*.secondary {*/
+/*    color: #8585AD;*/
+/*}*/
+
+
+
 .item {
     display: flex;
+    color: #8585AD;
 }
-.primary {
+/*.primary {*/
+/*    color: #F2F2F3;*/
+/*}*/
+/*.secondary {*/
+/*    color: #8585AD;*/
+/*}*/
+.activeNav p {
     color: #F2F2F3;
 }
-.secondary {
-    color: #8585AD;
+.activeNav svg {
+    fill: #F2F2F3;
 }

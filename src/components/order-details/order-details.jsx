@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useMemo} from "react";
 
 import styles from "./order-details.module.css";
 import gifPath from  "../../images/done.gif";
@@ -16,7 +16,7 @@ export default function OrderDetails() {
 
     const dispatch = useDispatch();
 
-    const cartIDs = cart.map(item => item._id);
+    const cartIDs = useMemo(() => cart.map(item => item._id),[cart]);
 
     const calcOrderNum = (num) => {
         const numLength = num.toString().length;
@@ -32,14 +32,7 @@ export default function OrderDetails() {
                 ingredients: cartIDs,
             };
 
-            const options = {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(fetchData)
-            }
-            dispatch(postOrder(baseUrl + "orders", options, cartIDs));
+            dispatch(postOrder(baseUrl + "orders", fetchData, cartIDs));
         }
 
     }, [cartIDs, cartIDsFromStore, dispatch, orderNum]);

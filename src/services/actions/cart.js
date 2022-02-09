@@ -10,36 +10,33 @@ import {
     SET_ORDER
 } from "./types/cart";
 import {v4 as uuid} from "uuid";
+import {requestData} from "../../utils/utils";
 
 
-export function getIngredients(url, requestAction = getIngredientsRequest, successAction = getIngredientsSuccess, errorAction = getIngredientsError) {
-    return sendData({url, requestAction, successAction, errorAction});
+export function getIngredients(
+  url,
+  method = "GET",
+  requestAction = getIngredientsRequest,
+  successAction = getIngredientsSuccess,
+  errorAction = getIngredientsError
+) {
+    return requestData(
+      {method, url, requestAction, successAction, errorAction}
+    );
 }
-export function postOrder (url, options, cartIDs, requestAction = postOrderRequest, successAction = postOrderSuccess, errorAction = postOrderError) {
-    return sendData({url, cartIDs, requestAction, successAction, errorAction, options});
+export function postOrder (
+  url,
+  body,
+  payload,
+  method = "POST",
+  requestAction = postOrderRequest,
+  successAction = postOrderSuccess,
+  errorAction = postOrderError
+) {
+    return requestData({method, url, payload, requestAction, successAction, errorAction, body});
 }
 
-function sendData ({url, requestAction, successAction, errorAction, options, cartIDs}) {
 
-    return async function(dispatch) {
-        try {
-            dispatch(requestAction);
-            const response = options ? await fetch(url, options) : await fetch(url);
-            let json;
-
-            if (response.ok) {
-
-                json = await response.json();
-                dispatch(successAction(json, cartIDs));
-            } else {
-                dispatch(errorAction());
-            }
-
-        } catch {
-            dispatch(errorAction());
-        }
-    }
-}
 
 const getIngredientsRequest = () => ({
     type: GET_INGREDIENTS_REQUEST
