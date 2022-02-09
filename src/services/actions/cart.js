@@ -10,7 +10,7 @@ import {
     SET_ORDER
 } from "./types/cart";
 import {v4 as uuid} from "uuid";
-import {requestData} from "../../utils/utils";
+import {requestData} from "../api";
 
 
 export function getIngredients(

@@ -1,10 +1,10 @@
 import React, {useState} from 'react';
 import { Input, PasswordInput, Button } from "@ya.praktikum/react-developer-burger-ui-components";
 import {Link} from "react-router-dom";
-import { requestData } from "../../utils/utils";
 import {baseUrl} from "../../utils/constants";
 import {actions} from "../../services/reducers/auth";
 import {useDispatch} from "react-redux";
+import {requestData} from "../../services/api";
 
 function RegisterPage() {
   const [name, setName] = useState('');

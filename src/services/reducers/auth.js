@@ -1,4 +1,5 @@
 import {createSlice} from "@reduxjs/toolkit";
+import {verify} from "crypto";
 
 const authSlice = createSlice({
   name: 'auth',
@@ -16,7 +17,7 @@ const authSlice = createSlice({
       request: false,
       success: false,
       error: false,
-    }
+    },
   },
   reducers: {
     changeName(state, action) {
@@ -70,7 +71,11 @@ const authSlice = createSlice({
       state.login.request = false;
       state.login.error = true;
     },
-
+    refreshAccessToken(state, action) {
+      const data = action.payload;
+      state.accessToken = data.accessToken;
+      state.refreshToken = data.refreshToken;
+    }
   }
 })
 

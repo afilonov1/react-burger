@@ -1,11 +1,11 @@
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from "react-redux";
+import React, {useEffect} from 'react';
+import {useDispatch, useSelector} from "react-redux";
 
 import AppHeader from "../app-header/app-header";
-import { baseUrl } from '../../utils/constants';
-import { getIngredients } from "../../services/actions/cart";
+import {baseUrl} from '../../utils/constants';
+import {getIngredients} from "../../services/actions/cart";
 import Main from "../../pages/main/main";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
 import LoginPage from "../../pages/login-page/login-page";
 import RegisterPage from "../../pages/register-page/register-page";
 import ForgotPasswordPage from "../../pages/forgot-password-page/forgot-password-page";
@@ -30,20 +30,21 @@ function App() {
   return (
     <div>
       <Router>
-        <AppHeader />
-        <Switch>
-          <Route path="/" exact>
-            {ingredientsData && !isFailed && constructorData && <Main/>}
-            {isFailed && <p className="error">Ошибка соединения с сервером</p>}
-          </Route>
-          <Route path="/login" component={LoginPage} />
-          <Route path="/register" component={RegisterPage} />
-          <Route path="/forgot-password" component={ForgotPasswordPage} />
-          <Route path="/reset-password" component={ResetPasswordPage} />
-          <ProtectedRoute path="/profile">
-            <ProfilePage />
-          </ProtectedRoute>
-        </Switch>
+        <AppHeader/>
+        {ingredientsData && !isFailed && constructorData && (
+          <Switch>
+            <Route path="/" component={Main} exact>
+            </Route>
+            <Route path="/login" component={LoginPage}/>
+            <Route path="/register" component={RegisterPage}/>
+            <Route path="/forgot-password" component={ForgotPasswordPage}/>
+            <Route path="/reset-password" component={ResetPasswordPage}/>
+            <ProtectedRoute path="/profile">
+              <ProfilePage/>
+            </ProtectedRoute>
+          </Switch>
+        )}
+        {isFailed && <p className="error">Ошибка соединения с сервером</p>}
       </Router>
     </div>
   );

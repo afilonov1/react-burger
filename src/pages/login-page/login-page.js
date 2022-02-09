@@ -1,10 +1,10 @@
 import React from 'react';
 import { Input, PasswordInput, Button } from "@ya.praktikum/react-developer-burger-ui-components";
 import {Link} from "react-router-dom";
-import {requestData} from "../../utils/utils";
 import {baseUrl} from "../../utils/constants";
 import {useDispatch} from "react-redux";
 import {actions} from "../../services/reducers/auth";
+import {requestData} from "../../services/api";
 
 function LoginPage() {
   const [email, setEmail] = React.useState('');
