@@ -1,16 +1,20 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { Input, PasswordInput, Button } from "@ya.praktikum/react-developer-burger-ui-components";
-import {Link} from "react-router-dom";
+import {Link, Redirect, useHistory, useLocation} from "react-router-dom";
 import {baseUrl} from "../../utils/constants";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {actions} from "../../services/reducers/auth";
 import {requestData} from "../../services/api";
 
 function LoginPage() {
-  const [email, setEmail] = React.useState('');
-  const [password, setPassword] = React.useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const isAuth = useSelector(store => store.auth.isAuth);
   const dispatch = useDispatch();
   const {loginSuccess, loginError, loginRequest} = actions;
+  const location = useLocation();
+  const direction = location.state?.from?.pathname || "/";
+
   const onChangeEmail = e => {
     setEmail(e.target.value)
   }
@@ -31,6 +35,11 @@ function LoginPage() {
       errorAction: loginError
     }));
 
+  }
+  if (isAuth) {
+    return (
+      <Redirect to={{pathname: direction}} />
+    )
   }
   return (
     <section className="auth__section" onSubmit={onSubmit}>

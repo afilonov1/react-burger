@@ -1,8 +1,9 @@
-import React, {useRef, useState} from "react";
-import {NavLink, Route, Switch} from "react-router-dom";
+import React from "react";
+import {NavLink, Route} from "react-router-dom";
 import styles from "./profile-page.module.css";
-import {EmailInput, Input, PasswordInput} from "@ya.praktikum/react-developer-burger-ui-components";
 import EditProfile from "./edit-profile";
+import {useSelector} from "react-redux";
+
 
 function ProfilePage() {
 

@@ -1,11 +1,16 @@
 import React, {useState} from "react";
 import styles from "./profile-page.module.css";
 import {Input, PasswordInput} from "@ya.praktikum/react-developer-burger-ui-components";
+import {useSelector} from "react-redux";
 
 function EditProfile() {
-  const [name, setName] = useState('Марк');
-  const [email, setEmail] = useState('mail@stellar.burgers');
-  const [password, setPassword] = useState('Логин1');
+  const { nameInStore, emailInStore } = useSelector(store => ({
+    nameInStore: store.auth.name,
+    emailInStore: store.auth.email
+  }))
+  const [name, setName] = useState(nameInStore);
+  const [email, setEmail] = useState(emailInStore);
+  const [password, setPassword] = useState('');
 
 
   const onNameChange = (e) => {
@@ -20,7 +25,6 @@ function EditProfile() {
 
   const onSubmit = e => {
     e.preventDefault();
-    console.log("bebra")
   }
   return (
     <section className={styles.section}>

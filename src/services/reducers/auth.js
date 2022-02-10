@@ -1,9 +1,9 @@
 import {createSlice} from "@reduxjs/toolkit";
-import {verify} from "crypto";
 
 const authSlice = createSlice({
   name: 'auth',
   initialState: {
+    isAuth: false,
     name: "",
     email: "",
     accessToken: "",
@@ -20,14 +20,10 @@ const authSlice = createSlice({
     },
   },
   reducers: {
-    changeName(state, action) {
-      state.name = action.payload;
-    },
-    login() {
 
-    },
     registerSuccess(state, action) {
       const data = action.payload;
+      state.isAuth = true;
       state.name = data.user.name;
       state.email = data.user.email;
       state.refreshToken = data.refreshToken;
@@ -45,6 +41,7 @@ const authSlice = createSlice({
       state.register.error = true;
     },
     logout(state) {
+      state.isAuth = false;
       state.name = "";
       state.email = "";
       state.refreshToken = "";
@@ -52,9 +49,13 @@ const authSlice = createSlice({
       state.register.success = false;
       state.register.request = true;
       state.register.error = false;
+      state.login.success = false;
+      state.login.request = true;
+      state.login.error = false;
     },
     loginSuccess(state, action) {
       const data = action.payload;
+      state.isAuth = true;
       state.name = data.user.name;
       state.email = data.user.email;
       state.refreshToken = data.refreshToken;

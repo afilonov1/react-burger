@@ -22,12 +22,15 @@ export function requestData({method, url, requestAction, successAction, errorAct
       if (response.ok) {
         json = await response.json();
         dispatch(successAction(json, payload));
+        return true;
       } else {
         dispatch(errorAction());
+        return false;
       }
 
     } catch {
       dispatch(errorAction());
+      return false;
     }
   }
 }
@@ -65,26 +68,22 @@ const getNewAccessTokenRequest = (url, token) =>
 export function getNewAccessToken({refreshToken, url, successAction}) {
   return async function (dispatch) {
     try {
-      console.log(refreshToken);
       const response = await getNewAccessTokenRequest(url, refreshToken);
-      console.log(response);
       if (response.ok) {
         const data = await response.json();
-        console.log(data);
         if (data.success) {
           dispatch(successAction(data));
           return data.accessToken;
         }
       }
     } catch(e) {
-        console.log(e);
     }
   }
 }
 
 export async function checkAccessToken({accessToken, url}) {
   try {
-    const response = await getUserRequest("12" + url, accessToken);
+    const response = await getUserRequest(url, accessToken);
 
     if (response.ok) {
       const data = await response.json();
@@ -101,3 +100,36 @@ export async function checkAccessToken({accessToken, url}) {
   }
 
 }
+export async function checkAccessToken2({accessToken, url}) {
+  try {
+    const response = await getUserRequest2(url, accessToken);
+
+    if (response.ok) {
+      const data = await response.json();
+      const isSucceed = data.success;
+      if (isSucceed) {
+        console.log(data)
+        return true;
+      }
+    } else {
+      return false;
+    }
+
+  } catch {
+    return false;
+  }
+
+}
+const getUserRequest2 = (url, token) =>
+  fetch(url, {
+    method: 'GET',
+    mode: 'cors',
+    cache: 'no-cache',
+    credentials: 'same-origin',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: token
+    },
+    redirect: 'follow',
+    referrerPolicy: 'no-referrer'
+  });

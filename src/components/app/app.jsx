@@ -12,6 +12,7 @@ import ForgotPasswordPage from "../../pages/forgot-password-page/forgot-password
 import ResetPasswordPage from "../../pages/reset-password-page/reset-password-page";
 import ProfilePage from "../../pages/profile-page/profile-page";
 import ProtectedRoute from "../../pages/protected-route/protected-route";
+import NotFound404 from "../../pages/not-found-404/not-found-404";
 
 
 function App() {
@@ -33,15 +34,17 @@ function App() {
         <AppHeader/>
         {ingredientsData && !isFailed && constructorData && (
           <Switch>
-            <Route path="/" component={Main} exact>
-            </Route>
+            <ProtectedRoute path="/" exact={true}>
+              <Main />
+            </ProtectedRoute>
             <Route path="/login" component={LoginPage}/>
             <Route path="/register" component={RegisterPage}/>
             <Route path="/forgot-password" component={ForgotPasswordPage}/>
             <Route path="/reset-password" component={ResetPasswordPage}/>
-            <ProtectedRoute path="/profile">
-              <ProfilePage/>
+            <ProtectedRoute path="/profile" exact={true}>
+              <ProfilePage />
             </ProtectedRoute>
+            <Route path="*" component={NotFound404} />
           </Switch>
         )}
         {isFailed && <p className="error">Ошибка соединения с сервером</p>}
