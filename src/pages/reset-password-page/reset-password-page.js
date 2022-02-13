@@ -1,6 +1,8 @@
 import React, {useState} from 'react';
-import { Input, Button } from "@ya.praktikum/react-developer-burger-ui-components";
-import {Link} from "react-router-dom";
+import {Input, Button} from "@ya.praktikum/react-developer-burger-ui-components";
+import {Link, Redirect} from "react-router-dom";
+import {resetPasswordRequest} from "../../services/api";
+import {baseUrl, resetPasswordEndpoint} from "../../utils/constants";
 
 
 const ShowIconString = "ShowIcon";
@@ -10,6 +12,7 @@ function ResetPasswordPage() {
   const [newPassword, setNewPassword] = useState('');
   const [code, setCode] = useState('');
   const [currentIcon, setCurrentIcon] = useState(ShowIconString);
+  const [changeSuccess, setChangeSuccess] = useState(false);
   const onChangePassword = e => {
     setNewPassword(e.target.value)
   }
@@ -17,27 +20,24 @@ function ResetPasswordPage() {
     setCode(e.target.value)
   }
 
-  const onSubmit = e => {
+  const onSubmit = async e => {
     e.preventDefault();
-    // const resetPasswordRequest = postRequestHandle(baseUrl +  "password-reset/reset", {
-    //   password: newPassword,
-    //   token: ""
-    // });
-    // resetPasswordRequest
-    //   .then(res => res.json())
-    //   .then(data => {
-    //     console.log(data);
-    //     if (data.success) {
-    //
-    //     }
-    //   });
+    const result = await resetPasswordRequest(baseUrl + resetPasswordEndpoint, {
+      password: newPassword,
+      token: code
+    });
+    setChangeSuccess(result);
   }
 
   const toggleIcon = () => {
     setCurrentIcon(currentIcon === ShowIconString ? HideIconString : ShowIconString);
 
   }
-
+  if (changeSuccess) {
+    return (
+      <Redirect to="/login"/>
+    )
+  }
   return (
     <section className="auth__section" onSubmit={onSubmit}>
       <form className="auth__form">
@@ -73,4 +73,5 @@ function ResetPasswordPage() {
     </section>
   );
 }
+
 export default ResetPasswordPage;

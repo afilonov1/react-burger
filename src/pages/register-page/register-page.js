@@ -1,16 +1,19 @@
 import React, {useState} from 'react';
-import { Input, PasswordInput, Button } from "@ya.praktikum/react-developer-burger-ui-components";
-import {Link} from "react-router-dom";
-import {baseUrl} from "../../utils/constants";
+import {Input, PasswordInput, Button} from "@ya.praktikum/react-developer-burger-ui-components";
+import {Link, Redirect} from "react-router-dom";
+import {baseUrl, registerEndpoint} from "../../utils/constants";
 import {actions} from "../../services/reducers/auth";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {requestData} from "../../services/api";
 
 function RegisterPage() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('')
-  const { registerError, registerRequest, registerSuccess } = actions;
+  const [password, setPassword] = useState('');
+  const isAuth = useSelector(store => store.auth.isAuth);
+
+
+  const {registerError, registerRequest, registerSuccess} = actions;
   const dispatch = useDispatch();
   const onChangeEmail = e => {
     setEmail(e.target.value)
@@ -21,24 +24,29 @@ function RegisterPage() {
   const onChangeName = e => {
     setName(e.target.value)
   }
-  const onSubmit = e => {
+  const onSubmit = async e => {
     e.preventDefault();
     const body = {
       email,
       password,
       name
     };
-    dispatch(requestData({
+    await dispatch(requestData({
       method: "POST",
-      url: baseUrl +  "auth/register",
+      url: baseUrl + registerEndpoint,
       body: body,
       successAction: registerSuccess,
       requestAction: registerRequest,
-      errorAction: registerError
+      errorAction: registerError,
+      setCookie: true
     }));
 
   }
-
+  if (isAuth) {
+    return (
+      <Redirect to="/"/>
+    );
+  }
   return (
     <section className="auth__section">
       <form className="auth__form" onSubmit={onSubmit}>
@@ -76,4 +84,5 @@ function RegisterPage() {
     </section>
   );
 }
+
 export default RegisterPage;

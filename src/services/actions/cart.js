@@ -5,7 +5,7 @@ import {
     GET_INGREDIENTS_SUCCESS,
     MOVE_CART_ITEM_TO_INDEX, POST_ORDER_ERROR, POST_ORDER_REQUEST, POST_ORDER_SUCCESS,
     REMOVE_CONTAINER_ITEM,
-    REPLACE_CART_INGREDIENTS,
+    REPLACE_CART_INGREDIENTS, SET_CART_STATE_TO_INITIAL,
     SET_CONTAINER_BUN,
     SET_ORDER
 } from "./types/cart";
@@ -90,4 +90,7 @@ export const moveCartItemToIndex = (hash, indexAt) => ({
     type: MOVE_CART_ITEM_TO_INDEX,
     hash,
     indexAt
+})
+export const setCartToInitial = () => ({
+    type: SET_CART_STATE_TO_INITIAL
 })

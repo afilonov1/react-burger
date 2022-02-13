@@ -9,4 +9,5 @@ function NotFound404() {
     </section>
   )
 }
+
 export default NotFound404;

@@ -1,6 +1,6 @@
-import {requestIsReady} from "./actions/modal";
+import Cookies from 'js-cookie';
 
-export function requestData({method, url, requestAction, successAction, errorAction, body, payload}) {
+export function requestData({method, url, requestAction, successAction, errorAction, body, payload, setCookie}) {
 
   return async function (dispatch) {
     try {
@@ -18,10 +18,14 @@ export function requestData({method, url, requestAction, successAction, errorAct
         body: JSON.stringify(body)
       });
 
-      let json;
-      if (response.ok) {
-        json = await response.json();
-        dispatch(successAction(json, payload));
+      let data = await response.json();
+
+      if (response.ok && data.success) {
+        dispatch(successAction(data, payload));
+        if (setCookie) {
+          Cookies.set('accessToken', data.accessToken);
+          Cookies.set('refreshToken', data.refreshToken);
+        }
         return true;
       } else {
         dispatch(errorAction());
@@ -35,7 +39,7 @@ export function requestData({method, url, requestAction, successAction, errorAct
   }
 }
 
-const getUserRequest = (url, token) =>
+const getUserRequest = (url) =>
   fetch(url, {
     method: 'GET',
     mode: 'cors',
@@ -43,12 +47,12 @@ const getUserRequest = (url, token) =>
     credentials: 'same-origin',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: token
+      Authorization: Cookies.get("accessToken")
     },
     redirect: 'follow',
     referrerPolicy: 'no-referrer'
   });
-const getNewAccessTokenRequest = (url, token) =>
+const getNewAccessTokenRequest = (url) =>
   fetch(url, {
     method: 'POST',
     mode: 'cors',
@@ -61,75 +65,184 @@ const getNewAccessTokenRequest = (url, token) =>
     redirect: 'follow',
     referrerPolicy: 'no-referrer',
     body: JSON.stringify({
-      token: token
+      token: Cookies.get("refreshToken")
     })
   });
 
-export function getNewAccessToken({refreshToken, url, successAction}) {
+export async function getNewAccessToken(url) {
+  try {
+    const response = await getNewAccessTokenRequest(url);
+    if (response.ok) {
+      const data = await response.json();
+      if (data.success) {
+        Cookies.set("accessToken", data.accessToken);
+        Cookies.set("refreshToken", data.refreshToken);
+        return data.accessToken;
+      }
+    }
+  } catch (e) {
+
+  }
+}
+
+export async function checkAccessToken(url) {
+  try {
+    const response = await getUserRequest(url);
+
+    if (response.ok) {
+      const data = await response.json();
+      const isSucceed = data.success;
+      if (isSucceed) {
+        return true;
+      }
+    } else {
+      return false;
+    }
+
+  } catch {
+    return false;
+  }
+
+}
+export function getUser(url, setUserName, setUserEmail) {
   return async function (dispatch) {
     try {
-      const response = await getNewAccessTokenRequest(url, refreshToken);
+      const response = await fetch(url, {
+        method: 'GET',
+        mode: 'cors',
+        cache: 'no-cache',
+        credentials: 'same-origin',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: Cookies.get("accessToken")
+        },
+        redirect: 'follow',
+        referrerPolicy: 'no-referrer'
+      });
+
       if (response.ok) {
         const data = await response.json();
-        if (data.success) {
-          dispatch(successAction(data));
-          return data.accessToken;
-        }
+        dispatch(setUserName(data.user.name));
+        dispatch(setUserEmail(data.user.email));
+        return data;
+      } else {
+
       }
-    } catch(e) {
+
+    } catch {
     }
+
+  }
+}
+export function updateUser(url, body, setUserName, setUserEmail) {
+  return async function (dispatch, state) {
+    try {
+
+      const response = await fetch(url, {
+        method: 'PATCH',
+        mode: 'cors',
+        cache: 'no-cache',
+        credentials: 'same-origin',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: Cookies.get("accessToken")
+        },
+        redirect: 'follow',
+        referrerPolicy: 'no-referrer',
+        body: JSON.stringify(body)
+      });
+      if (response.ok) {
+        const data = await response.json();
+        await dispatch(setUserName(data.user.name));
+        await dispatch(setUserEmail(data.user.email));
+
+        return data;
+      } else {
+
+      }
+
+    } catch {
+    }
+
   }
 }
 
-export async function checkAccessToken({accessToken, url}) {
+export async function logoutUser(url) {
   try {
-    const response = await getUserRequest(url, accessToken);
-
+    const response = await fetch(url, {
+      method: 'POST',
+      mode: 'cors',
+      cache: 'no-cache',
+      credentials: 'same-origin',
+      headers: {
+        'Content-Type': 'application/json',
+        //Authorization: Cookies.get("refreshToken")
+      },
+      redirect: 'follow',
+      referrerPolicy: 'no-referrer',
+      body: JSON.stringify({
+        token: Cookies.get("refreshToken")
+      })
+    });
     if (response.ok) {
       const data = await response.json();
-      const isSucceed = data.success;
-      if (isSucceed) {
-        return true;
-      }
+      return data.success;
     } else {
       return false;
     }
-
   } catch {
     return false;
   }
 
 }
-export async function checkAccessToken2({accessToken, url}) {
-  try {
-    const response = await getUserRequest2(url, accessToken);
 
+export async function resetPasswordRequest(url, body) {
+  try {
+    const response = await fetch(url, {
+      method: 'POST',
+      mode: 'cors',
+      cache: 'no-cache',
+      credentials: 'same-origin',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      redirect: 'follow',
+      referrerPolicy: 'no-referrer',
+      body: JSON.stringify(body)
+    });
     if (response.ok) {
       const data = await response.json();
-      const isSucceed = data.success;
-      if (isSucceed) {
-        console.log(data)
-        return true;
-      }
+      return data.success;
     } else {
       return false;
     }
-
   } catch {
     return false;
   }
-
 }
-const getUserRequest2 = (url, token) =>
-  fetch(url, {
-    method: 'GET',
-    mode: 'cors',
-    cache: 'no-cache',
-    credentials: 'same-origin',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: token
-    },
-    redirect: 'follow',
-    referrerPolicy: 'no-referrer'
-  });
+export async function forgotPasswordRequest(url, email) {
+  try {
+    const response = await fetch(url, {
+      method: 'POST',
+      mode: 'cors',
+      cache: 'no-cache',
+      credentials: 'same-origin',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      redirect: 'follow',
+      referrerPolicy: 'no-referrer',
+      body: JSON.stringify({
+        email: email
+      })
+    });
+    if (response.ok) {
+      const data = await response.json();
+      return data.success;
+    } else {
+      return false;
+    }
+  } catch {
+    return false;
+  }
+}

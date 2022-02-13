@@ -1,13 +1,11 @@
 import React from "react";
-import {NavLink, Route} from "react-router-dom";
+import {NavLink, Route, Switch, useRouteMatch} from "react-router-dom";
 import styles from "./profile-page.module.css";
 import EditProfile from "./edit-profile";
-import {useSelector} from "react-redux";
-
+import ProfileOrders from "./profile-orders";
 
 function ProfilePage() {
-
-
+  let match = useRouteMatch();
   return (
     <div className={styles.container}>
       <aside className={styles.aside}>
@@ -35,7 +33,7 @@ function ProfilePage() {
             </li>
             <li>
               <NavLink
-                to="/profile/orders/:id"
+                to="/logout"
                 className={styles.navItem + " text text_type_main-medium"}
                 activeClassName={styles.activeNavItem}
                 exact
@@ -48,8 +46,11 @@ function ProfilePage() {
         <p className={styles.text + " text text_type_main-default"}>В этом разделе вы можете
           изменить свои персональные данные</p>
       </aside>
+      <Switch>
+        <Route path={`${match.path}`} component={EditProfile} exact />
+        <Route path={`${match.path}/orders`} component={ProfileOrders}/>
+      </Switch>
 
-      <Route to="/profile/orders" component={EditProfile} />
     </div>
   );
 }

@@ -1,0 +1,27 @@
+.loaderPrimary {
+    width: 150px;
+    height: 150px;
+    border: 8px solid rgb(13 161 143 / 67%);
+    border-radius: 50%;
+    border-left-color: #801ab3;
+    animation: loaderKF 1.3s linear infinite;
+}
+.loaderSecondary {
+    width: 150px;
+    height: 150px;
+    border: 8px solid rgba(61, 49, 189, 0.67);
+    border-radius: 50%;
+    border-left-color: #3e1652;
+    animation: loaderKF 1.3s linear infinite;
+}
+.loaderWrapper {
+    height: calc(100vh - 228px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+@keyframes loaderKF {
+    100% {
+        transform: rotate(360deg);
+    }
+}

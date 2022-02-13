@@ -1,28 +1,25 @@
-import React from 'react';
-import { Input, Button } from "@ya.praktikum/react-developer-burger-ui-components";
-import {Link} from "react-router-dom";
+import React, {useState} from 'react';
+import {Input, Button} from "@ya.praktikum/react-developer-burger-ui-components";
+import {Link, Redirect} from "react-router-dom";
+import {baseUrl, forgotPasswordEndpoint} from "../../utils/constants";
+import {forgotPasswordRequest} from "../../services/api";
 
 function ForgotPasswordPage() {
-  const [email, setEmail] = React.useState('');
-
+  const [email, setEmail] = useState('');
+  const [requestReceived, setRequestReceived] = useState(false);
   const onChangeEmail = e => {
-    setEmail(e.target.value)
+    setEmail(e.target.value);
   }
 
-  const onSubmit = e => {
+  const onSubmit = async e => {
     e.preventDefault();
-    // const forgotPasswordRequest = postRequestHandle("password-reset", {
-    //   email
-    // });
-    // forgotPasswordRequest
-    //   .then(res => res.json())
-    //   .then(data => {
-    //     if (data.success) {
-    //       history.push({
-    //         pathname: "/reset-password"
-    //       })
-    //     }
-    //   });
+    const result = await forgotPasswordRequest(baseUrl + forgotPasswordEndpoint, email);
+    setRequestReceived(result);
+  };
+  if (requestReceived) {
+    return (
+      <Redirect to="reset-password"/>
+    )
   }
 
   return (
@@ -48,4 +45,5 @@ function ForgotPasswordPage() {
     </section>
   );
 }
+
 export default ForgotPasswordPage;

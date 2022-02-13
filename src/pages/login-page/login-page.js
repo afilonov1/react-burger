@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
-import { Input, PasswordInput, Button } from "@ya.praktikum/react-developer-burger-ui-components";
-import {Link, Redirect, useHistory, useLocation} from "react-router-dom";
-import {baseUrl} from "../../utils/constants";
+import {Input, PasswordInput, Button} from "@ya.praktikum/react-developer-burger-ui-components";
+import {Link, Redirect, useLocation} from "react-router-dom";
+import {baseUrl, loginEndpoint} from "../../utils/constants";
 import {useDispatch, useSelector} from "react-redux";
 import {actions} from "../../services/reducers/auth";
 import {requestData} from "../../services/api";
@@ -28,19 +28,21 @@ function LoginPage() {
     }
     dispatch(requestData({
       method: "POST",
-      url: baseUrl +  "auth/login",
+      url: baseUrl + loginEndpoint,
       body: body,
       successAction: loginSuccess,
       requestAction: loginRequest,
-      errorAction: loginError
+      errorAction: loginError,
+      setCookie: true
     }));
 
   }
   if (isAuth) {
     return (
-      <Redirect to={{pathname: direction}} />
+      <Redirect to={{pathname: direction}}/>
     )
   }
+
   return (
     <section className="auth__section" onSubmit={onSubmit}>
       <form className="auth__form">
@@ -72,4 +74,5 @@ function LoginPage() {
     </section>
   );
 }
+
 export default LoginPage;

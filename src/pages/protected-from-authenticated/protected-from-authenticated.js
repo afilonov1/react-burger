@@ -1,21 +1,22 @@
 import React, {useEffect} from "react";
 import {Redirect, Route} from "react-router-dom";
-
+import {useSelector} from "react-redux";
 import useInit from "../../services/useInit";
 import Loader from "../../components/loader/loader";
 import PropTypes from "prop-types";
 
-function ProtectedRoute({component, ...rest}) {
-  const {init, isInitLoaded, canEnter} = useInit();
+function ProtectedFromAuthenticated({component, ...rest}) {
+  const {init, isInitLoaded} = useInit();
 
   useEffect(() => {
-    init("vsNotAuth");
+    init();
   }, [init]);
 
+  const isAuth = useSelector(store => store.auth.isAuth);
   if (!isInitLoaded) {
     return (
-      <Loader type="primary"/>
-    );
+      <Loader type="secondary"/>
+    )
   }
   const RenderComponent = () => {
     return (
@@ -25,26 +26,20 @@ function ProtectedRoute({component, ...rest}) {
   return (
     <Route
       {...rest}
-      render={({location}) =>
-        (canEnter) ? (
+      render={() =>
+        !isAuth ? (
           <RenderComponent/>
         ) : (
-          <Redirect
-            to={{
-              pathname: '/login',
-              state: {from: location}
-            }}
-          />
+          <Redirect to="/"/>
         )
       }
     />
-
-
   );
 }
 
-export default ProtectedRoute;
-ProtectedRoute.propTypes = {
+export default ProtectedFromAuthenticated;
+
+ProtectedFromAuthenticated.propTypes = {
   component: PropTypes.elementType.isRequired,
   exact: PropTypes.bool,
   path: PropTypes.string.isRequired
