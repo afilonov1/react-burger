@@ -1,5 +1,5 @@
 import {
-  ADD_CONTAINER_ITEM,
+  ADD_CONTAINER_ITEM, CLEAR_CART, CLEAR_ORDER,
   GET_INGREDIENTS_ERROR,
   GET_INGREDIENTS_REQUEST,
   GET_INGREDIENTS_SUCCESS,
@@ -45,6 +45,23 @@ export const cartReducer = (state = initialState, action) => {
         }
       }
     }
+    case CLEAR_ORDER: {
+      return {
+        ...state,
+        order: {
+          name: "",
+          number: 0,
+          cartSum: 0,
+          cartIDs: []
+        }
+      }
+    }
+    case CLEAR_CART: {
+      return {
+        ...state,
+        constructorData: []
+      }
+    }
     case GET_INGREDIENTS_REQUEST: {
       return {
         ...state,
@@ -84,6 +101,8 @@ export const cartReducer = (state = initialState, action) => {
         postOrder: {
           ...state.postOrder,
           isRequest: true,
+          isError: false,
+          isSuccess: false
         }
       }
     }
@@ -95,10 +114,8 @@ export const cartReducer = (state = initialState, action) => {
       return {
         ...state,
         postOrder: {
-          ...state.postOrder,
           isRequest: false,
           isSuccess: true,
-          isError: false
         },
         order: {
           ...state.order,
@@ -113,9 +130,7 @@ export const cartReducer = (state = initialState, action) => {
       return {
         ...state,
         postOrder: {
-          ...state.postOrder,
           isRequest: false,
-          isSuccess: false,
           isError: true
         }
       }

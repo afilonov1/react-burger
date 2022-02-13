@@ -1,4 +1,4 @@
-import React, {useMemo} from "react";
+import React, {useEffect, useMemo, useState} from "react";
 import styles from "./burger-constructor.module.css";
 import {Button, ConstructorElement} from "@ya.praktikum/react-developer-burger-ui-components";
 
@@ -10,12 +10,21 @@ import {openOrderModal} from "../../services/actions/modal";
 import {useDrop} from "react-dnd";
 import {addContainerItem, setContainerBun} from "../../services/actions/cart";
 import ConstructorItem from "../constructor-item/constructor-item";
+import {Redirect} from "react-router-dom";
+import useInit from "../../services/useInit";
 
 
 export default function BurgerConstructor() {
   const cart = useSelector(store => store.cart.constructorData);
   const isBun = cart[0]?.type === "bun";
+  const {init, isInitLoaded, canEnter} = useInit();
+
+  useEffect(() => {
+    init("vsNotAuth");
+  }, [init]);
+
   const isModalVisible = useSelector(store => store.modal.isOrderModalVisible);
+  const [isOrderClicked, setOrderClicked] = useState(false);
   const dispatch = useDispatch();
   const [{isHover}, dropRef] = useDrop({
     accept: "ingredient",
@@ -41,7 +50,11 @@ export default function BurgerConstructor() {
 
   const borderColor = isHover ? "lightskyblue" : "transparent";
 
-
+  if (isInitLoaded && !canEnter && isOrderClicked) {
+    return (
+      <Redirect to="/login" />
+    );
+  }
   return (
     <section className={styles.section}>
       <div className={styles.cart} style={{borderColor}} ref={dropRef}>
@@ -92,15 +105,18 @@ export default function BurgerConstructor() {
 
         <img className="mr-10 ml-3" src={imagePath} alt="Цена"/>
         <Button type="primary" size="medium" onClick={() => {
+          setOrderClicked(true);
           const isFormValid = cart.length >= 3 && cart[0].type === "bun";
-          if (isFormValid) dispatch(openOrderModal());
+          if (isInitLoaded && canEnter && isFormValid) {
+            dispatch(openOrderModal());
+          }
         }}>
           Оформить заказ
         </Button>
       </div>
 
       {isModalVisible && (
-        <Modal>
+        <Modal isOrderModal>
           <OrderDetails/>
         </Modal>
       )}

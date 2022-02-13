@@ -8,11 +8,12 @@ import ModalOverlay from "../modal-overlay/modal-overlay";
 import {useDispatch} from "react-redux";
 import {closeModal} from "../../services/actions/modal";
 import {useHistory} from "react-router-dom";
+import {clearCart, clearOrder} from "../../services/actions/cart";
 
 const modalRoot = document.getElementById("react-modals");
 
 export default function Modal(props) {
-  const {children, header, goBack} = props;
+  const {children, header, goBack, isOrderModal} = props;
   const history = useHistory();
   const dispatch = useDispatch();
   const onClose = useCallback(() => {
@@ -20,7 +21,11 @@ export default function Modal(props) {
     if (goBack) {
       history.goBack();
     }
-  }, [dispatch, goBack, history]);
+    if (isOrderModal) {
+      dispatch(clearCart());
+      dispatch(clearOrder());
+    }
+  }, [dispatch, goBack, history, isOrderModal]);
   useEffect(() => {
     const escapeHandler = (e) => {
       if (e.code === "Escape") {
@@ -53,5 +58,6 @@ export default function Modal(props) {
 Modal.propTypes = {
   children: PropTypes.element.isRequired,
   header: PropTypes.string,
-  goBack: PropTypes.bool
+  goBack: PropTypes.bool,
+  isOrderModal: PropTypes.bool
 }

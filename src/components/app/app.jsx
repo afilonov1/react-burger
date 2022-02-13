@@ -20,7 +20,7 @@ function App() {
     <div>
       <AppHeader/>
       <Switch>
-        <ProtectedRoute path="/" component={Main} exact/>
+        <Route path="/" component={Main} exact/>
         <ProtectedFromAuthenticated path="/login" component={LoginPage} exact/>
         <ProtectedFromAuthenticated path="/register" component={RegisterPage} exact/>
         <ProtectedFromAuthenticated path="/forgot-password" component={ForgotPasswordPage} exact/>

@@ -1,6 +1,6 @@
 import Cookies from 'js-cookie';
 
-export function requestData({method, url, requestAction, successAction, errorAction, body, payload, setCookie}) {
+export function requestData({method, url, requestAction, successAction, errorAction, body, payload, setCookie, additionalAction}) {
 
   return async function (dispatch) {
     try {
@@ -22,6 +22,9 @@ export function requestData({method, url, requestAction, successAction, errorAct
 
       if (response.ok && data.success) {
         dispatch(successAction(data, payload));
+        if (additionalAction) {
+          dispatch(additionalAction());
+        }
         if (setCookie) {
           Cookies.set('accessToken', data.accessToken);
           Cookies.set('refreshToken', data.refreshToken);

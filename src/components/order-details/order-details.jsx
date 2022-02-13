@@ -31,8 +31,8 @@ export default function OrderDetails() {
       const fetchData = {
         ingredients: cartIDs,
       };
-
       dispatch(postOrder(baseUrl + "orders", fetchData, cartIDs));
+
     }
 
   }, [cartIDs, cartIDsFromStore, dispatch, orderNum]);

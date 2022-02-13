@@ -44,8 +44,8 @@ function LoginPage() {
   }
 
   return (
-    <section className="auth__section" onSubmit={onSubmit}>
-      <form className="auth__form">
+    <section className="auth__section">
+      <form className="auth__form" onSubmit={onSubmit}>
         <h1 className="auth__title text text_type_main-medium">Вход</h1>
         <Input
           type={'email'}

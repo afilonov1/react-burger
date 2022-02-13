@@ -3,22 +3,18 @@ import {Tab} from "@ya.praktikum/react-developer-burger-ui-components";
 
 import styles from "./burger-ingredients.module.css";
 import IngredientsItem from "../ingredients-item/ingredients-item";
-import Modal from "../modal/modal";
-import IngredientDetails from "../ingredient-details/ingredient-details";
 import {useSelector} from "react-redux";
 import {
   additionScrollForSaucesAndFillings,
   BUNS,
   FILLINGS, fixTabsPixels,
   heightFromTopPageToRelativeBlock,
-  ingredientModalHeader,
   SAUCES
 } from "../../utils/constants";
 
 export default function BurgerIngredients() {
   const [currentTab, setCurrentTab] = useState(BUNS);
   const ingredientsData = useSelector(store => store.cart.ingredientsData);
-  const isModalVisible = useSelector(store => store.modal.isIngredientModalVisible);
 
   const sectionRef = useRef();
   const bunRef = useRef();
@@ -90,11 +86,6 @@ export default function BurgerIngredients() {
         </div>
 
       </section>
-      {isModalVisible && (
-        <Modal header={ingredientModalHeader}>
-          <IngredientDetails/>
-        </Modal>
-      )}
     </section>
   );
 }

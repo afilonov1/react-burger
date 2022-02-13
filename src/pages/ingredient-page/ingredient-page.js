@@ -2,11 +2,12 @@ import React, {useCallback, useEffect, useState} from "react";
 import {useHistory, useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {getIngredients} from "../../services/actions/cart";
-import {baseUrl, ingredientsEndpoint} from "../../utils/constants";
+import {baseUrl, ingredientModalHeader, ingredientsEndpoint} from "../../utils/constants";
 import Loader from "../../components/loader/loader";
 import IngredientDetails from "../../components/ingredient-details/ingredient-details";
 import Main from "../main/main";
 import Modal from "../../components/modal/modal";
+import styles from "./ingredient-page.module.css";
 
 function IngredientPage() {
   const params = useParams();
@@ -33,15 +34,16 @@ function IngredientPage() {
     render = (
       <>
         <Main/>
-        <Modal goBack={true}>
+        <Modal goBack={true} header={ingredientModalHeader}>
           <IngredientDetails itemPage={itemPage}/>
         </Modal>
       </>
     )
   } else {
     render = (
-      <div className="mt-30">
-        < IngredientDetails itemPage={itemPage}/>
+      <div>
+        <h1 className={styles.noModalTitle + " white text text_type_main-large mt-30"}>{ingredientModalHeader}</h1>
+        <IngredientDetails itemPage={itemPage}/>
       </div>
     )
   }

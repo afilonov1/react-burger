@@ -1,5 +1,5 @@
 import {
-    ADD_CONTAINER_ITEM,
+    ADD_CONTAINER_ITEM, CLEAR_CART, CLEAR_ORDER,
     GET_INGREDIENTS_ERROR,
     GET_INGREDIENTS_REQUEST,
     GET_INGREDIENTS_SUCCESS,
@@ -31,7 +31,7 @@ export function postOrder (
   method = "POST",
   requestAction = postOrderRequest,
   successAction = postOrderSuccess,
-  errorAction = postOrderError
+  errorAction = postOrderError,
 ) {
     return requestData({method, url, payload, requestAction, successAction, errorAction, body});
 }
@@ -93,4 +93,10 @@ export const moveCartItemToIndex = (hash, indexAt) => ({
 })
 export const setCartToInitial = () => ({
     type: SET_CART_STATE_TO_INITIAL
+})
+export const clearCart = () => ({
+    type: CLEAR_CART
+})
+export const clearOrder = () => ({
+    type: CLEAR_ORDER
 })
