@@ -23,7 +23,6 @@ export default function Modal(props) {
     }
     if (isOrderModal) {
       dispatch(clearCart());
-      dispatch(clearOrder());
     }
   }, [dispatch, goBack, history, isOrderModal]);
   useEffect(() => {
@@ -39,12 +38,12 @@ export default function Modal(props) {
     (
       <div className={styles.wrapper}>
         <section className={styles.modal}>
-          <header className={styles.header}>
-            <p className={styles.text + " white text text_type_main-large"}>{header}</p>
+          <div className={styles.header}>
+            <h2 className={styles.text + " white text text_type_main-large"}>{header}</h2>
             <div className={styles.close}>
               <CloseIcon onClick={onClose} type="primary"/>
             </div>
-          </header>
+          </div>
           {children}
         </section>
         <ModalOverlay onClose={onClose}/>

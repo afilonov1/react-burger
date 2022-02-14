@@ -19,9 +19,6 @@ export default function BurgerConstructor() {
   const isBun = cart[0]?.type === "bun";
   const {init, isInitLoaded, canEnter} = useInit();
 
-  useEffect(() => {
-    init("vsNotAuth");
-  }, [init]);
 
   const isModalVisible = useSelector(store => store.modal.isOrderModalVisible);
   const [isOrderClicked, setOrderClicked] = useState(false);
@@ -41,6 +38,16 @@ export default function BurgerConstructor() {
     })
   })
 
+  async function setOrder() {
+    await init("vsNotAuth");
+    setOrderClicked(true);
+    const isFormValid = cart.length >= 3 && cart[0].type === "bun";
+    if (isInitLoaded && canEnter && isFormValid) {
+      dispatch(openOrderModal());
+    }
+  }
+
+
   const orderSum = useMemo(() => {
     const reducer = (previousValue, currentValue) => {
       return previousValue + currentValue.price;
@@ -52,7 +59,7 @@ export default function BurgerConstructor() {
 
   if (isInitLoaded && !canEnter && isOrderClicked) {
     return (
-      <Redirect to="/login" />
+      <Redirect to="/login"/>
     );
   }
   return (
@@ -104,13 +111,7 @@ export default function BurgerConstructor() {
         <p className="white text text_type_digits-medium">{orderSum}</p>
 
         <img className="mr-10 ml-3" src={imagePath} alt="Цена"/>
-        <Button type="primary" size="medium" onClick={() => {
-          setOrderClicked(true);
-          const isFormValid = cart.length >= 3 && cart[0].type === "bun";
-          if (isInitLoaded && canEnter && isFormValid) {
-            dispatch(openOrderModal());
-          }
-        }}>
+        <Button type="primary" size="medium" onClick={setOrder}>
           Оформить заказ
         </Button>
       </div>
