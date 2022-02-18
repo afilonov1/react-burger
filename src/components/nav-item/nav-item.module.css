@@ -1,9 +1,15 @@
 .item {
     display: flex;
+    color: #8585AD;
 }
-.primary {
+
+.activeNav p {
     color: #F2F2F3;
 }
-.secondary {
-    color: #8585AD;
+.activeNav svg {
+    fill: #F2F2F3;
+}
+.icon {
+    width: 24px;
+    height: 24px;
 }

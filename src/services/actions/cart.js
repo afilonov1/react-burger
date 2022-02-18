@@ -1,45 +1,42 @@
 import {
-    ADD_CONTAINER_ITEM,
+    ADD_CONTAINER_ITEM, CLEAR_CART, CLEAR_ORDER,
     GET_INGREDIENTS_ERROR,
     GET_INGREDIENTS_REQUEST,
     GET_INGREDIENTS_SUCCESS,
     MOVE_CART_ITEM_TO_INDEX, POST_ORDER_ERROR, POST_ORDER_REQUEST, POST_ORDER_SUCCESS,
     REMOVE_CONTAINER_ITEM,
-    REPLACE_CART_INGREDIENTS,
+    REPLACE_CART_INGREDIENTS, SET_CART_STATE_TO_INITIAL,
     SET_CONTAINER_BUN,
     SET_ORDER
 } from "./types/cart";
 import {v4 as uuid} from "uuid";
+import {requestData} from "../api";
 
 
-export function getIngredients(url, requestAction = getIngredientsRequest, successAction = getIngredientsSuccess, errorAction = getIngredientsError) {
-    return sendData({url, requestAction, successAction, errorAction});
+export function getIngredients(
+  url,
+  method = "GET",
+  requestAction = getIngredientsRequest,
+  successAction = getIngredientsSuccess,
+  errorAction = getIngredientsError
+) {
+    return requestData(
+      {method, url, requestAction, successAction, errorAction}
+    );
 }
-export function postOrder (url, options, cartIDs, requestAction = postOrderRequest, successAction = postOrderSuccess, errorAction = postOrderError) {
-    return sendData({url, cartIDs, requestAction, successAction, errorAction, options});
+export function postOrder (
+  url,
+  body,
+  payload,
+  method = "POST",
+  requestAction = postOrderRequest,
+  successAction = postOrderSuccess,
+  errorAction = postOrderError,
+) {
+    return requestData({method, url, payload, requestAction, successAction, errorAction, body});
 }
 
-function sendData ({url, requestAction, successAction, errorAction, options, cartIDs}) {
 
-    return async function(dispatch) {
-        try {
-            dispatch(requestAction);
-            const response = options ? await fetch(url, options) : await fetch(url);
-            let json;
-
-            if (response.ok) {
-
-                json = await response.json();
-                dispatch(successAction(json, cartIDs));
-            } else {
-                dispatch(errorAction());
-            }
-
-        } catch {
-            dispatch(errorAction());
-        }
-    }
-}
 
 const getIngredientsRequest = () => ({
     type: GET_INGREDIENTS_REQUEST
@@ -93,4 +90,13 @@ export const moveCartItemToIndex = (hash, indexAt) => ({
     type: MOVE_CART_ITEM_TO_INDEX,
     hash,
     indexAt
+})
+export const setCartToInitial = () => ({
+    type: SET_CART_STATE_TO_INITIAL
+})
+export const clearCart = () => ({
+    type: CLEAR_CART
+})
+export const clearOrder = () => ({
+    type: CLEAR_ORDER
 })

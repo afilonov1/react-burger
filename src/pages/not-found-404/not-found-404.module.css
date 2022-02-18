@@ -1,0 +1,10 @@
+.title {
+    color: palevioletred;
+    font-size: 50px;
+}
+.wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: calc(100vh - 288px);
+}
