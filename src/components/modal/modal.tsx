@@ -1,6 +1,5 @@
-import React, {useCallback, useEffect} from "react";
+import React, {ReactNode, useCallback, useEffect} from "react";
 import ReactDOM from "react-dom";
-import PropTypes from "prop-types";
 import {CloseIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 
 import styles from "./modal.module.css";
@@ -8,11 +7,16 @@ import ModalOverlay from "../modal-overlay/modal-overlay";
 import {useDispatch} from "react-redux";
 import {closeModal} from "../../services/actions/modal";
 import {useHistory} from "react-router-dom";
-import {clearCart, clearOrder} from "../../services/actions/cart";
+import {clearCart} from "../../services/actions/cart";
 
-const modalRoot = document.getElementById("react-modals");
+const modalRoot = document.getElementById("react-modals") as HTMLElement;
 
-export default function Modal(props) {
+export default function Modal(props: {
+  children: ReactNode;
+  header?: string;
+  goBack?: boolean;
+  isOrderModal?: boolean;
+}) {
   const {children, header, goBack, isOrderModal} = props;
   const history = useHistory();
   const dispatch = useDispatch();
@@ -26,8 +30,8 @@ export default function Modal(props) {
     }
   }, [dispatch, goBack, history, isOrderModal]);
   useEffect(() => {
-    const escapeHandler = (e) => {
-      if (e.code === "Escape") {
+    const escapeHandler = (event: KeyboardEvent) => {
+      if (event.code === "Escape") {
         onClose();
       }
     };
@@ -52,11 +56,4 @@ export default function Modal(props) {
     ,
     modalRoot
   );
-}
-
-Modal.propTypes = {
-  children: PropTypes.element.isRequired,
-  header: PropTypes.string,
-  goBack: PropTypes.bool,
-  isOrderModal: PropTypes.bool
 }

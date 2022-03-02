@@ -9,6 +9,7 @@ import {
   SET_CONTAINER_BUN,
   SET_ORDER,
 } from '../actions/types/cart';
+import {IIngredient, TCart} from "../../utils/types";
 
 const initialState = {
   ingredientsData: null,
@@ -31,7 +32,7 @@ const initialState = {
   },
 };
 
-export const cartReducer = (state = initialState, action) => {
+export const cartReducer = (state: TCart = initialState, action: any) => {
   switch (action.type) {
     case SET_ORDER: {
       return {
@@ -110,7 +111,7 @@ export const cartReducer = (state = initialState, action) => {
       const name = action.payload.name;
       const number = action.payload.order.number;
       const cartIDs = action.cartIDs;
-      const cartSum = cartIDs.reduce((acc, next) => state.ingredientsData.find(item => item._id === next).price + acc, 0);
+      const cartSum = cartIDs.reduce((acc: number, next: string) => state.ingredientsData?.find((item: IIngredient) => item._id === next)!.price! + acc, 0);
       return {
         ...state,
         postOrder: {
@@ -138,7 +139,7 @@ export const cartReducer = (state = initialState, action) => {
     case ADD_CONTAINER_ITEM: {
       const constructor = state.constructorData;
       const ingredients = state.ingredientsData;
-      const newItem = ingredients.find(item => item._id === action.id);
+      const newItem = ingredients?.find(item => item._id === action.id);
       return {
         ...state,
         constructorData: [
@@ -154,7 +155,7 @@ export const cartReducer = (state = initialState, action) => {
     case SET_CONTAINER_BUN: {
       const constructor = state.constructorData;
       const ingredients = state.ingredientsData;
-      const newBun = ingredients.find(item => item._id === action.id);
+      const newBun = ingredients?.find(item => item._id === action.id);
       if (constructor[0]?.type === "bun") {
         return {
           ...state,
@@ -206,7 +207,7 @@ export const cartReducer = (state = initialState, action) => {
     }
     case MOVE_CART_ITEM_TO_INDEX: {
       const cart = state.constructorData;
-      const item = cart.find(elem => elem.hash === action.hash);
+      const item = cart.find(elem => elem.hash === action.hash)!;
       const cartWitchDeletedItem = cart.filter(item => item.hash !== action.hash);
       cartWitchDeletedItem.splice(action.indexAt, 0, item);
       return {

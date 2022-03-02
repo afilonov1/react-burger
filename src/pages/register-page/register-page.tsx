@@ -5,26 +5,27 @@ import {baseUrl, registerEndpoint} from "../../utils/constants";
 import {actions} from "../../services/reducers/auth";
 import {useDispatch, useSelector} from "react-redux";
 import {requestData} from "../../services/api";
+import {IStore} from "../../utils/types";
 
 function RegisterPage() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const isAuth = useSelector(store => store.auth.isAuth);
+  const isAuth = useSelector((store: IStore) => store.auth.isAuth);
 
 
   const {registerError, registerRequest, registerSuccess} = actions;
   const dispatch = useDispatch();
-  const onChangeEmail = e => {
+  const onChangeEmail = (e: any) => {
     setEmail(e.target.value)
   }
-  const onChangePassword = e => {
+  const onChangePassword = (e: any) => {
     setPassword(e.target.value)
   }
-  const onChangeName = e => {
+  const onChangeName = (e: any) => {
     setName(e.target.value)
   }
-  const onSubmit = async e => {
+  const onSubmit = async (e: any) => {
     e.preventDefault();
     const body = {
       email,

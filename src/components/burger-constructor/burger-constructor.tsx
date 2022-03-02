@@ -12,20 +12,21 @@ import {addContainerItem, setContainerBun} from "../../services/actions/cart";
 import ConstructorItem from "../constructor-item/constructor-item";
 import {Redirect} from "react-router-dom";
 import useInit from "../../services/useInit";
+import {IHashIngredient, IStore} from "../../utils/types";
 
 
 export default function BurgerConstructor() {
-  const cart = useSelector(store => store.cart.constructorData);
+  const cart = useSelector((store: IStore) => store.cart.constructorData);
   const isBun = cart[0]?.type === "bun";
   const {init, isInitLoaded, canEnter} = useInit();
 
 
-  const isModalVisible = useSelector(store => store.modal.isOrderModalVisible);
+  const isModalVisible = useSelector((store: IStore) => store.modal.isOrderModalVisible);
   const [isOrderClicked, setOrderClicked] = useState(false);
   const dispatch = useDispatch();
   const [{isHover}, dropRef] = useDrop({
     accept: "ingredient",
-    drop(item) {
+    drop(item: {subtype: string, id: number}) {
       const {subtype, id} = item;
       if (subtype === "main" || subtype === "sauce") {
         dispatch(addContainerItem(id));
@@ -39,24 +40,24 @@ export default function BurgerConstructor() {
   })
 
   async function setOrder() {
-    await init("vsNotAuth");
+    const canEnter = await init("vsNotAuth");
+    // console.log("setOrder, canEnter = ", canEnter)
     setOrderClicked(true);
     const isFormValid = cart.length >= 3 && cart[0].type === "bun";
-    if (isInitLoaded && canEnter && isFormValid) {
+    if (canEnter && isFormValid) {
       dispatch(openOrderModal());
     }
   }
 
-
   const orderSum = useMemo(() => {
-    const reducer = (previousValue, currentValue) => {
+    const reducer = (previousValue: number, currentValue: IHashIngredient) => {
       return previousValue + currentValue.price;
     };
     return cart.reduce(reducer, 0);
   }, [cart]);
 
   const borderColor = isHover ? "lightskyblue" : "transparent";
-
+  console.log(isInitLoaded, canEnter, isOrderClicked)
   if (isInitLoaded && !canEnter && isOrderClicked) {
     return (
       <Redirect to="/login"/>
@@ -83,7 +84,7 @@ export default function BurgerConstructor() {
         )}
         <div className={styles.wrapper + " scrollbar mt-4 mb-4"}>
           <ul className={styles.list}>
-            {cart.map((ingredient, index) => {
+            {cart.map((ingredient: IHashIngredient, index: number) => {
               const lastIndex = cart.length - 1;
               if ((index === 0 || index === lastIndex) && cart[index].type === "bun") {
                 return null;

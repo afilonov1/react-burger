@@ -2,14 +2,14 @@ import React from "react";
 
 import styles from "./ingredient-details.module.css";
 import {useSelector} from "react-redux";
-import {ingredientType} from "../../utils/props";
+import {IStore, IIngredient} from "../../utils/types";
 
-export default function IngredientDetails({itemPage = null}) {
+export default function IngredientDetails({itemPage = null}: {itemPage: IIngredient | null}) {
 
 
-  const modalItem = useSelector(store => store.modal.currentDetailsItem);
-  const itemData = itemPage || modalItem;
-  return (
+  const modalItem = useSelector((store: IStore) => store.modal.currentDetailsItem);
+  const itemData: IIngredient | null = itemPage || modalItem;
+  return itemData && (
     <div className={styles.wrapper}>
       <img className={styles.image} src={itemData.image_large} alt=""/>
       <p className={styles.name + " white text text_type_main-medium mt-4 mb-8"}>{itemData.name}</p>
@@ -35,8 +35,4 @@ export default function IngredientDetails({itemPage = null}) {
 
     </div>
   );
-}
-
-IngredientDetails.propType = {
-  itemPage: ingredientType
 }

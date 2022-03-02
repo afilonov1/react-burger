@@ -3,16 +3,18 @@ import {baseUrl, checkAccessEndpoint, refreshTokenEndpoint} from "../utils/const
 import {useDispatch, useSelector} from "react-redux";
 import {actions} from "./reducers/auth";
 import {useCallback, useState} from "react";
+import {IStore} from "../utils/types";
 
 function useInit() {
   const dispatch = useDispatch();
-  const isAuth = useSelector(store => store.auth.isAuth);
+  const isAuth = useSelector((store: IStore) => store.auth.isAuth);
   const {setAuthFalse, setAuthTrue} = actions;
   const [isInitLoaded, setIsInitLoaded] = useState(false);
   const [canEnter, setCanEnter] = useState(false);
-  const init = useCallback(async (type) => {
+  const init = useCallback(async (type?: string) => {
+    let enter: boolean | undefined;
     if (type === "vsNotAuth") {
-      let enter = await checkAccessToken(baseUrl + checkAccessEndpoint);
+      enter = await checkAccessToken(baseUrl + checkAccessEndpoint);
       if (!isAuth && enter) {
         await dispatch(setAuthTrue());
       }
@@ -23,9 +25,10 @@ function useInit() {
           await dispatch(setAuthFalse());
         }
       }
-      setCanEnter(enter);
+      await setCanEnter(enter);
     }
     setIsInitLoaded(true);
+    return enter;
   }, [isAuth, dispatch, setAuthTrue, setAuthFalse]);
   return {init, isInitLoaded, canEnter};
 }

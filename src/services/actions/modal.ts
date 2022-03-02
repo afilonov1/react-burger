@@ -5,6 +5,7 @@ import {
     SET_MODAL_INVISIBLE,
 
 } from "./types/modal";
+import {IIngredient} from "../../utils/types";
 
 export const requestIsReady = () => ({
     type: REQUEST_IS_READY
@@ -14,7 +15,7 @@ export const closeModal = () => ({
     type: SET_MODAL_INVISIBLE
 })
 
-export const openIngredientModal = (itemData) => ({
+export const openIngredientModal = (itemData: IIngredient) => ({
     type: OPEN_INGREDIENT_MODAL,
     payload: itemData
 })

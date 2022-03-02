@@ -1,10 +1,9 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React, {ReactNode} from "react";
 
 import styles from "./nav-item.module.css";
 import {NavLink} from "react-router-dom";
 
-export default function NavItem(props) {
+export default function NavItem(props: {path: string; isExact: boolean; text: string; children: ReactNode}) {
   return (
     <NavLink
       to={props.path}
@@ -20,11 +19,4 @@ export default function NavItem(props) {
       </p>
     </NavLink>
   );
-}
-
-NavItem.propTypes = {
-  path: PropTypes.string.isRequired,
-  isExact: PropTypes.bool.isRequired,
-  text: PropTypes.string.isRequired,
-  children: PropTypes.element.isRequired,
 }

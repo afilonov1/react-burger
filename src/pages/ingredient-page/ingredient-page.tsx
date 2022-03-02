@@ -8,15 +8,26 @@ import IngredientDetails from "../../components/ingredient-details/ingredient-de
 import Main from "../main/main";
 import Modal from "../../components/modal/modal";
 import styles from "./ingredient-page.module.css";
+import {IIngredient, IStore} from "../../utils/types";
+
+type THistory = {
+  location: {
+    state?: {
+      modal: boolean;
+    }
+  }
+}
 
 function IngredientPage() {
-  const params = useParams();
-  const history = useHistory();
+  const params: {ingredientId: string} = useParams();
+  // const history: History<{modal: boolean}> = useHistory();
+  const history: THistory = useHistory();
+  console.log(history)
   let render;
 
   const [isLoaded, setIsLoaded] = useState(false);
   const dispatch = useDispatch();
-  const {ingredientsData, isFailed} = useSelector(store => ({
+  const {ingredientsData, isFailed} = useSelector((store: IStore) => ({
     ingredientsData: store.cart.ingredientsData,
     isFailed: store.cart.getIngredients.isError || store.cart.postOrder.isError
   }))
@@ -29,7 +40,7 @@ function IngredientPage() {
   useEffect(() => {
     onload();
   }, [dispatch, onload]);
-  const itemPage = ingredientsData?.find(item => item._id === params.ingredientId);
+  const itemPage: IIngredient = ingredientsData?.find(item => item._id === params.ingredientId)!;
   if (history.location?.state?.modal) {
     render = (
       <>

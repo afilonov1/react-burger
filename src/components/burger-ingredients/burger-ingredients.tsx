@@ -1,4 +1,4 @@
-import React, {useRef, useState} from "react";
+import React, {RefObject, useRef, useState} from "react";
 import {Tab} from "@ya.praktikum/react-developer-burger-ui-components";
 
 import styles from "./burger-ingredients.module.css";
@@ -11,29 +11,34 @@ import {
   heightFromTopPageToRelativeBlock,
   SAUCES
 } from "../../utils/constants";
+import {IStore} from "../../utils/types";
 
 export default function BurgerIngredients() {
   const [currentTab, setCurrentTab] = useState(BUNS);
-  const ingredientsData = useSelector(store => store.cart.ingredientsData);
+  const ingredientsData = useSelector((store: IStore) => store.cart.ingredientsData)!;
 
-  const sectionRef = useRef();
-  const bunRef = useRef();
-  const sauceRef = useRef();
-  const mainRef = useRef();
+  const sectionRef = useRef<HTMLElement>(null);
+  const bunRef = useRef<HTMLHeadingElement>(null);
+  const sauceRef = useRef<HTMLHeadingElement>(null);
+  const mainRef = useRef<HTMLHeadingElement>(null);
 
-  const scrollToRef = (ref) => {
-    sectionRef.current.scrollTo(0, ref.current.offsetTop - heightFromTopPageToRelativeBlock - additionScrollForSaucesAndFillings)
+  const scrollToRef = (ref: RefObject<HTMLHeadingElement>) => {
+    if (sectionRef?.current && ref?.current) {
+      sectionRef.current.scrollTo(0, ref.current.offsetTop - heightFromTopPageToRelativeBlock - additionScrollForSaucesAndFillings);
+    }
   }
 
-  const handler = e => {
-    const distanceFromSauceBlockToRelative = sauceRef.current.getBoundingClientRect().top - heightFromTopPageToRelativeBlock - additionScrollForSaucesAndFillings;
-    const distanceFromMainBlockToRelative = mainRef.current.getBoundingClientRect().top - heightFromTopPageToRelativeBlock - additionScrollForSaucesAndFillings;
-    if (distanceFromMainBlockToRelative <= fixTabsPixels) {
-      if (currentTab !== FILLINGS) setCurrentTab(FILLINGS);
-    } else if (distanceFromSauceBlockToRelative <= fixTabsPixels) {
-      if (currentTab !== SAUCES) setCurrentTab(SAUCES);
-    } else if (currentTab !== BUNS) {
-      setCurrentTab(BUNS)
+  const handler = (e: React.SyntheticEvent) => {
+    if (sauceRef?.current && mainRef?.current) {
+      const distanceFromSauceBlockToRelative = sauceRef.current.getBoundingClientRect().top - heightFromTopPageToRelativeBlock - additionScrollForSaucesAndFillings;
+      const distanceFromMainBlockToRelative = mainRef.current.getBoundingClientRect().top - heightFromTopPageToRelativeBlock - additionScrollForSaucesAndFillings;
+      if (distanceFromMainBlockToRelative <= fixTabsPixels) {
+        if (currentTab !== FILLINGS) setCurrentTab(FILLINGS);
+      } else if (distanceFromSauceBlockToRelative <= fixTabsPixels) {
+        if (currentTab !== SAUCES) setCurrentTab(SAUCES);
+      } else if (currentTab !== BUNS) {
+        setCurrentTab(BUNS)
+      }
     }
 
   }

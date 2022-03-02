@@ -14,7 +14,7 @@ import {requestData} from "../api";
 
 
 export function getIngredients(
-  url,
+  url: string,
   method = "GET",
   requestAction = getIngredientsRequest,
   successAction = getIngredientsSuccess,
@@ -25,9 +25,9 @@ export function getIngredients(
     );
 }
 export function postOrder (
-  url,
-  body,
-  payload,
+  url: string,
+  body: any,
+  payload: any,
   method = "POST",
   requestAction = postOrderRequest,
   successAction = postOrderSuccess,
@@ -41,7 +41,7 @@ export function postOrder (
 const getIngredientsRequest = () => ({
     type: GET_INGREDIENTS_REQUEST
 })
-const getIngredientsSuccess = (json) => ({
+const getIngredientsSuccess = (json: any) => ({
     type: GET_INGREDIENTS_SUCCESS,
     payload: json.data
 })
@@ -51,7 +51,7 @@ const getIngredientsError = () => ({
 const postOrderRequest = () => ({
     type: POST_ORDER_REQUEST
 })
-const postOrderSuccess = (json, cartIDs) => ({
+const postOrderSuccess = (json: any, cartIDs: Array<string>) => ({
     type: POST_ORDER_SUCCESS,
     payload: json,
     cartIDs
@@ -59,34 +59,34 @@ const postOrderSuccess = (json, cartIDs) => ({
 const postOrderError = () => ({
     type: POST_ORDER_ERROR
 })
-export const setOrder = (name, number, cartSum, cartIDs) => ({
+export const setOrder = (name: string, number: number, cartSum: number, cartIDs: Array<string>) => ({
     type: SET_ORDER,
     name,
     number,
     cartSum,
     cartIDs
 })
-export const addContainerItem = (id) => ({
+export const addContainerItem = (id: number) => ({
     type: ADD_CONTAINER_ITEM,
     id,
     hash: uuid()
 })
-export const removeContainerItem = (hash) => ({
+export const removeContainerItem = (hash: string) => ({
     type: REMOVE_CONTAINER_ITEM,
     hash
 })
-export const setContainerBun = (id) => ({
+export const setContainerBun = (id: number) => ({
     type: SET_CONTAINER_BUN,
     id,
     hashTop: uuid(),
     hashBottom: uuid()
 })
-export const replaceCartIngredients = (indexFrom, indexAt) => ({
+export const replaceCartIngredients = (indexFrom: number, indexAt: number) => ({
     type: REPLACE_CART_INGREDIENTS,
     indexFrom,
     indexAt
 })
-export const moveCartItemToIndex = (hash, indexAt) => ({
+export const moveCartItemToIndex = (hash: string, indexAt: number) => ({
     type: MOVE_CART_ITEM_TO_INDEX,
     hash,
     indexAt

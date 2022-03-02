@@ -8,11 +8,12 @@ import {useDispatch, useSelector} from "react-redux";
 import {getIngredients} from "../../services/actions/cart";
 import {baseUrl, ingredientsEndpoint} from "../../utils/constants";
 import Loader from "../../components/loader/loader";
+import {IStore} from "../../utils/types";
 
 
 function Main() {
   const dispatch = useDispatch();
-  const {ingredientsData, isFailed} = useSelector(store => ({
+  const {ingredientsData, isFailed} = useSelector((store: IStore) => ({
     ingredientsData: store.cart.ingredientsData,
     isFailed: store.cart.getIngredients.isError || store.cart.postOrder.isError
   }))

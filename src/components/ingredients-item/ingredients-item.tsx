@@ -2,17 +2,17 @@ import React, {useEffect, useState} from "react";
 import {Counter, CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 
 import styles from './ingredients-item.module.css';
-import {ingredientType} from "../../utils/props";
 import {useDispatch, useSelector} from "react-redux";
 import {openIngredientModal} from "../../services/actions/modal";
 import {useDrag} from "react-dnd";
 import {Link} from "react-router-dom";
+import {IIngredient, IStore} from "../../utils/types";
 
 
-export default function IngredientsItem({itemData}) {
+export default function IngredientsItem({itemData}: {itemData: IIngredient}) {
   const [counter, setCounter] = useState(0);
   const dispatch = useDispatch();
-  const cart = useSelector(store => store.cart.constructorData);
+  const cart = useSelector((store: IStore) => store.cart.constructorData);
   useEffect(() => {
     let newCount = cart.filter(item => item._id === itemData._id).length;
     setCounter(newCount);
@@ -52,8 +52,4 @@ export default function IngredientsItem({itemData}) {
     </Link>
 
   );
-}
-
-IngredientsItem.propTypes = {
-  itemData: ingredientType.isRequired,
 }

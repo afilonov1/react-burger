@@ -5,22 +5,22 @@ import {resetPasswordRequest} from "../../services/api";
 import {baseUrl, resetPasswordEndpoint} from "../../utils/constants";
 
 
-const ShowIconString = "ShowIcon";
-const HideIconString = "HideIcon";
+const ShowIconString: "ShowIcon" = "ShowIcon";
+const HideIconString: "HideIcon" = "HideIcon";
 
 function ResetPasswordPage() {
   const [newPassword, setNewPassword] = useState('');
   const [code, setCode] = useState('');
-  const [currentIcon, setCurrentIcon] = useState(ShowIconString);
+  const [currentIcon, setCurrentIcon] = useState<"ShowIcon" | "HideIcon">(ShowIconString);
   const [changeSuccess, setChangeSuccess] = useState(false);
-  const onChangePassword = e => {
+  const onChangePassword = (e: any) => {
     setNewPassword(e.target.value)
   }
-  const onChangeCode = e => {
+  const onChangeCode = (e: any) => {
     setCode(e.target.value)
   }
 
-  const onSubmit = async e => {
+  const onSubmit = async (e: any) => {
     e.preventDefault();
     const result = await resetPasswordRequest(baseUrl + resetPasswordEndpoint, {
       password: newPassword,

@@ -1,8 +1,7 @@
 import React from "react";
 import styles from "./loader.module.css";
-import PropTypes from "prop-types";
 
-function Loader({type}) {
+function Loader({type}: {type: string}) {
   return (
     <div className={styles.loaderWrapper}>
       <div className={type === "primary" ? styles.loaderPrimary : styles.loaderSecondary}/>
@@ -11,7 +10,3 @@ function Loader({type}) {
 }
 
 export default Loader;
-
-Loader.propTypes = {
-  type: PropTypes.string.isRequired
-}

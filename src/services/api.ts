@@ -1,8 +1,21 @@
 import Cookies from 'js-cookie';
+import {ActionCreator, ActionCreatorWithPayload} from "@reduxjs/toolkit";
 
-export function requestData({method, url, requestAction, successAction, errorAction, body, payload, setCookie, additionalAction}) {
+export function requestData(
+  {method, url, requestAction, successAction, errorAction, body, payload, setCookie, additionalAction}: {
+    method: string;
+    url: string;
+    requestAction: ActionCreator<any>;
+    // successAction: ActionCreatorWithPayload<string>;
+    successAction: ActionCreator<any>;
+    errorAction: ActionCreator<any>;
+    body?: { email: string; password: string; };
+    payload?: any;
+    setCookie?: any;
+    additionalAction?: any;
+  }) {
 
-  return async function (dispatch) {
+  return async function (dispatch: any) {
     try {
       dispatch(requestAction());
       const response = await fetch(url, {
@@ -42,20 +55,23 @@ export function requestData({method, url, requestAction, successAction, errorAct
   }
 }
 
-const getUserRequest = (url) =>
-  fetch(url, {
+const getUserRequest = (url: string): any => {
+  let header: HeadersInit = {
+    'Content-Type': 'application/json',
+    Authorization: Cookies.get("accessToken")!
+  };
+
+  return fetch(url, {
     method: 'GET',
     mode: 'cors',
     cache: 'no-cache',
     credentials: 'same-origin',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: Cookies.get("accessToken")
-    },
+    headers: header,
     redirect: 'follow',
     referrerPolicy: 'no-referrer'
   });
-const getNewAccessTokenRequest = (url) =>
+}
+const getNewAccessTokenRequest = (url: string) =>
   fetch(url, {
     method: 'POST',
     mode: 'cors',
@@ -72,12 +88,13 @@ const getNewAccessTokenRequest = (url) =>
     })
   });
 
-export async function getNewAccessToken(url) {
+export async function getNewAccessToken(url: string) {
   try {
-    const response = await getNewAccessTokenRequest(url);
+    const response: any = await getNewAccessTokenRequest(url);
     if (response.ok) {
       const data = await response.json();
       if (data.success) {
+        console.log("cookies set", data)
         Cookies.set("accessToken", data.accessToken);
         Cookies.set("refreshToken", data.refreshToken);
         return data.accessToken;
@@ -88,16 +105,15 @@ export async function getNewAccessToken(url) {
   }
 }
 
-export async function checkAccessToken(url) {
+export async function checkAccessToken(url: string) {
   try {
     const response = await getUserRequest(url);
 
     if (response.ok) {
       const data = await response.json();
+      console.log(data)
       const isSucceed = data.success;
-      if (isSucceed) {
-        return true;
-      }
+      return !!isSucceed;
     } else {
       return false;
     }
@@ -107,18 +123,20 @@ export async function checkAccessToken(url) {
   }
 
 }
-export function getUser(url, setUserName, setUserEmail) {
-  return async function (dispatch) {
+
+export function getUser(url: string, setUserName: any, setUserEmail: any) {
+  return async function (dispatch: any) {
     try {
+      const header: HeadersInit = {
+        'Content-Type': 'application/json',
+        Authorization: Cookies.get("accessToken")!
+      } ;
       const response = await fetch(url, {
         method: 'GET',
         mode: 'cors',
         cache: 'no-cache',
         credentials: 'same-origin',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: Cookies.get("accessToken")
-        },
+        headers: header,
         redirect: 'follow',
         referrerPolicy: 'no-referrer'
       });
@@ -137,19 +155,20 @@ export function getUser(url, setUserName, setUserEmail) {
 
   }
 }
-export function updateUser(url, body, setUserName, setUserEmail) {
-  return async function (dispatch, state) {
-    try {
 
+export function updateUser(url: string, body: any, setUserName: any, setUserEmail: any) {
+  return async function (dispatch: any) {
+    try {
+      const header: HeadersInit = {
+        'Content-Type': 'application/json',
+        Authorization: Cookies.get("accessToken")!
+      };
       const response = await fetch(url, {
         method: 'PATCH',
         mode: 'cors',
         cache: 'no-cache',
         credentials: 'same-origin',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: Cookies.get("accessToken")
-        },
+        headers: header,
         redirect: 'follow',
         referrerPolicy: 'no-referrer',
         body: JSON.stringify(body)
@@ -170,7 +189,7 @@ export function updateUser(url, body, setUserName, setUserEmail) {
   }
 }
 
-export async function logoutUser(url) {
+export async function logoutUser(url: string) {
   try {
     const response = await fetch(url, {
       method: 'POST',
@@ -199,7 +218,7 @@ export async function logoutUser(url) {
 
 }
 
-export async function resetPasswordRequest(url, body) {
+export async function resetPasswordRequest(url: string, body: any) {
   try {
     const response = await fetch(url, {
       method: 'POST',
@@ -223,7 +242,8 @@ export async function resetPasswordRequest(url, body) {
     return false;
   }
 }
-export async function forgotPasswordRequest(url, email) {
+
+export async function forgotPasswordRequest(url: string, email: string) {
   try {
     const response = await fetch(url, {
       method: 'POST',

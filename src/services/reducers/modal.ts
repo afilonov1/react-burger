@@ -6,7 +6,7 @@ const initialState = {
     currentDetailsItem: null
 }
 
-export const modalReducer = (state = initialState, action) => {
+export const modalReducer = (state = initialState, action: any) => {
     switch (action.type) {
 
         case (SET_MODAL_INVISIBLE): {

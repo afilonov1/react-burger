@@ -1,18 +1,20 @@
-import React, {useEffect} from "react";
+import React, {ReactComponentElement, useEffect} from "react";
 import {Redirect, Route} from "react-router-dom";
 import {useSelector} from "react-redux";
 import useInit from "../../services/useInit";
 import Loader from "../../components/loader/loader";
 import PropTypes from "prop-types";
+import {IStore} from "../../utils/types";
 
-function ProtectedFromAuthenticated({component, ...rest}) {
+function ProtectedFromAuthenticated({component, ...rest}: {component: any; path: string; exact: boolean}) {
   const {init, isInitLoaded} = useInit();
+  console.log("ProtectedFromAuthenticated")
 
   useEffect(() => {
     init();
   }, [init]);
 
-  const isAuth = useSelector(store => store.auth.isAuth);
+  const isAuth = useSelector((store: IStore) => store.auth.isAuth);
   if (!isInitLoaded) {
     return (
       <Loader type="secondary"/>

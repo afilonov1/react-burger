@@ -6,6 +6,7 @@ import {getUser, updateUser} from "../../services/api";
 import {baseUrl, getUserdataEndpoint} from "../../utils/constants";
 import {validateEmail} from "../../utils/utils";
 import styles from "./edit-profile.module.css";
+import {IStore} from "../../utils/types";
 
 function EditProfile() {
   const dispatch = useDispatch();
@@ -18,7 +19,7 @@ function EditProfile() {
     return true;
   }
 
-  const {nameInStore, emailInStore} = useSelector(store => ({
+  const {nameInStore, emailInStore} = useSelector((store: IStore) => ({
     nameInStore: store.auth.user.name,
     emailInStore: store.auth.user.email
   }))
@@ -33,7 +34,7 @@ function EditProfile() {
     email: "",
     password: ""
   });
-  const onNameChange = (e) => {
+  const onNameChange = (e: any) => {
     const newName = e.target.value;
     setName(newName);
     if (newName.trim().length < 3) {
@@ -42,7 +43,7 @@ function EditProfile() {
       setNameError(false);
     }
   }
-  const onEmailChange = (e) => {
+  const onEmailChange = (e: any) => {
     const newEmail = e.target.value;
     setEmail(newEmail);
     if (!validateEmail(newEmail)) {
@@ -51,16 +52,16 @@ function EditProfile() {
       setEmailError(false);
     }
   }
-  const onPasswordChange = (e) => {
+  const onPasswordChange = (e: any) => {
     setPassword(e.target.value);
   }
 
-  const onSubmit = e => {
+  const onSubmit = (e: any) => {
     e.preventDefault();
   }
 
   const init = useCallback(async () => {
-    const data = await dispatch(getUser(baseUrl + getUserdataEndpoint, setUserName, setUserEmail));
+    const data: any = await dispatch(getUser(baseUrl + getUserdataEndpoint, setUserName, setUserEmail));
     if (data) {
       const newName = data.user.name;
       const newEmail = data.user.email;
@@ -80,13 +81,13 @@ function EditProfile() {
   if (!initDone) {
     return null;
   }
-  const onReset = (e) => {
+  const onReset = (e: any) => {
     setName(nameInStore);
     setEmail(emailInStore);
     setPassword("");
 
   }
-  const onSave = (e) => {
+  const onSave = (e: any) => {
     dispatch(updateUser(
       baseUrl + getUserdataEndpoint,
       {

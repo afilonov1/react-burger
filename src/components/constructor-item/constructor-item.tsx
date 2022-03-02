@@ -4,14 +4,14 @@ import styles from "./constructor-item.module.css";
 import {moveCartItemToIndex, removeContainerItem, replaceCartIngredients} from "../../services/actions/cart";
 import {useDispatch, useSelector} from "react-redux";
 import {useDrag, useDrop} from "react-dnd";
-import PropTypes from "prop-types";
+import {IStore} from "../../utils/types";
 
-function ConstructorItem({index}) {
-  const cart = useSelector(store => store.cart.constructorData);
+function ConstructorItem({index}: {index: number}) {
+  const cart = useSelector((store: IStore) => store.cart.constructorData);
   const ingredient = cart[index];
   const {hash} = ingredient;
   const dispatch = useDispatch();
-  const removeItem = (hash) => {
+  const removeItem = (hash: string) => {
     dispatch(removeContainerItem(hash))
   }
 
@@ -44,7 +44,7 @@ function ConstructorItem({index}) {
   }), [hash, originalIndex, moveCard]);
   const [, drop] = useDrop(() => ({
     accept: "sort",
-    hover({hash: draggedHash}) {
+    hover({hash: draggedHash}: {hash: string}) {
       //const isItemInCart = cart.filter(item => item.hash === draggedHash).length !== 0;
       if (draggedHash !== hash) {
         const {index: overIndex} = findCard(hash);
@@ -74,7 +74,3 @@ function ConstructorItem({index}) {
 }
 
 export default ConstructorItem;
-
-ConstructorItem.propTypes = {
-  index: PropTypes.number.isRequired
-}

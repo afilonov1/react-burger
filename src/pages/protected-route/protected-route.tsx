@@ -3,9 +3,10 @@ import {Redirect, Route} from "react-router-dom";
 
 import useInit from "../../services/useInit";
 import Loader from "../../components/loader/loader";
-import PropTypes from "prop-types";
 
-function ProtectedRoute({component, ...rest}) {
+function ProtectedRoute({component, ...rest}: {component: any; path: string}) {
+  console.log("ProtectedRoute")
+
   const {init, isInitLoaded, canEnter} = useInit();
 
   useEffect(() => {
@@ -44,8 +45,3 @@ function ProtectedRoute({component, ...rest}) {
 }
 
 export default ProtectedRoute;
-ProtectedRoute.propTypes = {
-  component: PropTypes.elementType.isRequired,
-  exact: PropTypes.bool,
-  path: PropTypes.string.isRequired
-}

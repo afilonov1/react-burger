@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {SyntheticEvent, useState} from 'react';
 import {Input, Button} from "@ya.praktikum/react-developer-burger-ui-components";
 import {Link, Redirect} from "react-router-dom";
 import {baseUrl, forgotPasswordEndpoint} from "../../utils/constants";
@@ -7,11 +7,11 @@ import {forgotPasswordRequest} from "../../services/api";
 function ForgotPasswordPage() {
   const [email, setEmail] = useState('');
   const [requestReceived, setRequestReceived] = useState(false);
-  const onChangeEmail = e => {
-    setEmail(e.target.value);
+  const onChangeEmail = (event: { target: HTMLInputElement }) => {
+    setEmail(event.target.value);
   }
 
-  const onSubmit = async e => {
+  const onSubmit = async (e: SyntheticEvent) => {
     e.preventDefault();
     const result = await forgotPasswordRequest(baseUrl + forgotPasswordEndpoint, email);
     setRequestReceived(result);

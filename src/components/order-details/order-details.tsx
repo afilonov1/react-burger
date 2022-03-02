@@ -6,19 +6,19 @@ import {useDispatch, useSelector} from "react-redux";
 import {postOrder} from "../../services/actions/cart";
 import {baseUrl} from "../../utils/constants";
 import {compareArrays} from "../../utils/utils";
+import {IStore} from "../../utils/types";
 
 
 export default function OrderDetails() {
-  const orderNum = useSelector(store => store.cart.order.number);
-  const cartIDsFromStore = useSelector(store => store.cart.order.cartIDs);
-  const cart = useSelector(store => store.cart.constructorData);
-
+  const orderNum = useSelector((store: IStore) => store.cart.order.number);
+  const cartIDsFromStore = useSelector((store: IStore) => store.cart.order.cartIDs);
+  const cart = useSelector((store: IStore) => store.cart.constructorData);
 
   const dispatch = useDispatch();
 
   const cartIDs = useMemo(() => cart.map(item => item._id), [cart]);
 
-  const calcOrderNum = (num) => {
+  const calcOrderNum = (num: number) => {
     const numLength = num.toString().length;
     if (num.toString().length < 6) {
       return "0".repeat(6 - numLength) + num;
