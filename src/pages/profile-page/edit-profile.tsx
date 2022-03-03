@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from "react";
+import React, {ChangeEvent, FormEventHandler, SyntheticEvent, useCallback, useEffect, useState} from "react";
 import {Button, Input, PasswordInput} from "@ya.praktikum/react-developer-burger-ui-components";
 import {useDispatch, useSelector} from "react-redux";
 import {actions} from "../../services/reducers/auth";
@@ -13,10 +13,8 @@ function EditProfile() {
   const {setUserName, setUserEmail} = actions;
 
   function isCurrentStateEqualToInitial() {
-    if (initialState.name !== name || initialState.email !== email || initialState.password !== password) {
-      return false;
-    }
-    return true;
+    return !(initialState.name !== name || initialState.email !== email || initialState.password !== password);
+
   }
 
   const {nameInStore, emailInStore} = useSelector((store: IStore) => ({
@@ -24,17 +22,17 @@ function EditProfile() {
     emailInStore: store.auth.user.email
   }))
   const [initDone, setInitDone] = useState(false);
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
+  const [name, setName] = useState(nameInStore);
+  const [email, setEmail] = useState(emailInStore);
   const [password, setPassword] = useState('');
   const [nameError, setNameError] = useState(false);
   const [emailError, setEmailError] = useState(false);
-  const [initialState, setInitialState] = useState({
+  const initialState = {
     name: "",
     email: "",
     password: ""
-  });
-  const onNameChange = (e: any) => {
+  };
+  const onNameChange = (e: ChangeEvent<HTMLInputElement>) => {
     const newName = e.target.value;
     setName(newName);
     if (newName.trim().length < 3) {
@@ -43,7 +41,7 @@ function EditProfile() {
       setNameError(false);
     }
   }
-  const onEmailChange = (e: any) => {
+  const onEmailChange = (e: ChangeEvent<HTMLInputElement>) => {
     const newEmail = e.target.value;
     setEmail(newEmail);
     if (!validateEmail(newEmail)) {
@@ -52,42 +50,37 @@ function EditProfile() {
       setEmailError(false);
     }
   }
-  const onPasswordChange = (e: any) => {
+  const onPasswordChange = (e: ChangeEvent<HTMLInputElement>) => {
     setPassword(e.target.value);
   }
 
-  const onSubmit = (e: any) => {
+  const onSubmit: FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
   }
-
-  const init = useCallback(async () => {
-    const data: any = await dispatch(getUser(baseUrl + getUserdataEndpoint, setUserName, setUserEmail));
-    if (data) {
-      const newName = data.user.name;
-      const newEmail = data.user.email;
-      await setName(newName);
-      await setEmail(newEmail);
-      await setInitialState({
-        name: newName,
-        email: newEmail,
-        password: ""
-      })
-    }
+  const init: () => void = useCallback(async () => {
+    await dispatch(getUser(baseUrl + getUserdataEndpoint, setUserName, setUserEmail));
     setInitDone(true);
   }, [dispatch, setUserName, setUserEmail]);
+
   useEffect(() => {
     init()
   }, [init]);
+  useEffect(() => {
+    setName(nameInStore);
+    setEmail(emailInStore);
+  }, [nameInStore, emailInStore]);
   if (!initDone) {
     return null;
   }
-  const onReset = (e: any) => {
+  const onReset = (e: SyntheticEvent) => {
+    e.preventDefault();
     setName(nameInStore);
     setEmail(emailInStore);
     setPassword("");
 
   }
-  const onSave = (e: any) => {
+  const onSave = (e: SyntheticEvent) => {
+    e.preventDefault();
     dispatch(updateUser(
       baseUrl + getUserdataEndpoint,
       {

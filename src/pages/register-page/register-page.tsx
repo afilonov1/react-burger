@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {ChangeEventHandler, useState} from 'react';
 import {Input, PasswordInput, Button} from "@ya.praktikum/react-developer-burger-ui-components";
 import {Link, Redirect} from "react-router-dom";
 import {baseUrl, registerEndpoint} from "../../utils/constants";
@@ -16,16 +16,16 @@ function RegisterPage() {
 
   const {registerError, registerRequest, registerSuccess} = actions;
   const dispatch = useDispatch();
-  const onChangeEmail = (e: any) => {
+  const onChangeEmail: ChangeEventHandler<HTMLInputElement> = (e) => {
     setEmail(e.target.value)
   }
-  const onChangePassword = (e: any) => {
+  const onChangePassword: ChangeEventHandler<HTMLInputElement> = (e) => {
     setPassword(e.target.value)
   }
-  const onChangeName = (e: any) => {
+  const onChangeName: ChangeEventHandler<HTMLInputElement> = (e) => {
     setName(e.target.value)
   }
-  const onSubmit = async (e: any) => {
+  const onSubmit: React.FormEventHandler = async (e) => {
     e.preventDefault();
     const body = {
       email,

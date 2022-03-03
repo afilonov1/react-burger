@@ -1,12 +1,16 @@
 import {OPEN_INGREDIENT_MODAL, OPEN_ORDER_MODAL, SET_MODAL_INVISIBLE} from "../actions/types/modal";
+import {IIngredient} from "../../utils/types";
 
 const initialState = {
     isOrderModalVisible: false,
     isIngredientModalVisible: false,
     currentDetailsItem: null
 }
-
-export const modalReducer = (state = initialState, action: any) => {
+type ModalActionsTypes = {
+    type: string;
+    payload?: IIngredient;
+}
+export const modalReducer = (state = initialState, action: ModalActionsTypes) => {
     switch (action.type) {
 
         case (SET_MODAL_INVISIBLE): {

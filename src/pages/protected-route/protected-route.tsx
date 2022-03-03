@@ -4,9 +4,7 @@ import {Redirect, Route} from "react-router-dom";
 import useInit from "../../services/useInit";
 import Loader from "../../components/loader/loader";
 
-function ProtectedRoute({component, ...rest}: {component: any; path: string}) {
-  console.log("ProtectedRoute")
-
+const ProtectedRoute: React.FC<{path: string; exact: boolean}> = ({children, path, exact}) => {
   const {init, isInitLoaded, canEnter} = useInit();
 
   useEffect(() => {
@@ -18,17 +16,16 @@ function ProtectedRoute({component, ...rest}: {component: any; path: string}) {
       <Loader type="primary"/>
     );
   }
-  const RenderComponent = () => {
-    return (
-      component()
-    )
-  }
+
   return (
     <Route
-      {...rest}
+      path={path}
+      exact={exact}
       render={({location}) =>
         (canEnter) ? (
-          <RenderComponent/>
+          <>
+            {children}
+          </>
         ) : (
           <Redirect
             to={{

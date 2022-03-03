@@ -11,6 +11,7 @@ import {
 } from "./types/cart";
 import {v4 as uuid} from "uuid";
 import {requestData} from "../api";
+import {IIngredient} from "../../utils/types";
 
 
 export function getIngredients(
@@ -26,8 +27,10 @@ export function getIngredients(
 }
 export function postOrder (
   url: string,
-  body: any,
-  payload: any,
+  body: {
+      ingredients: string[];
+  },
+  payload: string[],
   method = "POST",
   requestAction = postOrderRequest,
   successAction = postOrderSuccess,
@@ -41,9 +44,9 @@ export function postOrder (
 const getIngredientsRequest = () => ({
     type: GET_INGREDIENTS_REQUEST
 })
-const getIngredientsSuccess = (json: any) => ({
+const getIngredientsSuccess = (json: {success: boolean; data: IIngredient[]}) => ({
     type: GET_INGREDIENTS_SUCCESS,
-    payload: json.data
+    ingredients: json.data
 })
 const getIngredientsError = () => ({
     type: GET_INGREDIENTS_ERROR
@@ -51,7 +54,7 @@ const getIngredientsError = () => ({
 const postOrderRequest = () => ({
     type: POST_ORDER_REQUEST
 })
-const postOrderSuccess = (json: any, cartIDs: Array<string>) => ({
+const postOrderSuccess = (json: {name: string; order: {number: number}; success: boolean}, cartIDs: Array<string>) => ({
     type: POST_ORDER_SUCCESS,
     payload: json,
     cartIDs
@@ -66,7 +69,7 @@ export const setOrder = (name: string, number: number, cartSum: number, cartIDs:
     cartSum,
     cartIDs
 })
-export const addContainerItem = (id: number) => ({
+export const addContainerItem = (id: string) => ({
     type: ADD_CONTAINER_ITEM,
     id,
     hash: uuid()
@@ -75,7 +78,7 @@ export const removeContainerItem = (hash: string) => ({
     type: REMOVE_CONTAINER_ITEM,
     hash
 })
-export const setContainerBun = (id: number) => ({
+export const setContainerBun = (id: string) => ({
     type: SET_CONTAINER_BUN,
     id,
     hashTop: uuid(),

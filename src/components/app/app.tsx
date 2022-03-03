@@ -21,11 +21,21 @@ function App() {
       <AppHeader/>
       <Switch>
         <Route path="/" component={Main} exact/>
-        <ProtectedFromAuthenticated path="/login" component={LoginPage} exact/>
-        <ProtectedFromAuthenticated path="/register" component={RegisterPage} exact/>
-        <ProtectedFromAuthenticated path="/forgot-password" component={ForgotPasswordPage} exact/>
-        <ProtectedFromAuthenticated path="/reset-password" component={ResetPasswordPage} exact/>
-        <ProtectedRoute path="/profile" component={ProfilePage}/>
+        <ProtectedFromAuthenticated path="/login" exact>
+          <LoginPage />
+        </ProtectedFromAuthenticated>
+        <ProtectedFromAuthenticated path="/register" exact>
+          <RegisterPage />
+        </ProtectedFromAuthenticated>
+        <ProtectedFromAuthenticated path="/forgot-password" exact>
+          <ForgotPasswordPage />
+        </ProtectedFromAuthenticated>
+        <ProtectedFromAuthenticated path="/reset-password" exact>
+          <ResetPasswordPage />
+        </ProtectedFromAuthenticated>
+        <ProtectedRoute path="/profile" exact={false}>
+          <ProfilePage />
+        </ProtectedRoute>
         <Route path="/logout" component={Logout} exact/>
         <Route path="/ingredients/:ingredientId" component={IngredientPage} exact/>
         <Route path="*" component={NotFound404}/>

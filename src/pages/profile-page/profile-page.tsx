@@ -5,7 +5,7 @@ import EditProfile from "./edit-profile";
 import ProfileOrders from "./profile-orders";
 
 function ProfilePage() {
-  let match: any = useRouteMatch();
+  let match: {path: string} = useRouteMatch();
   return (
     <div className={styles.container}>
       <aside className={styles.aside}>

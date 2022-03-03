@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo, useState} from "react";
+import React, {useMemo, useState} from "react";
 import styles from "./burger-constructor.module.css";
 import {Button, ConstructorElement} from "@ya.praktikum/react-developer-burger-ui-components";
 
@@ -26,7 +26,7 @@ export default function BurgerConstructor() {
   const dispatch = useDispatch();
   const [{isHover}, dropRef] = useDrop({
     accept: "ingredient",
-    drop(item: {subtype: string, id: number}) {
+    drop(item: {subtype: string, id: string}) {
       const {subtype, id} = item;
       if (subtype === "main" || subtype === "sauce") {
         dispatch(addContainerItem(id));
@@ -41,7 +41,6 @@ export default function BurgerConstructor() {
 
   async function setOrder() {
     const canEnter = await init("vsNotAuth");
-    // console.log("setOrder, canEnter = ", canEnter)
     setOrderClicked(true);
     const isFormValid = cart.length >= 3 && cart[0].type === "bun";
     if (canEnter && isFormValid) {
@@ -57,7 +56,6 @@ export default function BurgerConstructor() {
   }, [cart]);
 
   const borderColor = isHover ? "lightskyblue" : "transparent";
-  console.log(isInitLoaded, canEnter, isOrderClicked)
   if (isInitLoaded && !canEnter && isOrderClicked) {
     return (
       <Redirect to="/login"/>

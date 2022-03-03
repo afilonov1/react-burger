@@ -13,16 +13,21 @@ function LoginPage() {
   const isAuth = useSelector((store: IStore) => store.auth.isAuth);
   const dispatch = useDispatch();
   const {loginSuccess, loginError, loginRequest} = actions;
-  const location: any = useLocation();
+  interface LocationState {
+    from: {
+      pathname: string;
+    };
+  }
+  const location = useLocation<LocationState>();
   const direction = location.state?.from?.pathname || "/";
 
-  const onChangeEmail = (e: any) => {
+  const onChangeEmail = (e: { target: HTMLInputElement }) => {
     setEmail(e.target.value)
   }
-  const onChangePassword = (e: any) => {
+  const onChangePassword: React.ChangeEventHandler<HTMLInputElement> = (e) => {
     setPassword(e.target.value)
   }
-  const onSubmit = (e: any) => {
+  const onSubmit: React.FormEventHandler = (e) => {
     e.preventDefault();
     const body = {
       email, password

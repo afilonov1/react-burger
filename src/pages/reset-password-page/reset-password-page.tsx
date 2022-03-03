@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {ChangeEventHandler, useState} from 'react';
 import {Input, Button} from "@ya.praktikum/react-developer-burger-ui-components";
 import {Link, Redirect} from "react-router-dom";
 import {resetPasswordRequest} from "../../services/api";
@@ -13,14 +13,14 @@ function ResetPasswordPage() {
   const [code, setCode] = useState('');
   const [currentIcon, setCurrentIcon] = useState<"ShowIcon" | "HideIcon">(ShowIconString);
   const [changeSuccess, setChangeSuccess] = useState(false);
-  const onChangePassword = (e: any) => {
+  const onChangePassword: ChangeEventHandler<HTMLInputElement> = (e) => {
     setNewPassword(e.target.value)
   }
-  const onChangeCode = (e: any) => {
+  const onChangeCode: ChangeEventHandler<HTMLInputElement> = (e) => {
     setCode(e.target.value)
   }
 
-  const onSubmit = async (e: any) => {
+  const onSubmit: React.FormEventHandler = async (e) => {
     e.preventDefault();
     const result = await resetPasswordRequest(baseUrl + resetPasswordEndpoint, {
       password: newPassword,
@@ -39,8 +39,8 @@ function ResetPasswordPage() {
     )
   }
   return (
-    <section className="auth__section" onSubmit={onSubmit}>
-      <form className="auth__form">
+    <section className="auth__section">
+      <form className="auth__form" onSubmit={onSubmit}>
         <h1 className="auth__title text text_type_main-medium">Восстановление пароля</h1>
         <Input
           type={currentIcon === ShowIconString ? 'text' : 'password'}

@@ -31,8 +31,23 @@ const initialState = {
     cartIDs: []
   },
 };
+type CartActionsType = {
+  type: string;
+  payload?: {name: string; order: {number: number}; success: boolean};
+  ingredients?: IIngredient[];
+  cartIDs?: string[];
+  name?: string;
+  number?: number;
+  cartSum?: number;
+  id?: string;
+  hash?: string;
+  hashTop?: string;
+  hashBottom?: string;
+  indexFrom?: number;
+  indexAt?: number;
+}
 
-export const cartReducer = (state: TCart = initialState, action: any) => {
+export const cartReducer = (state: TCart = initialState, action: CartActionsType) => {
   switch (action.type) {
     case SET_ORDER: {
       return {
@@ -81,7 +96,7 @@ export const cartReducer = (state: TCart = initialState, action: any) => {
           isSuccess: true,
           isError: false
         },
-        ingredientsData: action.payload,
+        ingredientsData: action.ingredients,
       };
     }
 
@@ -108,10 +123,10 @@ export const cartReducer = (state: TCart = initialState, action: any) => {
       }
     }
     case POST_ORDER_SUCCESS: {
-      const name = action.payload.name;
-      const number = action.payload.order.number;
+      const name = action.payload?.name;
+      const number = action.payload?.order.number;
       const cartIDs = action.cartIDs;
-      const cartSum = cartIDs.reduce((acc: number, next: string) => state.ingredientsData?.find((item: IIngredient) => item._id === next)!.price! + acc, 0);
+      const cartSum = cartIDs?.reduce((acc: number, next: string) => state.ingredientsData?.find((item: IIngredient) => item._id === next)!.price! + acc, 0);
       return {
         ...state,
         postOrder: {
@@ -196,8 +211,8 @@ export const cartReducer = (state: TCart = initialState, action: any) => {
     }
     case REPLACE_CART_INGREDIENTS: {
       //const firstItem = state.constructorData[action.indexFrom]
-      const firstItemIndex = action.indexFrom;
-      const secondItemIndex = action.indexAt;
+      const firstItemIndex = action.indexFrom!;
+      const secondItemIndex = action.indexAt!;
       const cart = [...state.constructorData];
       [cart[firstItemIndex], cart[secondItemIndex]] = [cart[secondItemIndex], cart[firstItemIndex]]
       return {
@@ -209,7 +224,7 @@ export const cartReducer = (state: TCart = initialState, action: any) => {
       const cart = state.constructorData;
       const item = cart.find(elem => elem.hash === action.hash)!;
       const cartWitchDeletedItem = cart.filter(item => item.hash !== action.hash);
-      cartWitchDeletedItem.splice(action.indexAt, 0, item);
+      cartWitchDeletedItem.splice(action.indexAt!, 0, item);
       return {
         ...state,
         constructorData: cartWitchDeletedItem

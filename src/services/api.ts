@@ -1,15 +1,14 @@
 import Cookies from 'js-cookie';
-import {ActionCreator, ActionCreatorWithPayload} from "@reduxjs/toolkit";
+import {ActionCreator} from "@reduxjs/toolkit";
 
 export function requestData(
   {method, url, requestAction, successAction, errorAction, body, payload, setCookie, additionalAction}: {
     method: string;
     url: string;
     requestAction: ActionCreator<any>;
-    // successAction: ActionCreatorWithPayload<string>;
     successAction: ActionCreator<any>;
     errorAction: ActionCreator<any>;
-    body?: { email: string; password: string; };
+    body?: { email: string; password: string; } | { ingredients: string[]} ;
     payload?: any;
     setCookie?: any;
     additionalAction?: any;
@@ -32,8 +31,8 @@ export function requestData(
       });
 
       let data = await response.json();
-
       if (response.ok && data.success) {
+
         dispatch(successAction(data, payload));
         if (additionalAction) {
           dispatch(additionalAction());
@@ -94,7 +93,6 @@ export async function getNewAccessToken(url: string) {
     if (response.ok) {
       const data = await response.json();
       if (data.success) {
-        console.log("cookies set", data)
         Cookies.set("accessToken", data.accessToken);
         Cookies.set("refreshToken", data.refreshToken);
         return data.accessToken;
@@ -111,7 +109,6 @@ export async function checkAccessToken(url: string) {
 
     if (response.ok) {
       const data = await response.json();
-      console.log(data)
       const isSucceed = data.success;
       return !!isSucceed;
     } else {

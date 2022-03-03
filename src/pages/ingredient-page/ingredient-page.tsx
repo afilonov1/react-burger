@@ -22,7 +22,6 @@ function IngredientPage() {
   const params: {ingredientId: string} = useParams();
   // const history: History<{modal: boolean}> = useHistory();
   const history: THistory = useHistory();
-  console.log(history)
   let render;
 
   const [isLoaded, setIsLoaded] = useState(false);

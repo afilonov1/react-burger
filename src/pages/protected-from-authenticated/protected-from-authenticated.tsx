@@ -1,15 +1,12 @@
-import React, {ReactComponentElement, useEffect} from "react";
+import React, {useEffect} from "react";
 import {Redirect, Route} from "react-router-dom";
 import {useSelector} from "react-redux";
 import useInit from "../../services/useInit";
 import Loader from "../../components/loader/loader";
-import PropTypes from "prop-types";
 import {IStore} from "../../utils/types";
 
-function ProtectedFromAuthenticated({component, ...rest}: {component: any; path: string; exact: boolean}) {
+const ProtectedFromAuthenticated: React.FC<{path: string; exact: boolean}> = ({children, path, exact}) => {
   const {init, isInitLoaded} = useInit();
-  console.log("ProtectedFromAuthenticated")
-
   useEffect(() => {
     init();
   }, [init]);
@@ -20,17 +17,16 @@ function ProtectedFromAuthenticated({component, ...rest}: {component: any; path:
       <Loader type="secondary"/>
     )
   }
-  const RenderComponent = () => {
-    return (
-      component()
-    )
-  }
+
   return (
     <Route
-      {...rest}
+      path={path}
+      exact={exact}
       render={() =>
         !isAuth ? (
-          <RenderComponent/>
+          <>
+          {children}
+          </>
         ) : (
           <Redirect to="/"/>
         )
@@ -40,9 +36,3 @@ function ProtectedFromAuthenticated({component, ...rest}: {component: any; path:
 }
 
 export default ProtectedFromAuthenticated;
-
-ProtectedFromAuthenticated.propTypes = {
-  component: PropTypes.elementType.isRequired,
-  exact: PropTypes.bool,
-  path: PropTypes.string.isRequired
-}
