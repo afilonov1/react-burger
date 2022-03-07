@@ -1,0 +1,20 @@
+export const GET_INGREDIENTS_REQUEST: string = "GET_INGREDIENTS_REQUEST";
+export const GET_INGREDIENTS_SUCCESS: string = "GET_INGREDIENTS_SUCCESS";
+export const GET_INGREDIENTS_ERROR: string = "GET_INGREDIENTS_ERROR";
+
+export const POST_ORDER_REQUEST: string = "POST_ORDER_REQUEST";
+export const POST_ORDER_SUCCESS: string = "POST_ORDER_SUCCESS";
+export const POST_ORDER_ERROR: string = "POST_ORDER_ERROR";
+
+export const SET_ORDER: string = "SET_ORDER";
+
+export const ADD_CONTAINER_ITEM: string = "ADD_CONTAINER_ITEM";
+export const SET_CONTAINER_BUN: string = "SET_CONTAINER_BUN";
+export const REMOVE_CONTAINER_ITEM: string = "REMOVE_CONTAINER_ITEM";
+export const REPLACE_CART_INGREDIENTS: string = "REPLACE_CART_INGREDIENTS";
+export const MOVE_CART_ITEM_TO_INDEX: string = "MOVE_CART_ITEM_TO_INDEX";
+
+export const SET_CART_STATE_TO_INITIAL: string = "SET_CART_STATE_TO_INITIAL";
+
+export const CLEAR_CART: string = "CLEAR_CART";
+export const CLEAR_ORDER: string = "CLEAR_ORDER";
