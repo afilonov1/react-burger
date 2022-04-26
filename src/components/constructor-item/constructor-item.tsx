@@ -2,12 +2,11 @@ import React, {useCallback} from "react";
 import {ConstructorElement, DragIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./constructor-item.module.css";
 import {moveCartItemToIndex, removeContainerItem, replaceCartIngredients} from "../../services/actions/cart";
-import {useDispatch, useSelector} from "react-redux";
 import {useDrag, useDrop} from "react-dnd";
-import {IStore} from "../../utils/types";
+import {useDispatch, useSelector} from "../../utils/hooks";
 
 function ConstructorItem({index}: {index: number}) {
-  const cart = useSelector((store: IStore) => store.cart.constructorData);
+  const cart = useSelector((state) => state.cart.constructorData);
   const ingredient = cart[index];
   const {hash} = ingredient;
   const dispatch = useDispatch();

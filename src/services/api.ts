@@ -1,7 +1,8 @@
 import Cookies from 'js-cookie';
 import {ActionCreator} from "@reduxjs/toolkit";
+import {AppDispatch, AppThunk} from "../utils/types";
 
-export function requestData(
+export const requestData: AppThunk = function (
   {method, url, requestAction, successAction, errorAction, body, payload, setCookie, additionalAction}: {
     method: string;
     url: string;
@@ -14,7 +15,7 @@ export function requestData(
     additionalAction?: any;
   }) {
 
-  return async function (dispatch: any) {
+  return async function (dispatch: AppDispatch) {
     try {
       dispatch(requestAction());
       const response = await fetch(url, {
@@ -121,8 +122,8 @@ export async function checkAccessToken(url: string) {
 
 }
 
-export function getUser(url: string, setUserName: any, setUserEmail: any) {
-  return async function (dispatch: any) {
+export const getUser: AppThunk = function (url: string, setUserName: any, setUserEmail: any) {
+  return async function (dispatch: AppDispatch) {
     try {
       const header: HeadersInit = {
         'Content-Type': 'application/json',
@@ -153,8 +154,8 @@ export function getUser(url: string, setUserName: any, setUserEmail: any) {
   }
 }
 
-export function updateUser(url: string, body: any, setUserName: any, setUserEmail: any) {
-  return async function (dispatch: any) {
+export const updateUser = function (url: string, body: any, setUserName: any, setUserEmail: any) {
+  return async function (dispatch: AppDispatch) {
     try {
       const header: HeadersInit = {
         'Content-Type': 'application/json',

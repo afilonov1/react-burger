@@ -24,7 +24,7 @@ export default function AppHeader() {
             <li className="ml-2">
               <NavItem
                 text="Лента заказов"
-                path="/order-feed"
+                path="/feed"
                 isExact={true}
               >
                 <ListIcon type="secondary"/>

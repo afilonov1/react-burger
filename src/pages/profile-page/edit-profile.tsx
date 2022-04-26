@@ -1,12 +1,11 @@
 import React, {ChangeEvent, FormEventHandler, SyntheticEvent, useCallback, useEffect, useState} from "react";
 import {Button, Input, PasswordInput} from "@ya.praktikum/react-developer-burger-ui-components";
-import {useDispatch, useSelector} from "react-redux";
 import {actions} from "../../services/reducers/auth";
 import {getUser, updateUser} from "../../services/api";
 import {baseUrl, getUserdataEndpoint} from "../../utils/constants";
 import {validateEmail} from "../../utils/utils";
 import styles from "./edit-profile.module.css";
-import {IStore} from "../../utils/types";
+import {useDispatch, useSelector} from "../../utils/hooks";
 
 function EditProfile() {
   const dispatch = useDispatch();
@@ -17,7 +16,7 @@ function EditProfile() {
 
   }
 
-  const {nameInStore, emailInStore} = useSelector((store: IStore) => ({
+  const {nameInStore, emailInStore} = useSelector((store) => ({
     nameInStore: store.auth.user.name,
     emailInStore: store.auth.user.email
   }))

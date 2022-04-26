@@ -7,4 +7,5 @@ export const rootReducer = combineReducers({
     cart: cartReducer,
     modal: modalReducer,
     auth: authSlice
-})
+});
+

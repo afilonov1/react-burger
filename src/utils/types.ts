@@ -1,3 +1,8 @@
+import store from "../services/reducers/store";
+import {TModalActions} from "../services/actions/modal";
+import {TCartActions} from "../services/actions/cart";
+import {Action, ActionCreator, ThunkAction} from "@reduxjs/toolkit";
+import {rootReducer} from "../services/reducers";
 
 export interface IIngredient {
   _id: string;
@@ -13,57 +18,19 @@ export interface IIngredient {
   image_large: string;
   __v: 0
 }
-export type TCart = {
-  ingredientsData: null | IIngredient[];
-  constructorData: IHashIngredient[];
-  getIngredients: {
-    isRequest: boolean;
-    isSuccess: boolean;
-    isError: boolean;
-  };
-  postOrder: {
-    isRequest: boolean;
-    isSuccess: boolean;
-    isError: boolean;
-  };
-  order: {
-    name: string;
-    number: number;
-    cartSum: number;
-    cartIDs: string[];
-  };
-}
+
 
 export interface IHashIngredient extends IIngredient {
   hash: string;
 }
 
-export type TModal = {
-  isOrderModalVisible: boolean;
-  isIngredientModalVisible: boolean;
-  currentDetailsItem: null | IIngredient;
-}
-export type TAuth = {
-  isAuth: boolean;
-  user: {
-    name: string;
-    email: string;
-  };
-  register: {
-    request: boolean;
-    success: boolean;
-    error: boolean;
-  };
-  login: {
-    request: boolean;
-    success: boolean;
-    error: boolean;
-  };
-};
 
+export type RootState = ReturnType<typeof rootReducer>;
 
-export interface IStore {
-  cart: TCart;
-  modal: TModal;
-  auth: TAuth;
-}
+type TApplicationActions = TModalActions | TCartActions;
+
+export type AppThunk<TReturn = void> = ActionCreator<
+    ThunkAction<TReturn, Action, RootState, TApplicationActions>
+  >;
+
+export type AppDispatch = typeof store.dispatch;

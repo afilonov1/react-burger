@@ -1,34 +1,22 @@
-import React, {ReactNode, useCallback, useEffect} from "react";
+import React, {ReactNode, useEffect} from "react";
 import ReactDOM from "react-dom";
 import {CloseIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 
 import styles from "./modal.module.css";
 import ModalOverlay from "../modal-overlay/modal-overlay";
-import {useDispatch} from "react-redux";
-import {closeModal} from "../../services/actions/modal";
-import {useHistory} from "react-router-dom";
-import {clearCart} from "../../services/actions/cart";
+import {useDispatch} from "../../utils/hooks";
 
 const modalRoot = document.getElementById("react-modals") as HTMLElement;
 
 export default function Modal(props: {
   children: ReactNode;
   header?: string;
-  goBack?: boolean;
   isOrderModal?: boolean;
+  onClose: () => void;
 }) {
-  const {children, header, goBack, isOrderModal} = props;
-  const history = useHistory();
+  const {children, header, onClose} = props;
   const dispatch = useDispatch();
-  const onClose = useCallback(() => {
-    dispatch(closeModal());
-    if (goBack) {
-      history.goBack();
-    }
-    if (isOrderModal) {
-      dispatch(clearCart());
-    }
-  }, [dispatch, goBack, history, isOrderModal]);
+
   useEffect(() => {
     const escapeHandler = (event: KeyboardEvent) => {
       if (event.code === "Escape") {

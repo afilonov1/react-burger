@@ -3,7 +3,6 @@ import {Tab} from "@ya.praktikum/react-developer-burger-ui-components";
 
 import styles from "./burger-ingredients.module.css";
 import IngredientsItem from "../ingredients-item/ingredients-item";
-import {useSelector} from "react-redux";
 import {
   additionScrollForSaucesAndFillings,
   BUNS,
@@ -11,11 +10,11 @@ import {
   heightFromTopPageToRelativeBlock,
   SAUCES
 } from "../../utils/constants";
-import {IStore} from "../../utils/types";
+import {useSelector} from "../../utils/hooks";
 
 export default function BurgerIngredients() {
   const [currentTab, setCurrentTab] = useState(BUNS);
-  const ingredientsData = useSelector((store: IStore) => store.cart.ingredientsData)!;
+  const ingredientsData = useSelector((store) => store.cart.ingredientsData)!;
 
   const sectionRef = useRef<HTMLElement>(null);
   const bunRef = useRef<HTMLHeadingElement>(null);

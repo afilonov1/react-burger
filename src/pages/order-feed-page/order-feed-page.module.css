@@ -1,0 +1,12 @@
+.title {
+    color: #F2F2F3;
+}
+.container {
+    max-width: 1240px;
+    margin: 40px auto 20px;
+}
+.content {
+    display: grid;
+    gap: 60px;
+    grid-template-columns: 1fr 1fr;
+}

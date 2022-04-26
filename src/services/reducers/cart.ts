@@ -9,9 +9,31 @@ import {
   SET_CONTAINER_BUN,
   SET_ORDER,
 } from '../actions/types/cart';
-import {IIngredient, TCart} from "../../utils/types";
+import {IHashIngredient, IIngredient} from "../../utils/types";
+import {TCartActions} from "../actions/cart";
 
-const initialState = {
+export type TCartStore = {
+  ingredientsData: null | Readonly<IIngredient[]>;
+  constructorData: IHashIngredient[];
+  getIngredients: {
+    isRequest: boolean;
+    isSuccess: boolean;
+    isError: boolean;
+  };
+  postOrder: {
+    isRequest: boolean;
+    isSuccess?: boolean;
+    isError?: boolean;
+  };
+  order: {
+    name: string;
+    number: number;
+    cartSum: number;
+    cartIDs: Readonly<string[]>;
+  };
+}
+
+const initialState: TCartStore = {
   ingredientsData: null,
   constructorData: [],
   getIngredients: {
@@ -29,25 +51,25 @@ const initialState = {
     number: 0,
     cartSum: 0,
     cartIDs: []
-  },
+  }
 };
-type CartActionsType = {
-  type: string;
-  payload?: {name: string; order: {number: number}; success: boolean};
-  ingredients?: IIngredient[];
-  cartIDs?: string[];
-  name?: string;
-  number?: number;
-  cartSum?: number;
-  id?: string;
-  hash?: string;
-  hashTop?: string;
-  hashBottom?: string;
-  indexFrom?: number;
-  indexAt?: number;
-}
+// type CartActionsType = {
+//   type: string;
+//   payload?: {name: string; order: {number: number}; success: boolean};
+//   ingredients?: IIngredient[];
+//   cartIDs?: string[];
+//   name?: string;
+//   number?: number;
+//   cartSum?: number;
+//   id?: string;
+//   hash?: string;
+//   hashTop?: string;
+//   hashBottom?: string;
+//   indexFrom?: number;
+//   indexAt?: number;
+// }
 
-export const cartReducer = (state: TCart = initialState, action: CartActionsType) => {
+export const cartReducer = (state = initialState, action: TCartActions): TCartStore => {
   switch (action.type) {
     case SET_ORDER: {
       return {
@@ -154,7 +176,7 @@ export const cartReducer = (state: TCart = initialState, action: CartActionsType
     case ADD_CONTAINER_ITEM: {
       const constructor = state.constructorData;
       const ingredients = state.ingredientsData;
-      const newItem = ingredients?.find(item => item._id === action.id);
+      const newItem = ingredients?.find(item => item._id === action.id)!;
       return {
         ...state,
         constructorData: [
@@ -170,7 +192,7 @@ export const cartReducer = (state: TCart = initialState, action: CartActionsType
     case SET_CONTAINER_BUN: {
       const constructor = state.constructorData;
       const ingredients = state.ingredientsData;
-      const newBun = ingredients?.find(item => item._id === action.id);
+      const newBun = ingredients?.find(item => item._id === action.id)!;
       if (constructor[0]?.type === "bun") {
         return {
           ...state,

@@ -1,13 +1,12 @@
 import {checkAccessToken, getNewAccessToken} from "./api";
 import {baseUrl, checkAccessEndpoint, refreshTokenEndpoint} from "../utils/constants";
-import {useDispatch, useSelector} from "react-redux";
 import {actions} from "./reducers/auth";
 import {useCallback, useState} from "react";
-import {IStore} from "../utils/types";
+import {useDispatch, useSelector} from "../utils/hooks";
 
 function useInit() {
   const dispatch = useDispatch();
-  const isAuth = useSelector((store: IStore) => store.auth.isAuth);
+  const isAuth = useSelector((store) => store.auth.isAuth);
   const {setAuthFalse, setAuthTrue} = actions;
   const [isInitLoaded, setIsInitLoaded] = useState(false);
   const [canEnter, setCanEnter] = useState(false);
