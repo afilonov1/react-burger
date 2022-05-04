@@ -8,7 +8,7 @@ import {
     REPLACE_CART_INGREDIENTS, SET_CART_STATE_TO_INITIAL,
     SET_CONTAINER_BUN,
     SET_ORDER
-} from "./types/cart";
+} from "../actionTypes/cart";
 import {v4 as uuid} from "uuid";
 import {requestData} from "../api";
 import {IIngredient} from "../../utils/types";

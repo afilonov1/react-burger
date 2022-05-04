@@ -10,3 +10,18 @@
 .text {
     color: #F2F2F3;
 }
+.ordersWrapper {
+    height: 152px;
+    overflow: auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-auto-rows: 32px;
+    /*align-items: end;*/
+    /*justify-items: end;*/
+}
+.orderDone {
+    color: #00CCCC;
+}
+.orderCooking {
+    color: #F2F2F3;
+}

@@ -5,14 +5,9 @@ import gifPath from "../../images/done.gif";
 import {postOrder} from "../../services/actions/cart";
 import {baseUrl} from "../../utils/constants";
 import {useDispatch, useSelector} from "../../utils/hooks";
+import {calcOrderNum} from "../../utils/utils";
 
-const calcOrderNum = (num: number) => {
-  const numLength = num.toString().length;
-  if (num.toString().length < 6) {
-    return "0".repeat(6 - numLength) + num;
-  }
-  return num.toString();
-}
+
 
 export default function OrderDetails() {
   const orderNum = useSelector((store) => store.cart.order.number);
@@ -25,7 +20,6 @@ export default function OrderDetails() {
 
   const formattedOrderNum = calcOrderNum(orderNum);
   useEffect(() => {
-      console.log("ABOBA")
       const fetchData = {
         ingredients: cartIDs,
       };

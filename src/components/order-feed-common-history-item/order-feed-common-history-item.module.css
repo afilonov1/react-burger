@@ -2,7 +2,7 @@
     padding: 24px;
     background: #1C1C21;
     border-radius: 40px;
-    z-index: -100;
+    /*z-index: -100;*/
     display: grid;
     gap: 24px;
     /*grid-auto-columns: 6fr 5fr 4fr 3fr;*/
@@ -28,8 +28,16 @@
 .imgWrapper {
     grid-area: images;
 }
-.price {
-    color: #F2F2F3;
+.priceWrapper {
     grid-area: price;
     justify-self: end;
+    display: grid;
+    /*grid-auto-columns: 1fr 1fr;*/
+    grid-template-columns: auto auto;
+    align-items: center;
+    gap: 9px;
+}
+.price {
+    line-height: 28px;
+    color: #F2F2F3;
 }

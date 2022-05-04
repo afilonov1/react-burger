@@ -8,19 +8,16 @@ import styles from "./order-feed-icons.module.css";
 const OrderFeedIcons: FC<{iconsId: string[]}> = ({iconsId}) => {
   const ingredients = useSelector(store => store.cart.ingredientsData);
   const [iconIngredients, setIconsIngredients] = useState<IIngredient[]>([]);
-  console.log(iconsId)
   useEffect(() => {
     if (!iconIngredients.length) {
       iconsId.forEach(id => {
         const ingredient = ingredients?.find(item => item._id === id);
-        console.log(ingredients)
         if (ingredient) {
           setIconsIngredients(prevState => [...prevState, ingredient]);
         }
       })
     }
-  }, [ingredients, iconsId]);
-  console.log(iconIngredients);
+  }, [ingredients, iconsId, iconIngredients]);
   return (
     <div className={styles.iconsWrapper}>
       {iconIngredients.map((item, index) => {

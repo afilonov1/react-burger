@@ -1,6 +1,4 @@
-
-
-export const feedData = {
+const feedData = {
   "success": true,
   "orders": [
   {
@@ -37,3 +35,4 @@ export const feedData = {
   "total": 1,
   "totalToday": 1
 }
+export {}

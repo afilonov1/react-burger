@@ -4,7 +4,7 @@ import {
     REQUEST_IS_READY,
     SET_MODAL_INVISIBLE,
 
-} from "./types/modal";
+} from "../actionTypes/modal";
 import {IIngredient} from "../../utils/types";
 
 interface IRequestIsReady {

@@ -1,4 +1,6 @@
 .wrapper {
     display: grid;
     gap: 16px;
+    height: calc(100vh - 217px);
+    overflow: auto;
 }

@@ -1,0 +1,45 @@
+.wrapper {
+    display: grid;
+    width: 640px;
+    grid-template-columns: 1fr auto;
+    grid-auto-rows: auto;
+    margin-inline: auto;
+    grid-template-areas:
+        "number number"
+        "title title"
+        "status status"
+        "consist consist"
+        "data data"
+        "time priceWrapper";
+}
+.number {
+    grid-area: number;
+}
+.title {
+    grid-area: title;
+}
+.status {
+    grid-area: status;
+}
+.consist {
+    grid-area: consist;
+}
+.data {
+    overflow-y: auto;
+    grid-area: data;
+    max-height: 312px;
+}
+.time {
+    grid-area: time;
+}
+
+.priceWrapper {
+    grid-area: priceWrapper;
+    display: grid;
+    grid-template-columns: auto auto;
+    gap: 9px;
+}
+.price {
+    line-height: 28px;
+    color: #F2F2F3;
+}

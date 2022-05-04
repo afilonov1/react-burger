@@ -1,9 +1,9 @@
 import React, {FC} from 'react';
 import styles from "./order-feed-icon-image.module.css";
 
-const OrderFeedIconImage: FC<{src: string, index: number, howMuchAfterLast?: number}> = ({src, index, howMuchAfterLast}) => {
+const OrderFeedIconImage: FC<{src: string, index?: number, howMuchAfterLast?: number}> = ({src, index, howMuchAfterLast}) => {
   return (
-    <div style={{zIndex: -index}} className={styles.imageWrapper}>
+    <div style={{zIndex: typeof index === "number" ? 7 - index : 1}} className={styles.imageWrapper}>
       <div className={styles.imageBackground}>
         <img style={{opacity: howMuchAfterLast ? 0.6 : 1}} className={styles.img} src={src} alt="" />
         {!!howMuchAfterLast && (

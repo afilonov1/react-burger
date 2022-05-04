@@ -18,6 +18,21 @@ export interface IIngredient {
   image_large: string;
   __v: 0
 }
+export interface IwsOrder {
+  createdAt: string;
+  ingredients: string[];
+  name: string;
+  number: number;
+  status: string;
+  updatedAt: string;
+  _id: string;
+}
+export interface IwsMessage {
+  orders: IwsOrder[];
+  success: boolean;
+  total: number;
+  totalToday: number;
+}
 
 
 export interface IHashIngredient extends IIngredient {

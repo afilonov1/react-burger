@@ -14,27 +14,28 @@ import ProtectedFromAuthenticated from "../../pages/protected-from-authenticated
 import Logout from "../../pages/logout/logout";
 import Modal from "../modal/modal";
 import {clearCart, clearOrder, getIngredients} from "../../services/actions/cart";
-import {baseUrl, ingredientsEndpoint} from "../../utils/constants";
 import {useDispatch, useSelector} from "../../utils/hooks";
 import IngredientDetails from "../ingredient-details/ingredient-details";
 import OrderDetails from "../order-details/order-details";
 import {closeModal} from "../../services/actions/modal";
 import OrderFeedPage from "../../pages/order-feed-page/order-feed-page";
+import OrderIngredientsDetails from "../order-ingredients-details/order-ingredients-details";
+import {baseUrl, ingredientsEndpoint} from "../../utils/constants";
 
 
 function App() {
+  const dispatch = useDispatch();
+
   const history = useHistory();
   const location: any = useLocation();
   let background = location.state && location.state.background;
 
   const isModalVisible = useSelector((store) => store.modal.isOrderModalVisible);
 
-
-  const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getIngredients(baseUrl + ingredientsEndpoint));
-
   }, [dispatch]);
+
   const closeWithGoBack = () => {
     dispatch(closeModal());
     history.goBack();
@@ -50,7 +51,7 @@ function App() {
       <Switch location={background || location}>
         <Route path="/" component={Main} exact/>
         <Route path="/feed" component={OrderFeedPage} exact/>
-        <Route path="/feed/:id" component={OrderFeedPage} exact/>
+        <Route path="/feed/:id" component={OrderIngredientsDetails} exact/>
         <ProtectedFromAuthenticated path="/login" exact>
           <LoginPage />
         </ProtectedFromAuthenticated>
@@ -70,9 +71,16 @@ function App() {
         <Route path="/ingredients/:ingredientId" component={IngredientDetails} exact/>
         <Route path="*" component={NotFound404}/>
       </Switch>
-      {background && <Route path="/ingredients/:ingredientId" children={<Modal onClose={closeWithGoBack}>
-        <IngredientDetails />
-      </Modal>} />}
+      {background && <Route path="/ingredients/:ingredientId" children={
+        <Modal onClose={closeWithGoBack}>
+          <IngredientDetails />
+        </Modal>
+      } />}
+      {background && <Route path="/feed/:id" children={
+        <Modal onClose={closeWithGoBack}>
+          <OrderIngredientsDetails />
+        </Modal>
+      } />}
       {isModalVisible && (
         <Modal isOrderModal onClose={closeAndClearCart}>
           <OrderDetails/>

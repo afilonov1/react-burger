@@ -8,7 +8,7 @@ import {
   REPLACE_CART_INGREDIENTS, SET_CART_STATE_TO_INITIAL,
   SET_CONTAINER_BUN,
   SET_ORDER,
-} from '../actions/types/cart';
+} from '../actionTypes/cart';
 import {IHashIngredient, IIngredient} from "../../utils/types";
 import {TCartActions} from "../actions/cart";
 
