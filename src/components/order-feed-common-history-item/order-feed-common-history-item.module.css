@@ -9,9 +9,11 @@
     grid-template-areas:
         "numOrder time time time"
         "title title title title"
+        "status status status status"
         "images images images price";
     align-items: center;
 }
+
 .numOrder {
     color: #F2F2F3;
     grid-area: numOrder;
@@ -40,4 +42,8 @@
 .price {
     line-height: 28px;
     color: #F2F2F3;
+}
+
+.status {
+    grid-area: status;
 }

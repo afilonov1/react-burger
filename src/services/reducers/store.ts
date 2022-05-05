@@ -5,7 +5,7 @@ import {socketMiddleware} from "../middleware/socketMiddleware";
 const store = configureStore({
   reducer: rootReducer,
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(socketMiddleware("wss://norma.nomoreparties.space/orders/all")),
+    getDefaultMiddleware().concat(socketMiddleware()),
 
 })
 

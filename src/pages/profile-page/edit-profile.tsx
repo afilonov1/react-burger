@@ -94,7 +94,7 @@ function EditProfile() {
   }
 
   return (
-    <section>
+    <section className={"mt-20"}>
       <form onSubmit={onSubmit}>
         <ul>
           <li>

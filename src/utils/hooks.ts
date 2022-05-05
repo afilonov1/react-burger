@@ -5,18 +5,22 @@ import {
 } from "react-redux";
 import {AppDispatch, AppThunk, RootState} from "./types";
 import {useEffect} from "react";
-import {wsConnectionStart} from "../services/actions/wsActions";
+import {wsCloseConnection, wsConnectionStart} from "../services/actions/wsActions";
+import {TSocketType} from "../services/reducers/webSocketReducer";
 
 // export const useSelector = createSelectorHook<RootState>();
 export const useSelector: TypedUseSelectorHook<RootState> = selectorHook;
 
 export const useDispatch = () => dispatchHook<AppDispatch | AppThunk>();
 
-export const useWSConnect = () => {
+export const useWSConnect = (url: string, type: TSocketType) => {
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(wsConnectionStart());
-  }, [dispatch]);
+    dispatch(wsConnectionStart({url, type}));
+    return () => {
+      dispatch(wsCloseConnection());
+    }
+  }, [dispatch, type, url]);
 
   return useSelector(store => store.ws.messages);
 }

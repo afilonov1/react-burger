@@ -6,9 +6,11 @@ import {IwsOrder} from "../../utils/types";
 import {useSelector} from "../../utils/hooks";
 import {createStringOfDate} from "../../utils/utils";
 import {Link, useLocation} from "react-router-dom";
+import classNames from "classnames";
+import OrderStatus from "../order-status/order-status";
 
 
-const OrderFeedCommonHistoryItem: FC<{ cart: IwsOrder }> = ({cart}) => {
+const OrderFeedCommonHistoryItem: FC<{ cart: IwsOrder, isPrivateHistory?: boolean }> = ({cart, isPrivateHistory}) => {
   const location = useLocation();
   const [price, setPrice] = useState(0);
   const ingredientsData = useSelector(store => store.cart.ingredientsData);
@@ -24,14 +26,17 @@ const OrderFeedCommonHistoryItem: FC<{ cart: IwsOrder }> = ({cart}) => {
   return (
     <Link
       to={{
-        pathname: `/feed/${cart._id}`,
+        pathname: `/${isPrivateHistory ? "profile/orders" : "feed"}/${cart._id}`,
         state: {background: location}
       }}
     >
-      <div className={styles.wrapper}>
+      <div className={classNames(styles.wrapper, isPrivateHistory ? styles.fullSize : null)}>
         <p className={styles.numOrder + " text text_type_digits-default"}>{cart.number}</p>
         <p className={styles.time + " text text_type_main-default text_color_inactive"}>{date}</p>
         <h3 className={styles.title + " text text_type_main-medium"}>{cart.name}</h3>
+        {isPrivateHistory && (
+          <OrderStatus status={cart.status} propClassName={styles.status}/>
+        )}
         <div className={styles.imgWrapper}>
           <OrderFeedIcons iconsId={cart.ingredients}/>
         </div>

@@ -4,13 +4,16 @@ import OrderFeedCommonHistoryItem from "../order-feed-common-history-item/order-
 import {IwsMessage, IwsOrder} from "../../utils/types";
 import classNames from "classnames";
 
-const OrderFeedCommonHistory: FC<{lastMessage: IwsMessage}> = ({lastMessage}) => {
+const OrderFeedCommonHistory: FC<
+    {lastMessage: IwsMessage, isPrivateHistory?: boolean}
+  > = ({lastMessage, isPrivateHistory}) => {
   return (
     <div className={classNames(styles.wrapper, "scrollbar pr-2")}>
       {lastMessage.orders.map((item: IwsOrder) => {
         return <OrderFeedCommonHistoryItem
           key={item._id}
           cart={item}
+          isPrivateHistory={isPrivateHistory}
         />
       })}
     </div>

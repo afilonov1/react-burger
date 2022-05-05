@@ -20,7 +20,7 @@ const OrderStatus: FC<{status: string, propClassName?: string}> = ({status, prop
     }
   }
   return (
-    <p className={classNames(className, propClassName, styles.common, "text text_type_main-default")}>Выполнен</p>
+    <p className={classNames(className, propClassName, styles.common, "text text_type_main-default")}>{text}</p>
   );
 };
 

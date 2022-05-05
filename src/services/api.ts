@@ -18,15 +18,16 @@ export const requestData: AppThunk = function (
   return async function (dispatch: AppDispatch) {
     try {
       dispatch(requestAction());
+      let header: HeadersInit = {
+        'Content-Type': 'application/json',
+        Authorization: Cookies.get("accessToken")!
+      };
       const response = await fetch(url, {
         method: method,
         mode: 'cors',
         cache: 'no-cache',
         credentials: 'same-origin',
-        headers: {
-          'Content-Type': 'application/json',
-          
-        },
+        headers: header,
         redirect: 'follow',
         referrerPolicy: 'no-referrer',
         body: JSON.stringify(body)

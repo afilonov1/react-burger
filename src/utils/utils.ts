@@ -1,3 +1,5 @@
+import Cookies from "js-cookie";
+
 export const compareArrays = <T>(array1: ReadonlyArray<T>, array2: ReadonlyArray<T>) => {
     return array1.length === array2.length && array1.every((value, index) => value === array2[index]);
 };
@@ -38,4 +40,9 @@ export const calcOrderNum = (num: number, withHash?: boolean) => {
     return beginOfString + "0".repeat(6 - numLength) + num;
   }
   return beginOfString + numIsString;
+}
+
+export const getWsUserUrl = () => {
+  const token = Cookies.get("accessToken")
+  return `wss://norma.nomoreparties.space/orders?token=${token?.slice(7)}`;
 }
