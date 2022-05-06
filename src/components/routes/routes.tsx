@@ -18,12 +18,14 @@ import OrderDetails from "../order-details/order-details";
 import {closeModal} from "../../services/actions/modal";
 import {clearCart, clearOrder} from "../../services/actions/cart";
 import {useDispatch, useSelector} from "../../utils/hooks";
+import {ILocation} from "../../utils/types";
+
 
 const Routes = () => {
   const dispatch = useDispatch();
 
   const history = useHistory();
-  const location: any = useLocation();
+  const location = useLocation<ILocation>();
   let background = location.state && location.state.background;
 
   const isModalVisible = useSelector((store) => store.modal.isOrderModalVisible);

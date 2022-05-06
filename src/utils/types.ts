@@ -3,6 +3,7 @@ import {TModalActions} from "../services/actions/modal";
 import {TCartActions} from "../services/actions/cart";
 import {Action, ActionCreator, ThunkAction} from "@reduxjs/toolkit";
 import {rootReducer} from "../services/reducers";
+import {Location} from "history";
 
 export interface IIngredient {
   _id: string;
@@ -34,6 +35,9 @@ export interface IwsMessage {
   totalToday: number;
 }
 
+export interface ILocation {
+  background?: Location;
+}
 
 export interface IHashIngredient extends IIngredient {
   hash: string;

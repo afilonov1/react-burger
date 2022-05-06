@@ -29,6 +29,18 @@ const OrderIngredientsDetails = () => {
   const params: {id: string} = useParams();
   const order = messages[0]?.orders?.find(item => item._id === params.id);
   const ingredients = useGetIngredients();
+  const uniqueIngredients: {hash: string, quantity: number}[] = [];
+  order?.ingredients.forEach(ingredientHash => {
+    const indexOfIngredientInUnique = uniqueIngredients.findIndex(item => item.hash === ingredientHash);
+    if (indexOfIngredientInUnique !== -1) {
+      uniqueIngredients[indexOfIngredientInUnique].quantity += 1;
+    } else {
+      uniqueIngredients.push({
+        hash: ingredientHash,
+        quantity: 1
+      })
+    }
+  })
   const price = order?.ingredients.reduce((acc: number, currHash: string) => {
       const cartItem = ingredients?.find(cartItem => cartItem._id === currHash);
       return cartItem ? acc + cartItem.price : acc;
@@ -46,7 +58,7 @@ const OrderIngredientsDetails = () => {
       <OrderStatus status={order.status} propClassName={styles.status}/>
       <p className={classNames(styles.consist, "text text_type_main-medium mt-15 mb-6")}>Состав:</p>
       <div className={classNames(styles.data, "scrollbar pr-6 mb-10")}>
-        {order.ingredients.map((item, index) => <OrderIngredientsDetailsItem key={index} hash={item} />)}
+        {uniqueIngredients.map((item, index) => <OrderIngredientsDetailsItem key={index} hash={item.hash} quantity={item.quantity}/>)}
       </div>
       <p className={styles.time + " text text_type_main-default text_color_inactive"}>{createStringOfDate(order.createdAt)}</p>
       <div className={styles.priceWrapper}>

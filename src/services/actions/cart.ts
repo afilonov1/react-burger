@@ -108,25 +108,25 @@ export type TCartActions = IGetIngredientsRequestAction | IGetIngredientsSuccess
   IRemoveContainerItemAction | ISetContainerBunAction | IReplaceCartIngredientsAction | IMoveCartItemToIndexAction |
   ISetCartToInitialAction | IClearCartAction | IClearOrderAction;
 
-const getIngredientsRequest = (): IGetIngredientsRequestAction => ({
+export const getIngredientsRequest = (): IGetIngredientsRequestAction => ({
     type: GET_INGREDIENTS_REQUEST
 })
-const getIngredientsSuccess = (json: { success: boolean; data: ReadonlyArray<IIngredient> }): IGetIngredientsSuccessAction => ({
+export const getIngredientsSuccess = (json: { success: boolean; data: ReadonlyArray<IIngredient> }): IGetIngredientsSuccessAction => ({
     type: GET_INGREDIENTS_SUCCESS,
     ingredients: json.data
 })
-const getIngredientsError = (): IGetIngredientsErrorAction => ({
+export const getIngredientsError = (): IGetIngredientsErrorAction => ({
     type: GET_INGREDIENTS_ERROR
 })
-const postOrderRequest = (): IPostOrderRequestAction => ({
+export const postOrderRequest = (): IPostOrderRequestAction => ({
     type: POST_ORDER_REQUEST
 })
-const postOrderSuccess = (json: {name: string; order: {number: number}; success: boolean}, cartIDs: Array<string>): IPostOrderSuccessAction => ({
+export const postOrderSuccess = (json: {name: string; order: {number: number}; success: boolean}, cartIDs: Array<string>): IPostOrderSuccessAction => ({
     type: POST_ORDER_SUCCESS,
     payload: json,
     cartIDs
 })
-const postOrderError = (): IPostOrderErrorAction => ({
+export const postOrderError = (): IPostOrderErrorAction => ({
     type: POST_ORDER_ERROR
 })
 export const setOrder = (name: string, number: number, cartSum: number, cartIDs: Array<string>): ISetOrderAction => ({
