@@ -2,17 +2,16 @@ import React, {useEffect, useState} from "react";
 import {Counter, CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 
 import styles from './ingredients-item.module.css';
-import {useDispatch, useSelector} from "react-redux";
-import {openIngredientModal} from "../../services/actions/modal";
 import {useDrag} from "react-dnd";
-import {Link} from "react-router-dom";
-import {IIngredient, IStore} from "../../utils/types";
+import {Link, useLocation} from "react-router-dom";
+import {IIngredient} from "../../utils/types";
+import {useSelector} from "../../utils/hooks";
 
 
 export default function IngredientsItem({itemData}: {itemData: IIngredient}) {
+  const location = useLocation();
   const [counter, setCounter] = useState(0);
-  const dispatch = useDispatch();
-  const cart = useSelector((store: IStore) => store.cart.constructorData);
+  const cart = useSelector((store) => store.cart.constructorData);
   useEffect(() => {
     let newCount = cart.filter(item => item._id === itemData._id).length;
     setCounter(newCount);
@@ -30,17 +29,14 @@ export default function IngredientsItem({itemData}: {itemData: IIngredient}) {
   const border = isDrag ? "1px solid coral" : "1px solid transparent";
 
   const ingredientId = itemData['_id'];
-
   return (
     <Link
       key={ingredientId}
       to={{
         pathname: `/ingredients/${ingredientId}`,
-        state: {modal: true},
+        state: { background: location }
       }}
-      style={{border}} ref={dragRef} className={styles.link + " mt-6 mb-2"} onClick={() => {
-      dispatch(openIngredientModal(itemData));
-    }}
+      style={{border}} ref={dragRef} className={styles.link + " mt-6 mb-2"}
     >
       <img src={itemData.image} alt={itemData.name} width="240" height="120"/>
       <div className={styles.priceWrap + " pt-1 pb-2"}>

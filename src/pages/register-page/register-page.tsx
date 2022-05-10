@@ -3,15 +3,14 @@ import {Input, PasswordInput, Button} from "@ya.praktikum/react-developer-burger
 import {Link, Redirect} from "react-router-dom";
 import {baseUrl, registerEndpoint} from "../../utils/constants";
 import {actions} from "../../services/reducers/auth";
-import {useDispatch, useSelector} from "react-redux";
 import {requestData} from "../../services/api";
-import {IStore} from "../../utils/types";
+import {useDispatch, useSelector} from "../../utils/hooks";
 
 function RegisterPage() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const isAuth = useSelector((store: IStore) => store.auth.isAuth);
+  const isAuth = useSelector((store) => store.auth.isAuth);
 
 
   const {registerError, registerRequest, registerSuccess} = actions;

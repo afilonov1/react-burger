@@ -1,0 +1,38 @@
+.img {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+
+
+}
+.imageBackground {
+    background: #131316;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+
+    position: relative;
+    inset-block-start: 2px;
+    inset-inline-start: 2px;
+}
+
+.imageWrapper {
+    background: linear-gradient(45deg, #801AB2, #4C4CFF);
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    position: relative;
+}
+
+.overflowNumber {
+    position: absolute;
+    top: calc(50% - 12px);
+    left: calc(50% - 10px);
+
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    color: #F2F2F3;
+
+}

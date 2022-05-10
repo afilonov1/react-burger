@@ -3,25 +3,22 @@ import styles from "./burger-constructor.module.css";
 import {Button, ConstructorElement} from "@ya.praktikum/react-developer-burger-ui-components";
 
 import imagePath from '../../images/Subtract.svg';
-import OrderDetails from "../order-details/order-details";
-import Modal from "../modal/modal";
-import {useDispatch, useSelector} from "react-redux";
 import {openOrderModal} from "../../services/actions/modal";
 import {useDrop} from "react-dnd";
 import {addContainerItem, setContainerBun} from "../../services/actions/cart";
 import ConstructorItem from "../constructor-item/constructor-item";
 import {Redirect} from "react-router-dom";
 import useInit from "../../services/useInit";
-import {IHashIngredient, IStore} from "../../utils/types";
+import {IHashIngredient} from "../../utils/types";
+import {useSelector, useDispatch} from "../../utils/hooks";
 
 
 export default function BurgerConstructor() {
-  const cart = useSelector((store: IStore) => store.cart.constructorData);
+  const cart = useSelector((store) => store.cart.constructorData);
   const isBun = cart[0]?.type === "bun";
   const {init, isInitLoaded, canEnter} = useInit();
 
 
-  const isModalVisible = useSelector((store: IStore) => store.modal.isOrderModalVisible);
   const [isOrderClicked, setOrderClicked] = useState(false);
   const dispatch = useDispatch();
   const [{isHover}, dropRef] = useDrop({
@@ -115,11 +112,7 @@ export default function BurgerConstructor() {
         </Button>
       </div>
 
-      {isModalVisible && (
-        <Modal isOrderModal>
-          <OrderDetails/>
-        </Modal>
-      )}
+
     </section>
   )
 }

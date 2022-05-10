@@ -26,7 +26,7 @@ function ProfilePage() {
                 to="/profile/orders"
                 className={styles.navItem + " text text_type_main-medium"}
                 activeClassName={styles.activeNavItem}
-                exact
+
               >
                 История заказов
               </NavLink>
@@ -47,8 +47,8 @@ function ProfilePage() {
           изменить свои персональные данные</p>
       </aside>
       <Switch>
-        <Route path={`${match.path}`} component={EditProfile} exact />
         <Route path={`${match.path}/orders`} component={ProfileOrders}/>
+        <Route path={`${match.path}`} component={EditProfile} exact/>
       </Switch>
 
     </div>

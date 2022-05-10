@@ -1,0 +1,49 @@
+.wrapper {
+    padding: 24px;
+    background: #1C1C21;
+    border-radius: 40px;
+    /*z-index: -100;*/
+    display: grid;
+    gap: 24px;
+    /*grid-auto-columns: 6fr 5fr 4fr 3fr;*/
+    grid-template-areas:
+        "numOrder time time time"
+        "title title title title"
+        "status status status status"
+        "images images images price";
+    align-items: center;
+}
+
+.numOrder {
+    color: #F2F2F3;
+    grid-area: numOrder;
+}
+.time {
+    grid-area: time;
+    justify-self: end;
+}
+.title {
+    color: #F2F2F3;
+    grid-area: title;
+    /*grid-column: span 2;*/
+}
+.imgWrapper {
+    grid-area: images;
+}
+.priceWrapper {
+    grid-area: price;
+    justify-self: end;
+    display: grid;
+    /*grid-auto-columns: 1fr 1fr;*/
+    grid-template-columns: auto auto;
+    align-items: center;
+    gap: 9px;
+}
+.price {
+    line-height: 28px;
+    color: #F2F2F3;
+}
+
+.status {
+    grid-area: status;
+}

@@ -1,30 +1,64 @@
 import Cookies from 'js-cookie';
-import {ActionCreator} from "@reduxjs/toolkit";
+import {ActionCreator, ActionCreatorWithPayload} from "@reduxjs/toolkit";
+import {AppDispatch, AppThunk} from "../utils/types";
+import {
+  getIngredientsError,
+  getIngredientsRequest, getIngredientsSuccess,
+  postOrderError,
+  postOrderRequest,
+  postOrderSuccess
+} from "./actions/cart";
+import {actions} from "./reducers/auth";
 
-export function requestData(
-  {method, url, requestAction, successAction, errorAction, body, payload, setCookie, additionalAction}: {
+// requestAction = getIngredientsRequest,
+//   successAction = getIngredientsSuccess,
+//   errorAction = getIngredientsError
+// requestAction = postOrderRequest,
+//   successAction = postOrderSuccess,
+//   errorAction = postOrderError,
+//  const {registerError, registerRequest, registerSuccess} = actions;
+//  const {loginSuccess, loginError, loginRequest} = actions;
+const {registerError, registerRequest, registerSuccess, loginSuccess, loginError, loginRequest} = actions;
+type TRequest =
+  ReturnType<typeof getIngredientsRequest> |
+  ReturnType<typeof postOrderRequest> |
+  ReturnType<typeof registerRequest> |
+  ReturnType<typeof loginRequest>;
+type TSuccess =
+  ReturnType<typeof getIngredientsSuccess> |
+  ReturnType<typeof postOrderSuccess> |
+  ReturnType<typeof registerSuccess> |
+  ReturnType<typeof loginSuccess>;
+type TError =
+  ReturnType<typeof getIngredientsError> |
+  ReturnType<typeof postOrderError> |
+  ReturnType<typeof registerError> |
+  ReturnType<typeof loginError>;
+export const requestData: AppThunk = function (
+  {method, url, requestAction, successAction, errorAction, body, payload, setCookie}: {
     method: string;
     url: string;
-    requestAction: ActionCreator<any>;
-    successAction: ActionCreator<any>;
-    errorAction: ActionCreator<any>;
+    requestAction: ActionCreator<TRequest>;
+    successAction: ActionCreator<TSuccess>;
+    errorAction: ActionCreator<TError>;
     body?: { email: string; password: string; } | { ingredients: string[]} ;
-    payload?: any;
-    setCookie?: any;
-    additionalAction?: any;
+    payload?: string[];
+    setCookie?: true;
   }) {
 
-  return async function (dispatch: any) {
+  return async function (dispatch: AppDispatch) {
     try {
       dispatch(requestAction());
+      let header: HeadersInit = {
+        'Content-Type': 'application/json',
+        Authorization: Cookies.get("accessToken")!
+      };
       const response = await fetch(url, {
         method: method,
         mode: 'cors',
         cache: 'no-cache',
         credentials: 'same-origin',
-        headers: {
-          'Content-Type': 'application/json'
-        },
+        headers: header,
         redirect: 'follow',
         referrerPolicy: 'no-referrer',
         body: JSON.stringify(body)
@@ -34,9 +68,6 @@ export function requestData(
       if (response.ok && data.success) {
 
         dispatch(successAction(data, payload));
-        if (additionalAction) {
-          dispatch(additionalAction());
-        }
         if (setCookie) {
           Cookies.set('accessToken', data.accessToken);
           Cookies.set('refreshToken', data.refreshToken);
@@ -54,7 +85,7 @@ export function requestData(
   }
 }
 
-const getUserRequest = (url: string): any => {
+const getUserRequest = (url: string): Promise<Response> => {
   let header: HeadersInit = {
     'Content-Type': 'application/json',
     Authorization: Cookies.get("accessToken")!
@@ -70,7 +101,7 @@ const getUserRequest = (url: string): any => {
     referrerPolicy: 'no-referrer'
   });
 }
-const getNewAccessTokenRequest = (url: string) =>
+const getNewAccessTokenRequest = (url: string): Promise<Response> =>
   fetch(url, {
     method: 'POST',
     mode: 'cors',
@@ -86,10 +117,9 @@ const getNewAccessTokenRequest = (url: string) =>
       token: Cookies.get("refreshToken")
     })
   });
-
 export async function getNewAccessToken(url: string) {
   try {
-    const response: any = await getNewAccessTokenRequest(url);
+    const response = await getNewAccessTokenRequest(url);
     if (response.ok) {
       const data = await response.json();
       if (data.success) {
@@ -121,8 +151,9 @@ export async function checkAccessToken(url: string) {
 
 }
 
-export function getUser(url: string, setUserName: any, setUserEmail: any) {
-  return async function (dispatch: any) {
+export const getUser: AppThunk = function (url: string, setUserName: ActionCreatorWithPayload<string>,
+                                           setUserEmail: ActionCreatorWithPayload<string>) {
+  return async function (dispatch: AppDispatch) {
     try {
       const header: HeadersInit = {
         'Content-Type': 'application/json',
@@ -153,8 +184,12 @@ export function getUser(url: string, setUserName: any, setUserEmail: any) {
   }
 }
 
-export function updateUser(url: string, body: any, setUserName: any, setUserEmail: any) {
-  return async function (dispatch: any) {
+export const updateUser: AppThunk = (url: string, body: {
+  name: string,
+  email: string,
+  password: string
+}, setUserName: ActionCreatorWithPayload<string>, setUserEmail: ActionCreatorWithPayload<string>) => {
+  return async function (dispatch: AppDispatch) {
     try {
       const header: HeadersInit = {
         'Content-Type': 'application/json',
@@ -215,7 +250,10 @@ export async function logoutUser(url: string) {
 
 }
 
-export async function resetPasswordRequest(url: string, body: any) {
+export async function resetPasswordRequest(url: string, body: {
+  password: string,
+  token: string
+}) {
   try {
     const response = await fetch(url, {
       method: 'POST',

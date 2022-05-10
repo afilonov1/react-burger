@@ -1,26 +1,54 @@
-import {createSlice} from "@reduxjs/toolkit";
+import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 
+export type TAuth = {
+  isAuth: boolean;
+  user: {
+    name: string;
+    email: string;
+  };
+  register: {
+    request: boolean;
+    success: boolean;
+    error: boolean;
+  };
+  login: {
+    request: boolean;
+    success: boolean;
+    error: boolean;
+  };
+};
+
+const initialAuth: TAuth = {
+  isAuth: false,
+  user: {
+    name: "",
+    email: "",
+  },
+  register: {
+    request: false,
+    success: false,
+    error: false,
+  },
+  login: {
+    request: false,
+    success: false,
+    error: false,
+  },
+};
+
+type TResponse = {
+  payload: {
+    user: {
+      name: string,
+      email: string
+    }
+  }
+}
 const authSlice = createSlice({
   name: 'auth',
-  initialState: {
-    isAuth: false,
-    user: {
-      name: "",
-      email: "",
-    },
-    register: {
-      request: false,
-      success: false,
-      error: false,
-    },
-    login: {
-      request: false,
-      success: false,
-      error: false,
-    },
-  },
+  initialState: initialAuth,
   reducers: {
-    registerSuccess(state, action) {
+    registerSuccess(state, action: TResponse) {
       const data = action.payload;
       state.isAuth = true;
       state.user.name = data.user.name;
@@ -48,7 +76,7 @@ const authSlice = createSlice({
       state.login.request = false;
       state.login.error = false;
     },
-    loginSuccess(state, action) {
+    loginSuccess(state, action: TResponse) {
       const data = action.payload;
       state.isAuth = true;
       state.user.name = data.user.name;
@@ -72,10 +100,10 @@ const authSlice = createSlice({
     setAuthTrue(state) {
       state.isAuth = true;
     },
-    setUserName(state, action) {
+    setUserName(state, action: PayloadAction<string>) {
       state.user.name = action.payload;
     },
-    setUserEmail(state, action) {
+    setUserEmail(state, action: PayloadAction<string>) {
       state.user.email = action.payload;
     },
   }

@@ -1,11 +1,11 @@
 import React, {useCallback, useEffect, useState} from "react";
 import {Redirect} from "react-router-dom";
-import {useDispatch} from "react-redux";
 import Cookies from 'js-cookie';
 import {logoutUser} from "../../services/api";
 import {baseUrl, logoutEndpoint} from "../../utils/constants";
 import {actions} from "../../services/reducers/auth";
 import {setCartToInitial} from "../../services/actions/cart";
+import {useDispatch} from "../../utils/hooks";
 
 function Logout() {
   const dispatch = useDispatch();

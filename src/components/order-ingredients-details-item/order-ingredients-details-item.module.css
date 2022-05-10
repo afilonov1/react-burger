@@ -1,0 +1,21 @@
+.wrapper {
+    display: grid;
+    grid-template-columns: 64px 1fr auto;
+    gap: 16px;
+    align-items: center;
+    justify-items: start;
+}
+
+.price {
+
+}
+
+.priceWrapper {
+    display: grid;
+    grid-template-columns: auto auto;
+    gap: 9px;
+}
+.price {
+    line-height: 28px;
+    color: #F2F2F3;
+}

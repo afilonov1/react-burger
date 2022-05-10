@@ -4,21 +4,38 @@ import {
     REQUEST_IS_READY,
     SET_MODAL_INVISIBLE,
 
-} from "./types/modal";
+} from "../actionTypes/modal";
 import {IIngredient} from "../../utils/types";
 
-export const requestIsReady = () => ({
+interface IRequestIsReady {
+    readonly type: typeof REQUEST_IS_READY;
+}
+interface ICloseModal {
+    readonly type: typeof SET_MODAL_INVISIBLE;
+}
+interface IOpenIngredientModal {
+    readonly type: typeof OPEN_INGREDIENT_MODAL;
+    readonly payload: Readonly<IIngredient>;
+}
+interface IOpenOrderModal {
+    readonly type: typeof OPEN_ORDER_MODAL;
+}
+
+export type TModalActions = IRequestIsReady | ICloseModal | IOpenIngredientModal | IOpenOrderModal;
+
+
+export const requestIsReady = (): IRequestIsReady => ({
     type: REQUEST_IS_READY
 })
 
-export const closeModal = () => ({
+export const closeModal = (): ICloseModal => ({
     type: SET_MODAL_INVISIBLE
 })
 
-export const openIngredientModal = (itemData: IIngredient) => ({
+export const openIngredientModal = (itemData: IIngredient): IOpenIngredientModal => ({
     type: OPEN_INGREDIENT_MODAL,
     payload: itemData
 })
-export const openOrderModal = () => ({
+export const openOrderModal = (): IOpenOrderModal => ({
     type: OPEN_ORDER_MODAL
 })

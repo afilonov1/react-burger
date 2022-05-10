@@ -2,15 +2,14 @@ import React, {useState} from 'react';
 import {Input, PasswordInput, Button} from "@ya.praktikum/react-developer-burger-ui-components";
 import {Link, Redirect, useLocation} from "react-router-dom";
 import {baseUrl, loginEndpoint} from "../../utils/constants";
-import {useDispatch, useSelector} from "react-redux";
 import {actions} from "../../services/reducers/auth";
 import {requestData} from "../../services/api";
-import {IStore} from "../../utils/types";
+import {useDispatch, useSelector} from "../../utils/hooks";
 
 function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const isAuth = useSelector((store: IStore) => store.auth.isAuth);
+  const isAuth = useSelector((store) => store.auth.isAuth);
   const dispatch = useDispatch();
   const {loginSuccess, loginError, loginRequest} = actions;
   interface LocationState {

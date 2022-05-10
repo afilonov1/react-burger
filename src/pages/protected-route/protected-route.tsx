@@ -1,10 +1,10 @@
 import React, {useEffect} from "react";
-import {Redirect, Route} from "react-router-dom";
+import {Redirect, Route, RouteProps} from "react-router-dom";
 
 import useInit from "../../services/useInit";
 import Loader from "../../components/loader/loader";
 
-const ProtectedRoute: React.FC<{path: string; exact: boolean}> = ({children, path, exact}) => {
+const ProtectedRoute: React.FC<RouteProps> = ({children, path, exact}) => {
   const {init, isInitLoaded, canEnter} = useInit();
 
   useEffect(() => {

@@ -10,7 +10,7 @@
 .container {
     display: flex;
     max-width: 1240px;
-    margin: 120px auto 0;
+    margin: 40px auto 0;
     position: relative;
 }
 .text {
@@ -20,7 +20,8 @@
 }
 .aside {
     width: 320px;
-    margin-right: 150px;
+    margin-top: 80px;
+    margin-right: 60px;
 }
 
 .section {
