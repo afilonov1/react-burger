@@ -8,6 +8,7 @@ describe("modal reducer", () => {
     expect(modalReducer(undefined, {})).toEqual({
       isOrderModalVisible: false,
     })
+
   })
   it("should set modal invisible", () => {
     expect(modalReducer(undefined, closeModal())).toEqual({

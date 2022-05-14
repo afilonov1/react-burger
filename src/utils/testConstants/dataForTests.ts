@@ -1,4 +1,4 @@
-import {TCartStore} from "../services/reducers/cart";
+import {TCartStore} from "../../services/reducers/cart";
 
 export const testCartTemplate: TCartStore = {
   ingredientsData: [

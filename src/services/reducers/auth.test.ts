@@ -1,58 +1,25 @@
-import auth, {actions, TAuth, TResponse} from "./auth";
+import auth, {actions} from "./auth";
+import {
+  initialAuth,
+  loginSuccessResultStore,
+  registerSuccessResultStore,
+  responseSuccessAuth
+} from "../../utils/testConstants/authConstants";
 
-const initialAuth: TAuth = {
-  isAuth: false,
-  user: {
-    name: "",
-    email: "",
-  },
-  register: {
-    request: false,
-    success: false,
-    error: false,
-  },
-  login: {
-    request: false,
-    success: false,
-    error: false,
-  },
-};
+
 const {
   registerSuccess, registerRequest, registerError,
   logout, loginSuccess, loginRequest, loginError,
   setAuthFalse, setAuthTrue, setUserName, setUserEmail
 } = actions;
 
-const responseSuccessAuth = {
-  user: {
-    name: "Name123",
-    email: "email333"
-  }
-}
 describe("auth reducer", () => {
   it("test initial state", () => {
     // @ts-ignore
     expect(auth(undefined, {})).toEqual(initialAuth)
   })
   it("handle registerSuccess", () => {
-    expect(auth(undefined, registerSuccess(responseSuccessAuth))).toEqual({
-      ...initialAuth,
-      isAuth: true,
-      user: {
-        name: responseSuccessAuth.user.name,
-        email: responseSuccessAuth.user.email,
-      },
-      register: {
-        request: false,
-        success: true,
-        error: false,
-      },
-      login: {
-        request: false,
-        success: false,
-        error: false,
-      },
-    })
+    expect(auth(undefined, registerSuccess(responseSuccessAuth))).toEqual(registerSuccessResultStore)
   })
   it("handle registerRequest", () => {
     expect(auth(undefined, registerRequest())).toEqual({
@@ -79,24 +46,7 @@ describe("auth reducer", () => {
     expect(auth(undefined, logout())).toEqual(initialAuth)
   })
   it("handle loginSuccess", () => {
-    expect(auth(undefined, loginSuccess(responseSuccessAuth))).toEqual({
-      ...initialAuth,
-      isAuth: true,
-      user: {
-        name: responseSuccessAuth.user.name,
-        email: responseSuccessAuth.user.email,
-      },
-      register: {
-        request: false,
-        success: false,
-        error: false,
-      },
-      login: {
-        request: false,
-        success: true,
-        error: false,
-      },
-    })
+    expect(auth(undefined, loginSuccess(responseSuccessAuth))).toEqual(loginSuccessResultStore)
   })
   it("handle loginRequest", () => {
     expect(auth(undefined, loginRequest())).toEqual({

@@ -6,7 +6,7 @@ import {
   wsConnectionSuccess,
   wsGetMessage
 } from "../actions/wsActions";
-import {wsMessagesData} from "../../utils/dataForTests";
+import {wsMessagesData} from "../../utils/testConstants/dataForTests";
 
 const initialState: WebSocketState = {
   wsConnected: false,
