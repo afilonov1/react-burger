@@ -1,16 +1,11 @@
-import {OPEN_INGREDIENT_MODAL, OPEN_ORDER_MODAL, SET_MODAL_INVISIBLE} from "../actionTypes/modal";
-import {IIngredient} from "../../utils/types";
+import {OPEN_ORDER_MODAL, SET_MODAL_INVISIBLE} from "../actionTypes/modal";
 import {TModalActions} from "../actions/modal";
 
 export type TModalState = {
     isOrderModalVisible: boolean;
-    isIngredientModalVisible: boolean;
-    currentDetailsItem: null | Readonly<IIngredient>;
 }
 const initialState: TModalState = {
     isOrderModalVisible: false,
-    isIngredientModalVisible: false,
-    currentDetailsItem: null
 };
 
 export const modalReducer = (state = initialState, action: TModalActions): TModalState => {
@@ -18,17 +13,10 @@ export const modalReducer = (state = initialState, action: TModalActions): TModa
 
         case (SET_MODAL_INVISIBLE): {
             return {
-                ...state,
                 ...initialState
             }
         }
-        case (OPEN_INGREDIENT_MODAL): {
-            return {
-                ...state,
-                isIngredientModalVisible: true,
-                currentDetailsItem: action.payload
-            }
-        }
+
         case (OPEN_ORDER_MODAL): {
             return {
                 ...state,
