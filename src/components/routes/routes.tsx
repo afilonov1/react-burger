@@ -16,7 +16,7 @@ import NotFound404 from "../../pages/not-found-404/not-found-404";
 import Modal from "../modal/modal";
 import OrderDetails from "../order-details/order-details";
 import {closeModal} from "../../services/actions/modal";
-import {clearCart, clearOrder} from "../../services/actions/cart";
+import {clearCart} from "../../services/actions/cart";
 import {useDispatch, useSelector} from "../../utils/hooks";
 import {ILocation} from "../../utils/types";
 
@@ -36,7 +36,6 @@ const Routes = () => {
   const closeAndClearCart = () => {
     dispatch(closeModal());
     dispatch(clearCart());
-    dispatch(clearOrder());
   }
   return (
     <>

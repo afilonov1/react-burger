@@ -32,7 +32,7 @@ export default function Modal(props: {
         <section className={styles.modal}>
           <div className={styles.header}>
             <h2 className={styles.text + " white text text_type_main-large"}>{header}</h2>
-            <div className={styles.close}>
+            <div data-test-id="close-modal" className={styles.close}>
               <CloseIcon onClick={onClose} type="primary"/>
             </div>
           </div>

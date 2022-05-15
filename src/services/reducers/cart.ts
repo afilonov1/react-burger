@@ -1,5 +1,5 @@
 import {
-  ADD_CONTAINER_ITEM, CLEAR_CART, CLEAR_ORDER,
+  ADD_CONTAINER_ITEM, CLEAR_CART,
   GET_INGREDIENTS_ERROR,
   GET_INGREDIENTS_REQUEST,
   GET_INGREDIENTS_SUCCESS,
@@ -7,7 +7,6 @@ import {
   REMOVE_CONTAINER_ITEM,
   REPLACE_CART_INGREDIENTS, SET_CART_STATE_TO_INITIAL,
   SET_CONTAINER_BUN,
-  SET_ORDER,
 } from '../actionTypes/cart';
 import {IHashIngredient, IIngredient} from "../../utils/types";
 import {TCartActions} from "../actions/cart";
@@ -53,47 +52,9 @@ const initialState: TCartStore = {
     cartIDs: []
   }
 };
-// type CartActionsType = {
-//   type: string;
-//   payload?: {name: string; order: {number: number}; success: boolean};
-//   ingredients?: IIngredient[];
-//   cartIDs?: string[];
-//   name?: string;
-//   number?: number;
-//   cartSum?: number;
-//   id?: string;
-//   hash?: string;
-//   hashTop?: string;
-//   hashBottom?: string;
-//   indexFrom?: number;
-//   indexAt?: number;
-// }
 
 export const cartReducer = (state = initialState, action: TCartActions): TCartStore => {
   switch (action.type) {
-    case SET_ORDER: {
-      return {
-        ...state,
-        order: {
-          ...state.order,
-          number: action.number,
-          cartSum: action.cartSum,
-          cartIDs: action.cartIDs,
-          name: action.name
-        }
-      }
-    }
-    case CLEAR_ORDER: {
-      return {
-        ...state,
-        order: {
-          name: "",
-          number: 0,
-          cartSum: 0,
-          cartIDs: []
-        }
-      }
-    }
     case CLEAR_CART: {
       return {
         ...state,
@@ -153,6 +114,7 @@ export const cartReducer = (state = initialState, action: TCartActions): TCartSt
         ...state,
         postOrder: {
           isRequest: false,
+          isError: false,
           isSuccess: true,
         },
         order: {
@@ -169,7 +131,8 @@ export const cartReducer = (state = initialState, action: TCartActions): TCartSt
         ...state,
         postOrder: {
           isRequest: false,
-          isError: true
+          isError: true,
+          isSuccess: false
         }
       }
     }

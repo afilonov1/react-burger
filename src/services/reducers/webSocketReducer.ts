@@ -8,7 +8,7 @@ import {
 import {IwsMessage} from "../../utils/types";
 
 export type TSocketType = "all" | "user" | null;
-type WebSocketState = {
+export type WebSocketState = {
   wsConnected: boolean;
   messages: IwsMessage[];
   error?: Event;

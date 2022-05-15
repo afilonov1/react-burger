@@ -36,7 +36,7 @@ const initialAuth: TAuth = {
   },
 };
 
-type TResponse = {
+export type TResponse = {
   payload: {
     user: {
       name: string,

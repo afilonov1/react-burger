@@ -129,13 +129,7 @@ export const postOrderSuccess = (json: {name: string; order: {number: number}; s
 export const postOrderError = (): IPostOrderErrorAction => ({
     type: POST_ORDER_ERROR
 })
-export const setOrder = (name: string, number: number, cartSum: number, cartIDs: Array<string>): ISetOrderAction => ({
-    type: SET_ORDER,
-    name,
-    number,
-    cartSum,
-    cartIDs
-})
+
 export const addContainerItem = (id: string): IAddContainerItemAction => ({
     type: ADD_CONTAINER_ITEM,
     id,
@@ -166,7 +160,4 @@ export const setCartToInitial = (): ISetCartToInitialAction => ({
 })
 export const clearCart = (): IClearCartAction => ({
     type: CLEAR_CART
-})
-export const clearOrder = (): IClearOrderAction => ({
-    type: CLEAR_ORDER
 })
