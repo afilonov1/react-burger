@@ -60,7 +60,7 @@ export default function BurgerConstructor() {
   }
   return (
     <section className={styles.section}>
-      <div className={styles.cart} style={{borderColor}} ref={dropRef}>
+      <div data-test-id="constructor-container" className={styles.cart} style={{borderColor}} ref={dropRef}>
         {cart.length === 0 && (
           <span className={styles.placeholderWrapper}>
                         <p className={styles.placeholder}>Для создания заказа перетащите булку и ингредиенты</p>
